@@ -1,0 +1,36 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "animation.player.first_person.empty_hand": {
+			"loop": true,
+			"bones": {
+				"rightarm": {
+					"position": [13.5, -10, 12],
+					"rotation": ["95.0 + variable.is_using_vr * 7.5", "-45.0 + variable.is_using_vr * 7.5", "115.0 + variable.is_using_vr * -2.5"]
+				}
+			}
+		},
+		"animation.player.first_person.swap_item": {
+			"loop": true,
+			"bones": {
+				"leftarm": {
+					"position": [ 0.0, "query.get_equipped_item_name('off_hand') == 'map' ? 0.0 : -10.0 * (1.0 - variable.player_arm_height)", 0.0 ]
+				},
+				"rightarm": {
+					"position": [ 0.0, "-10.0 * (1.0 - variable.player_arm_height)", 0.0 ]
+				}
+			}
+		},
+		"animation.player.first_person.shield_block": {
+			"loop": true,
+			"bones": {
+				"leftarm": {
+					"position": [ 0.0, "-10.0 * (1.0 - variable.player_arm_height)", 0.0 ]
+				},
+				"rightarm": {
+					"position": [ 0.0, "query.get_equipped_item_name('off_hand') != 'shield' ? -10.0 * (1.0 - variable.player_arm_height) : 0.0", 0.0 ]
+				}
+			}
+		}
+    }
+}

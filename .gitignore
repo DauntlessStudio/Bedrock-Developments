@@ -1,0 +1,4 @@
+node_modules/
+behavior_packs/
+resource_packs/
+bin/**/*.js

@@ -1,0 +1,1 @@
+console.log('Setup Bedrock Development API');

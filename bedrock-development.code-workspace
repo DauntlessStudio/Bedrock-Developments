@@ -1,0 +1,29 @@
+{
+    "folders": [
+        {
+            "name": "BP",
+            "path": "behavior_packs\\"
+        },
+        {
+            "name": "RP",
+            "path": "resource_packs\\"
+        },
+        {
+            "name": "TS",
+            "path": "ts\\"
+        },
+        {
+            "name": "SRC",
+            "path": "bin\\app\\src"
+        },
+        {
+            "name": "Root",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.json": "jsonc" // Opens .json files as jsonc (json with comments) so adding comments does not show errors
+        }
+    }
+}

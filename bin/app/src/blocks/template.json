@@ -1,0 +1,16 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:block": {
+        "description": {
+            "identifier": "namespace:template_block",
+            "register_to_creative_menu": true
+        },
+        "components": {
+            "minecraft:destroy_time": 2.0,
+            "minecraft:explosion_resistance": 1,
+            "minecraft:friction": 0.6,
+            "minecraft:loot": "loot_tables/blocks/empty.json",
+            "minecraft:map_color": "#B0B0B0"
+        }
+    }
+}

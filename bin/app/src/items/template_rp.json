@@ -1,0 +1,13 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:item": {
+        "description": {
+            "identifier": "namespace:template_item",
+            "category": "Equipment"
+        },
+        "components": {
+            "minecraft:icon": "template_item",
+            "minecraft:render_offsets": "apple"
+        }
+    }
+}

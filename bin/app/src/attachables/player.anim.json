@@ -1,0 +1,47 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.player.move.arms": {
+			"loop": true,
+			"bones": {
+				"leftArm": {
+					"rotation": ["variable.tcos0/(5 * v.dampen_left_arm_swing + 1) ", 0, 0]
+				},
+				"rightArm": {
+					"rotation": ["-variable.tcos0/(5 * v.dampen_right_arm_swing + 1) ", 0, 0]
+				}
+			}
+		},
+		"animation.player.custom_item.base_first_person_pose": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"rotation": [0, 180, 0],
+					"position": [0, 0, 0]
+				},
+				"leftArm": {
+					"position": [10, 0, -5]
+				},
+				"rightArm": {
+					"position": [-10, 0, -5]
+				}
+			}
+		},
+		"animation.player.custom_item.third_person_aim_arm.right": {
+			"loop": true,
+			"bones": {
+				"rightArm": {
+					"rotation": ["q.target_x_rotation - (q.is_sneaking * 15) ", "q.target_y_rotation", 0]
+				}
+			}
+		},
+		"animation.player.custom_item.third_person_aim_arm.left": {
+			"loop": true,
+			"bones": {
+				"leftArm": {
+					"rotation": ["q.target_x_rotation - (q.is_sneaking * 15) ", "q.target_y_rotation", 0]
+				}
+			}
+		}
+	}
+}
