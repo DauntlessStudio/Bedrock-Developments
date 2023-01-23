@@ -2,6 +2,7 @@ import * as Global from './globals';
 import { Octokit } from 'octokit';
 import { readJSONFromFile, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
 import { requestGet, requestURL, requestVanilla } from './github';
+import * as JSONC from 'comment-json';
 
 export async function packageList() {
     try {
