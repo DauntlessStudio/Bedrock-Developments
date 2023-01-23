@@ -1,8 +1,9 @@
 {
   "name": "bedrock-development",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "APIs for creating and editing files related to Minecraft Bedrock development.",
   "main": "bin/index.js",
+  "types": "bin/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/DauntlessStudio/Bedrock-Developments.git"
