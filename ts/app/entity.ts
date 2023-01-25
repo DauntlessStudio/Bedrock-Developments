@@ -39,7 +39,7 @@ export async function createNewEntity(names: string[], lang: boolean, type: stri
 
         if (client) {
             let client_entity = json_client_entity;
-            client_entity!.json['minecraft:client_entity']['description']['indentifier'] = name.fullname;
+            client_entity!.json['minecraft:client_entity']['description']['identifier'] = name.fullname;
             client_entity!.json['minecraft:client_entity']['description']['textures']['default'] = `textures/entity/${name.shortname}/default`;
             client_entity!.json['minecraft:client_entity']['description']['geometry']['default'] = `geometry.${name.shortname}`;
             writeFileFromJSON(`${Global.project_rp}entity/${name.pathname}${name.shortname}.entity.json`, client_entity?.json);
