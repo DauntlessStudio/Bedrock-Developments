@@ -72,7 +72,7 @@ async function createAttachable(name: string) {
     writeFileFromJSON(`${Global.project_rp}models/entity/player/${name_obj.shortname}.geo.json`, player_geo);
 
     // texture file
-    copyFile(`${Global.app_root}/src/attachables/attachable.png`, `${Global.project_rp}textures/entity/player/items/${name_obj.shortname}.png`);
+    copyFile(`${Global.app_root}/src/attachables/attachable.png`, `${Global.project_rp}textures/attachables/${name_obj.shortname}.png`);
 
     // modify player.entity.json
 	player_entity['minecraft:client_entity']['description']['animations']['ctrl.' + name_obj.shortname!] = 'controller.animation.player.custom_items.' + name_obj.shortname!;
