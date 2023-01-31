@@ -8,7 +8,7 @@
                 "enchanted": "entity_alphatest_glint"
             },
             "textures": {
-                "default": "textures/entity/player/items/example_item",
+                "default": "textures/attachables/example_item",
                 "enchanted": "textures/misc/enchanted_item_glint"
             },
             "geometry": {
