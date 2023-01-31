@@ -1,6 +1,6 @@
 {
   "name": "bedrock-development",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "APIs for creating and editing files related to Minecraft Bedrock development.",
   "main": "bin/index.js",
   "types": "bin/index.d.ts",
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "npx tsc -w",
+    "prepare": "npx tsc",
     "clear": "rm ./behavior_packs/** -r && rm ./resource_packs/** -r"
   },
   "keywords": [
