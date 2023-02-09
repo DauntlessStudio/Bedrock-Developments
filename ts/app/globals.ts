@@ -9,7 +9,7 @@ export var app_root = path.resolve(__dirname);
 var project_root = './';
 export var project_rp = '**/resource_packs/*rp/';
 export var project_bp = '**/behavior_packs/*bp/';
-export var indent = 4;
+export var indent = '\t';
 
 function setRootPath() {
     if (path.resolve(process.cwd()).includes('world_template')) {
@@ -67,6 +67,6 @@ export async function setBehaviorPath(bp:string|undefined) {
 }
 export function setIndentLevel(val:string) {
     if (Number(val)) {
-        indent = Number(val);
+        indent = '\t'.repeat(Number(val));
     }
 }
