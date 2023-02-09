@@ -302,6 +302,10 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
 
             // add properties
             for (const value of values) {
+                let event_name = `set_${name.shortname}_to_${value}`;
+                if (event) {
+                    event_name = event;
+                }
                 // initialize fields
                 let property_type = 'bool';
                 try {
@@ -314,26 +318,24 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
                 set_event = true;
 
                 entity.json!['minecraft:entity']['events'] ||= {};
-                entity.json!['minecraft:entity']['events'][`set_${name.shortname}_to_${value}`] = {set_property: {}}
-
-                console.log(property_type);
+                entity.json!['minecraft:entity']['events'][event_name] = {set_property: {}}
 
                 // assign property
                 switch (property_type) {
                     case 'enum':
-                        entity.json!['minecraft:entity']['events'][`set_${name.shortname}_to_${value}`]['set_property'][name.fullname!] = value;
+                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = value;
                         break;
                     case 'int':
-                        let int = Number(value) ? Number(value) : value;
-                        entity.json!['minecraft:entity']['events'][`set_${name.shortname}_to_${value}`]['set_property'][name.fullname!] = int;
+                        let int = !isNaN(parseInt(value)) ? parseInt(value) : value;
+                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = int;
                         break;
                     case 'float':
-                        let float = Number(value) ? Number(value) : value;
-                        entity.json!['minecraft:entity']['events'][`set_${name.shortname}_to_${value}`]['set_property'][name.fullname!] = float;
+                        let float = !isNaN(parseFloat(value)) ? parseFloat(value) : value;
+                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = float;
                         break;
                     default:
-                        let bool = Boolean(value) ? Boolean(value) : value;
-                        entity.json!['minecraft:entity']['events'][`set_${name.shortname}_to_${value}`]['set_property'][name.fullname!] = bool;
+                        let bool = Boolean(value) ? value === 'true' : value;
+                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = bool;
                         break;
                 }
             }
