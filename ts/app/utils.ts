@@ -1,3 +1,18 @@
+export class nameObject {
+    fullname: string;
+    namespace: string;
+    shortname: string;
+    displayname: string;
+    pathname: string;
+    constructor(fullname: string, namespace: string, shortname: string, displayname: string, pathname: string) {
+        this.fullname = fullname;
+        this.namespace = namespace;
+        this.shortname = shortname;
+        this.displayname = displayname;
+        this.pathname = pathname
+    }
+}
+
 /**
  * @remarks breaks a name input into usable parts
  * @param input the name to be taken apart i.e. namespace:template_entity
@@ -20,7 +35,7 @@ export function getNameObject(input: string) {
         local_displayname = words.join(' ');
     }
 
-    return {fullname: local_fullname, namespace: local_namespace, shortname: local_shortname, displayname: local_displayname, pathname: local_pathname};
+    return new nameObject(local_fullname!, local_namespace!, local_shortname!, local_displayname!, local_pathname);
 }
 
 /**

@@ -1,24 +1,78 @@
 import * as fs from 'fs';
 import * as Global from './globals';
 import { readJSONFromFile, readSourceFile, writeFileFromJSON, writeToLang, copyFile } from './file_manager';
-import { getNameObject, getNamesObjects } from './utils';
+import { getNameObject, getNamesObjects, nameObject } from './utils';
 import { requestURL } from './github';
 import * as JSONC from 'comment-json';
 
-export async function createNewItem(names: string[], lang: boolean, edible: boolean, stack: number=64, attachable: boolean) {
+export enum itemType {
+    basic='basic',
+    weapon='weapon',
+    projectile='projectile',
+    food='food',
+    armor_set='armor_set',
+    helmet='helmet',
+    chestplate='chestplate',
+    leggings='leggings',
+    boots='boots'
+}
+
+enum armorPiece {
+    helmet='helmet',
+    chestplate='chestplate',
+    leggings='leggings',
+    boots='boots'
+}
+
+export async function createNewItem(names: string[], lang: boolean, stack: number=64, type: itemType) {
     let names_list = getNamesObjects(names);
     let json_item_bp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_bp.json`)).shift();
     let json_item_rp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_rp.json`)).shift();
     let json_item_texture = await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
-
     for (const name of names_list) {
         let item_bp = json_item_bp;
+
+        switch (type) {
+            case itemType.armor_set:
+                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_texture?.json, json_item_rp?.json);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
+                return;
+            case itemType.helmet: {
+                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_texture?.json, json_item_rp?.json);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
+                return;
+            }
+            case itemType.chestplate: {
+                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_texture?.json, json_item_rp?.json);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
+                return;
+            }
+            case itemType.leggings: {
+                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_texture?.json, json_item_rp?.json);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
+                return;
+            }
+            case itemType.boots: {
+                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_texture?.json, json_item_rp?.json);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
+                return;
+            }
+        }
+
         item_bp!.json['minecraft:item']['description']['identifier'] = name.fullname;
         item_bp!.json['minecraft:item']['components']['minecraft:max_stack_size'] = Number(stack);
 
-        if (edible) {
+        if (type === itemType.projectile) {
             item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 30000;
             item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
+        }
+        if (type === itemType.food) {
+            item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 20;
+            item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 5, saturation_modifier: 'supernatural', can_always_eat: true};
         }
 
         writeFileFromJSON(`${Global.project_bp}items/${name.pathname}${name.shortname}.json`, item_bp?.json);
@@ -37,15 +91,129 @@ export async function createNewItem(names: string[], lang: boolean, edible: bool
             writeToLang(`item.${name.fullname}.name=${name.displayname}`, 'item names');
         }
 
-        if (attachable) {
-            createAttachable(name.fullname!);
+        if (type === itemType.weapon) {
+            createComplexAttachable(name.fullname!);
         }
     }
     
     writeFileFromJSON(`${Global.project_rp}textures/item_texture.json`, json_item_texture?.json, true);
 }
 
-async function createAttachable(name: string) {
+async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObject, item_texture: any, item_rp: any) {
+    armorItem['format_version'] = '1.16.100';
+    armorItem['minecraft:item']['description']['category'] = 'equipment';
+    armorItem['minecraft:item']['components']['minecraft:max_stack_size'] = 1;
+    armorItem['minecraft:item']['components']['minecraft:armor'] = {protection: 5};
+    armorItem['minecraft:item']['components']['minecraft:repairable'] = {repair_items: [{items: ['minecraft:stick'], repair_amount: 'query.remaining_durability + 0.05 * query.max_durability'}]};
+    armorItem['minecraft:item']['components']['minecraft:durability'] = {max_durability: 200};
+
+    let attachable = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/armor.json`)) as any;
+
+    switch (piece) {
+        case armorPiece.helmet:
+            armorItem['minecraft:item']['description']['identifier'] = name.fullname + '_helmet';
+            armorItem['minecraft:item']['components']['minecraft:creative_category'] = {parent: 'itemGroup.name.helmet'};
+            armorItem['minecraft:item']['components']['minecraft:display_name'] = {value: `item.${name.fullname}_helmet.name`};
+            armorItem['minecraft:item']['components']['minecraft:icon'] = {texture: name.shortname + '_helmet'};
+            armorItem['minecraft:item']['components']['minecraft:wearable'] = {dispensable: true, slot: 'slot.armor.head'};
+            armorItem['minecraft:item']['components']['minecraft:enchantable'] = {value: 10, slot: 'armor_head'};
+            writeFileFromJSON(`${Global.project_bp}items/${name.pathname}${name.shortname}_helmet.json`, armorItem);
+
+            attachable['minecraft:attachable']['description']['identifier'] = name.fullname + '_helmet'
+            attachable['minecraft:attachable']['description']['textures']['default'] = `textures/models/armor/${name.shortname}_main`
+            attachable['minecraft:attachable']['description']['geometry']['default'] = 'geometry.player.armor.helmet'
+            attachable['minecraft:attachable']['description']['scripts']['parent_setup'] = 'variable.helmet_layer_visible = 0.0;'
+            writeFileFromJSON(`${Global.project_rp}attachables/${name.pathname}${name.shortname}_helmet.json`, attachable);
+
+            item_rp['minecraft:item']['description']['identifier'] = name.fullname + '_helmet';
+            item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_helmet';
+            writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_helmet.json`, item_rp);
+
+            item_texture['texture_data'][name.shortname + '_helmet'] = {textures: `textures/items/${name.pathname}${name.shortname}_helmet`};
+            copyFile(`${Global.app_root}/src/items/armor/example_helmet.png`, `${Global.project_rp}textures/items/${name.shortname}_helmet.png`);
+
+            writeToLang(`item.${name.fullname}_helmet.name=${name.displayname} Helmet`, 'item names');
+            break;
+        case armorPiece.chestplate:
+            armorItem['minecraft:item']['description']['identifier'] = name.fullname + '_chestplate';
+            armorItem['minecraft:item']['components']['minecraft:creative_category'] = {parent: 'itemGroup.name.chestplate'};
+            armorItem['minecraft:item']['components']['minecraft:display_name'] = {value: `item.${name.fullname}_chestplate.name`};
+            armorItem['minecraft:item']['components']['minecraft:icon'] = {texture: name.shortname + '_chestplate'};
+            armorItem['minecraft:item']['components']['minecraft:wearable'] = {dispensable: true, slot: 'slot.armor.chest'};
+            armorItem['minecraft:item']['components']['minecraft:enchantable'] = {value: 10, slot: 'armor_torso'};
+            writeFileFromJSON(`${Global.project_bp}items/${name.pathname}${name.shortname}_chestplate.json`, armorItem);
+    
+            attachable['minecraft:attachable']['description']['identifier'] = name.fullname + '_chestplate'
+            attachable['minecraft:attachable']['description']['textures']['default'] = `textures/models/armor/${name.shortname}_main`
+            attachable['minecraft:attachable']['description']['geometry']['default'] = 'geometry.player.armor.chestplate'
+            attachable['minecraft:attachable']['description']['scripts']['parent_setup'] = 'variable.chest_layer_visible = 0.0;'
+            writeFileFromJSON(`${Global.project_rp}attachables/${name.pathname}${name.shortname}_chestplate.json`, attachable);
+
+            item_rp['minecraft:item']['description']['identifier'] = name.fullname + '_chestplate';
+            item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_chestplate';
+            writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_chestplate.json`, item_rp);
+
+            item_texture['texture_data'][name.shortname + '_chestplate'] = {textures: `textures/items/${name.pathname}${name.shortname}_chestplate`};
+            copyFile(`${Global.app_root}/src/items/armor/example_chestplate.png`, `${Global.project_rp}textures/items/${name.shortname}_chestplate.png`);
+    
+            writeToLang(`item.${name.fullname}_chestplate.name=${name.displayname} Chestplate`, 'item names');
+            break;
+        case armorPiece.leggings:
+            armorItem['minecraft:item']['description']['identifier'] = name.fullname + '_leggings';
+            armorItem['minecraft:item']['components']['minecraft:creative_category'] = {parent: 'itemGroup.name.leggings'};
+            armorItem['minecraft:item']['components']['minecraft:display_name'] = {value: `item.${name.fullname}_leggings.name`};
+            armorItem['minecraft:item']['components']['minecraft:icon'] = {texture: name.shortname + '_leggings'};
+            armorItem['minecraft:item']['components']['minecraft:wearable'] = {dispensable: true, slot: 'slot.armor.legs'};
+            armorItem['minecraft:item']['components']['minecraft:enchantable'] = {value: 10, slot: 'armor_legs'};
+            writeFileFromJSON(`${Global.project_bp}items/${name.pathname}${name.shortname}_leggings.json`, armorItem);
+    
+            attachable['minecraft:attachable']['description']['identifier'] = name.fullname + '_leggings'
+            attachable['minecraft:attachable']['description']['textures']['default'] = `textures/models/armor/${name.shortname}_legs`
+            attachable['minecraft:attachable']['description']['geometry']['default'] = 'geometry.player.armor.leggings'
+            attachable['minecraft:attachable']['description']['scripts']['parent_setup'] = 'variable.leg_layer_visible = 0.0;'
+            writeFileFromJSON(`${Global.project_rp}attachables/${name.pathname}${name.shortname}_leggings.json`, attachable);
+
+            item_rp['minecraft:item']['description']['identifier'] = name.fullname + '_leggings';
+            item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_leggings';
+            writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_leggings.json`, item_rp);
+
+            item_texture['texture_data'][name.shortname + '_leggings'] = {textures: `textures/items/${name.pathname}${name.shortname}_leggings`};
+            copyFile(`${Global.app_root}/src/items/armor/example_leggings.png`, `${Global.project_rp}textures/items/${name.shortname}_leggings.png`);
+    
+            writeToLang(`item.${name.fullname}_leggings.name=${name.displayname} Leggings`, 'item names');
+            break;
+            case armorPiece.boots:
+                armorItem['minecraft:item']['description']['identifier'] = name.fullname + '_boots';
+                armorItem['minecraft:item']['components']['minecraft:creative_category'] = {parent: 'itemGroup.name.boots'};
+                armorItem['minecraft:item']['components']['minecraft:display_name'] = {value: `item.${name.fullname}_boots.name`};
+                armorItem['minecraft:item']['components']['minecraft:icon'] = {texture: name.shortname + '_boots'};
+                armorItem['minecraft:item']['components']['minecraft:wearable'] = {dispensable: true, slot: 'slot.armor.feet'};
+                armorItem['minecraft:item']['components']['minecraft:enchantable'] = {value: 10, slot: 'armor_feet'};
+                writeFileFromJSON(`${Global.project_bp}items/${name.pathname}${name.shortname}_boots.json`, armorItem);
+    
+                attachable['minecraft:attachable']['description']['identifier'] = name.fullname + '_boots'
+                attachable['minecraft:attachable']['description']['textures']['default'] = `textures/models/armor/${name.shortname}_main`
+                attachable['minecraft:attachable']['description']['geometry']['default'] = 'geometry.player.armor.boots'
+                attachable['minecraft:attachable']['description']['scripts']['parent_setup'] = 'variable.boot_layer_visible = 0.0;'
+                writeFileFromJSON(`${Global.project_rp}attachables/${name.pathname}${name.shortname}_boots.json`, attachable);
+
+                item_rp['minecraft:item']['description']['identifier'] = name.fullname + '_boots';
+                item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_boots';
+                writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_boots.json`, item_rp);
+
+                item_texture['texture_data'][name.shortname + '_boots'] = {textures: `textures/items/${name.pathname}${name.shortname}_boots`};
+                copyFile(`${Global.app_root}/src/items/armor/example_boots.png`, `${Global.project_rp}textures/items/${name.shortname}_boots.png`);    
+    
+                writeToLang(`item.${name.fullname}_boots.name=${name.displayname} Boots`, 'item names');
+                break;
+        default:
+            break;
+    }
+            
+    writeFileFromJSON(`${Global.project_rp}textures/item_texture.json`, item_texture, true);
+}
+
+async function createComplexAttachable(name: string) {
     let name_obj = getNameObject(name);
     // get player entity
     let player_entity: any;

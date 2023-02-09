@@ -43,7 +43,9 @@ async function recursiveDownload(url: string) {
         let path = item.path.replace(/.+BP\//, Global.project_bp).replace(/.+RP\//, Global.project_rp);
         let contents = await(requestURL(item.download_url));
 
-        // Handle lang Files
+        //TODO handle adding ui files, item_texture, and terrain_texture
+
+        // Handle json Files
         if (/.json$/.test(path)) {
             writeFileFromJSON(path, JSONC.parse(contents.data));
             continue;
