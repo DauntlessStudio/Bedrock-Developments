@@ -357,50 +357,49 @@ async function getAnimationReferences(names_list: { fullname: string | undefined
     let anims = new Map<string, string>();
     for (const name of names_list)
     {
-        let found_key = false;
-        let controllers: {json: any, file: string}[] = [];
-        try {
-            controllers = await readJSONFromFile(`${Global.project_bp}animation_controllers/**/${name.namespace}.json`);
-        } catch (error) {}
-        if (controllers.length)
-        {
-            let controller = controllers.shift();
-            for (const key in controller?.json['animation_controllers'])
-            {
-                if (key.includes(name.fullname!))
-                {
-                    anims.set(name.fullname!, key);
-                    found_key = true;
-                    break;
-                }
-            }
-        } else
-        {
-            console.log("NO CONTROLLER");
-            let animations = [];
-            try {
-                animations = await readJSONFromFile(`${Global.project_bp}animations/**/${name.namespace}.json`);
-            } catch (error) {
-                console.log(`${chalk.red(`No animation existed matching ${name.fullname}`)}`);
-                continue;
-            }
-            if (animations.length)
-            {
-                let animation = animations.shift();
-                for (const key in animation?.json['animations'])
-                {
-                    if (key.includes(name.fullname!))
-                    {
-                        anims.set(name.fullname!, key);
-                        found_key = true
-                        break;
-                    }
-                }
-            }
+      let found_key = false;
+      let controllers: { json: any; file: string }[] = [];
+      try {
+        controllers = await readJSONFromFile(
+          `${Global.project_bp}animation_controllers/**/${name.namespace}.json`
+        );
+      } catch (error) {}
+      if (controllers.length) {
+        let controller = controllers.shift();
+        for (const key in controller?.json["animation_controllers"]) {
+          if (key.includes(name.fullname!)) {
+            anims.set(name.fullname!, key);
+            found_key = true;
+            break;
+          }
         }
-        if (!found_key) {
-            console.log(`${chalk.red(`No animation existed matching ${name.fullname}`)}`);
+      }
+      let animations = [];
+      try {
+        animations = await readJSONFromFile(
+          `${Global.project_bp}animations/**/${name.namespace}.json`
+        );
+      } catch (error) {
+        console.log(
+          `${chalk.red(`No animation existed matching ${name.fullname}`)}`
+        );
+        continue;
+      }
+      if (animations.length) {
+        let animation = animations.shift();
+        for (const key in animation?.json["animations"]) {
+          if (key.includes(name.fullname!)) {
+            anims.set(name.fullname!, key);
+            found_key = true;
+            break;
+          }
         }
+      }
+      if (!found_key) {
+        console.log(
+          `${chalk.red(`No animation existed matching ${name.fullname}`)}`
+        );
+      }
     }
 
     return anims;
