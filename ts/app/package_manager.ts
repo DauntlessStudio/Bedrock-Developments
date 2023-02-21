@@ -1,8 +1,11 @@
 import * as Global from './globals';
 import { Octokit } from 'octokit';
-import { readJSONFromFile, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
+import { deleteFile, readJSONFromFile, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
 import { requestGet, requestURL, requestVanilla } from './github';
+import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
+
+const chalk = new Chalk.Instance();
 
 export async function packageList() {
     try {
@@ -62,6 +65,22 @@ async function recursiveDownload(url: string) {
             }else {
                 writeToLang(contents.data, 'misc');
             }
+            continue;
+        }
+
+        // Handle import script File
+        if (/.bat$/.test(path)) {
+            let path = Global.project_bp + 'import.bat';
+            writeBufferFileFromString(path, contents.data);
+            const { exec } = require('node:child_process');
+            exec(`"${path}"`, (err:string, stdout:string, stderr:string) => {
+                if (err) {
+                    console.log(`${chalk.red(`${err}`)}`);
+                  return;
+                }
+                console.log(`${chalk.green(`${stdout}`)}`);
+                deleteFile(path);
+            });
             continue;
         }
 

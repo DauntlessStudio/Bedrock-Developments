@@ -46,3 +46,8 @@ export declare function writeFileFromString(path: string, data: string, overwrit
  * @param overwrite should an existing file at that path be overwritten
  */
 export declare function writeBufferFileFromString(path: string, data: string, overwrite?: boolean): void;
+/**
+ * @remarks deletes a file at a given path
+ * @param path the path to delete the file from
+ */
+export declare function deleteFile(path: string): void;

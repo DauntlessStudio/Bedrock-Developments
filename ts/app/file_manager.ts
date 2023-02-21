@@ -142,6 +142,16 @@ export function writeBufferFileFromString(path: string, data: string, overwrite:
 }
 
 /**
+ * @remarks deletes a file at a given path
+ * @param path the path to delete the file from
+ */
+export function deleteFile(path: string) {
+    if (fs.existsSync(path)) {
+        fs.unlinkSync(path);
+    }
+}
+
+/**
  * @remarks creates recursive directories, to be used before writing files
  * @param path the file path
  */
