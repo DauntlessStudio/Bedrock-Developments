@@ -46,7 +46,33 @@ async function recursiveDownload(url: string) {
         let path = item.path.replace(/.+BP\//, Global.project_bp).replace(/.+RP\//, Global.project_rp);
         let contents = await(requestURL(item.download_url));
 
-        //TODO handle adding ui files, item_texture, and terrain_texture
+        //TODO item_texture, and terrain_texture
+        if (/hud_screen.json$/.test(path)) {
+            try {
+                let hud_screen = await readJSONFromFile(`${Global.project_rp}ui/hud_screen.json`);
+                if (hud_screen.length) {
+                    let import_hud: any = JSONC.parse(contents.data);
+                    let new_hud = {...import_hud, ...hud_screen[0].json};
+                    new_hud['root_panel']['modifications'] = [...import_hud['root_panel']['modifications'], ...hud_screen[0].json['root_panel']['modifications']]
+                    writeFileFromJSON(path, new_hud, true);
+                    continue;
+                }
+            } catch (error) {
+            }
+        }
+
+        if (/_ui_defs.json$/.test(path)) {
+            try {
+                let _ui_defs = await readJSONFromFile(`${Global.project_rp}ui/_ui_defs.json`);
+                if (_ui_defs.length) {
+                    let import_defs: any = JSONC.parse(contents.data);
+                    let new_defs = {ui_defs: [...import_defs['ui_defs'], ..._ui_defs[0].json['ui_defs']]};
+                    writeFileFromJSON(path, new_defs, true);
+                    continue;
+                }
+            } catch (error) {
+            }
+        }
 
         // Handle json Files
         if (/.json$/.test(path)) {
