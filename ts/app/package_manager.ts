@@ -7,11 +7,16 @@ import * as JSONC from 'comment-json';
 
 const chalk = new Chalk.Instance();
 
-export async function packageList() {
+export async function packageList(filter: string) {
     try {
-        let response = await requestGet('/contents');
-        response.data = response.data.filter((item: { name: string | string[]; }) => !item.name.includes('README'));
-        return response.data;
+        let response = await requestGet('/contents/packages.json');
+        let content:any = JSONC.parse(Buffer.from(response.data.content, 'base64').toString('ascii'));
+
+        if (filter) {
+            content = content.filter((item: { display_name: string; categories: [string]}) => item.display_name.toLowerCase().includes(filter.toLowerCase()) || item.categories.includes(filter.toLowerCase()));
+        }
+
+        return content;
     } catch (error) {
         console.log(error);
     }
@@ -19,14 +24,14 @@ export async function packageList() {
 
 export async function packageImport(names: string[]) {
     try {
-        var response = await packageList();
+        var response = await packageList('');
 
         for (const name of names) {
             let package_url = '';
-            if (/^-?\d+$/.test(name)) {
-                package_url = response[Object.keys(response)[Number(name)]].url;
-            }else {
-                package_url = response[name].url;
+            for (const pkg of response) {
+                if (pkg.index === Number(name) || pkg.display_name.toLowerCase() === name.toLowerCase()) {
+                    package_url = pkg.repository.url;
+                }
             }
 
             recursiveDownload(package_url);
@@ -107,6 +112,12 @@ async function recursiveDownload(url: string) {
                 console.log(`${chalk.green(`${stdout}`)}`);
                 deleteFile(path);
             });
+            continue;
+        }
+
+        // Handle README
+        if (/.md/.test(path)) {
+            console.log(`${chalk.green(`View README at: ${item.html_url}`)}`);
             continue;
         }
 
