@@ -34,6 +34,8 @@ createNew.command('entity')
   .option('--no-lang', 'do not add lang file')
   .addOption(new Option('-t, --type <char>', 'set entity type: dummy, passive, hostile',).choices(['d', 'h', 'p']).default('d', 'dummy'))
   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
+  .option('--no-geo', 'do not add geo file')
+  .option('--no-texture', 'do not add texture file')
   .action(triggerCreateNewEntity)
   .hook('postAction', printVersion);
 
@@ -193,8 +195,10 @@ async function triggerCreateNewEntity(names: string[], options: OptionValues) {
   await setPaths();
   const type = options.type;
   const lang = options.lang;
+  const geo = options.geo;
+  const texture = options.texture;
   const client = options.client;
-  await Entity.createNewEntity(names, lang, type, client);
+  await Entity.createNewEntity(names, lang, geo, texture, type, client);
 }
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {

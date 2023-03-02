@@ -16,7 +16,7 @@ const chalk = new Chalk.Instance();
  * @param type the type of entity to create
  * @param client should a client entity be created
  */
-export async function createNewEntity(names: string[], lang: boolean, type: string|undefined, client: boolean) {
+export async function createNewEntity(names: string[], lang: boolean, geo: boolean, texture: boolean, type: string|undefined, client: boolean) {
     let names_list = getNamesObjects(names);
     let json_entity;
     switch (type) {
@@ -46,11 +46,15 @@ export async function createNewEntity(names: string[], lang: boolean, type: stri
             client_entity!.json['minecraft:client_entity']['description']['geometry']['default'] = `geometry.${name.shortname}`;
             writeFileFromJSON(`${Global.project_rp}entity/${name.pathname}${name.shortname}.entity.json`, client_entity?.json);
 
-            let geometry = json_geometry;
-            geometry!.json['minecraft:geometry'][0]['description']['identifier'] = `geometry.${name.shortname}`;
-            writeFileFromJSON(`${Global.project_rp}models/entity/${name.pathname}${name.shortname}.geo.json`, geometry?.json);
+            if (geo) {
+                let geometry = json_geometry;
+                geometry!.json['minecraft:geometry'][0]['description']['identifier'] = `geometry.${name.shortname}`;
+                writeFileFromJSON(`${Global.project_rp}models/entity/${name.pathname}${name.shortname}.geo.json`, geometry?.json);
+            }
 
-            copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`)
+            if (texture) {
+                copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`);
+            }
         }
 
         if (lang) {
