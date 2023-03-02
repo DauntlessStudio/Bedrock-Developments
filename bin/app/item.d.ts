@@ -1,5 +1,6 @@
 export declare enum itemType {
     basic = "basic",
+    attachable = "attachable",
     weapon = "weapon",
     projectile = "projectile",
     food = "food",
