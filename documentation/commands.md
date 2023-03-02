@@ -14,7 +14,7 @@ Comprehensive list of all commands, with example uses.
         - [Add Animations To Entities (entity anim)](#add-animations-to-entities)
         - [Add Component Groups To Entities (entity group)](#add-component-groups-to-entities)
         - [Add Components To Entities (entity component)](#add-components-to-entities)
-        - [Add Damage Sensors To Entities (entity sensor)](#add-damage-sensors-to)
+        - [Add Damage Sensors To Entities (entity sensor)](#add-damage-sensors-to-entities)
         - [Add Properties To Entities (entity property)](#add-properties-to-entities)
             - [Add Property Definition (entity property add)](#add-property-definition)
             - [Add Property Events (entity property event)](#add-property-events)
@@ -318,7 +318,7 @@ Arguments:
 
 Options:
   -c, --commands <commands>        the function commands, seperated by ";"
-  -n, --number <number>            the number times commands should be created in the files (default: "1")
+  -n, --number <number>            the number of times commands should be created in the files (default: "1")
   -d, --description <description>  the description of the function to be used as a comment
   -s, --source <source>            where is this function called from, used as a comment
   -h, --help                       display help for command
@@ -594,6 +594,11 @@ The damage sensor entries from this command are always added to the bottom of th
 ```
 bed entity sensor --start {cause:\"all\",deals_damage:false}
 ```
+---
+```
+bed entity sensor --file player.json {cause:\"fire\",deals_damage:false,on_damage:{event:\"add_extinguish\"}}
+```
+We can add more complex events, triggering events as well.
 
 &nbsp;
 
@@ -696,7 +701,7 @@ Options:
 ```
 bed entity property event --file player.json --property ldz:int_prop 1 2 3 4 5
 ```
-This creates five new events called `set_int_prop_to_1`, `set_int_prop_to_1`, etc. which set `ldz:int_prop` to the specified value.
+This creates five new events called `set_int_prop_to_1`, `set_int_prop_to_2`, etc. which set `ldz:int_prop` to the specified value.
 
 ---
 As with `property add`, this command will automatically determine what type the values should be. If we run the same command again, but this time with `ldz:enum_prop` as the target.
