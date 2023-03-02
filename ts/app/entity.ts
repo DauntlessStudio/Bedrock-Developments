@@ -5,6 +5,7 @@ import { requestGet, requestURL, requestVanilla } from './github';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import mergeDeep from './merge_deep';
+import { createNewAnimation, createNewController } from './animations';
 
 const chalk = new Chalk.Instance();
 
@@ -87,7 +88,13 @@ export async function createVanillaEntity(names: string[], client: boolean) {
     }
 }
 
-export async function entityAddAnim(names: string[], family: string|undefined, file: string, script: boolean) {
+export async function entityAddAnim(names: string[], family: string|undefined, file: string, script: boolean, create: string|undefined) {
+    if (create && create === 'ctrl') {
+        await createNewController(names, ['say anim_name'], undefined, undefined, undefined, "true");
+    }
+    if (create && create === 'anim') {
+        await createNewAnimation(names, false, ['say anim_name'], 1.0);
+    }
     let names_list = getNamesObjects(names);
     let anims = await getAnimationReferences(names_list);
 
@@ -111,6 +118,8 @@ export async function entityAddAnim(names: string[], family: string|undefined, f
 	                        entity.json['minecraft:entity']['description']['scripts']['animate'].push(shortname);
                         }
                     }
+                } else {
+                    console.log(`${chalk.red(`No animation matched ${name.fullname!}`)}`)
                 }
             }
             if (set_anim) {
@@ -389,9 +398,6 @@ async function getAnimationReferences(names_list: { fullname: string | undefined
           `${Global.project_bp}animations/**/${name.namespace}.json`
         );
       } catch (error) {
-        console.log(
-          `${chalk.red(`No animation existed matching ${name.fullname}`)}`
-        );
         continue;
       }
       if (animations.length) {
@@ -403,11 +409,6 @@ async function getAnimationReferences(names_list: { fullname: string | undefined
             break;
           }
         }
-      }
-      if (!found_key) {
-        console.log(
-          `${chalk.red(`No animation existed matching ${name.fullname}`)}`
-        );
       }
     }
 
