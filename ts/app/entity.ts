@@ -4,6 +4,7 @@ import { getNamesObjects, getNameObject } from './utils';
 import { requestGet, requestURL, requestVanilla } from './github';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
+import mergeDeep from './merge_deep';
 
 const chalk = new Chalk.Instance();
 
@@ -186,7 +187,11 @@ export async function entityAddComponent(component: string, family: string|undef
             for (const key of Object.keys(component_json)) {
                 // add component
                 entity.json!['minecraft:entity']['components'] ||= {};
-                entity.json!['minecraft:entity']['components'][key] = component_json[key];
+                if (entity.json!['minecraft:entity']['components'][key]) {
+                    entity.json!['minecraft:entity']['components'][key] = mergeDeep(entity.json!['minecraft:entity']['components'][key], component_json[key]);
+                }else {
+                    entity.json!['minecraft:entity']['components'][key] = component_json[key];
+                }
             }
 
             // write file
