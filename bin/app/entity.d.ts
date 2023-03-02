@@ -9,7 +9,7 @@ export declare function createNewEntity(names: string[], lang: boolean, type: st
 export declare function createVanillaEntity(names: string[], client: boolean): Promise<void>;
 export declare function entityAddAnim(names: string[], family: string | undefined, file: string, script: boolean): Promise<void>;
 export declare function entityAddGroup(group: string, family: string | undefined, file: string): Promise<void>;
-export declare function entityAddComponent(component: string, family: string | undefined, file: string): Promise<void>;
+export declare function entityAddComponent(component: string, family: string | undefined, file: string, overwrite: boolean): Promise<void>;
 export declare function entityAddDamageSensor(sensor: string, family: string | undefined, file: string): Promise<void>;
 export declare function entityAddProperty(names: string[], family: string | undefined, file: string, property: string, values: string[] | undefined, default_value: string | undefined, client: boolean): Promise<void>;
 export declare function entityAddPropertyEvent(values: string[], family: string | undefined, file: string, property: string, event: string | undefined): Promise<void>;

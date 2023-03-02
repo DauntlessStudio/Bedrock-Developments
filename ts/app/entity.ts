@@ -163,7 +163,7 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
     }
 }
 
-export async function entityAddComponent(component: string, family: string|undefined, file: string) {
+export async function entityAddComponent(component: string, family: string|undefined, file: string, overwrite: boolean) {
     let component_json: any = {};
     // parse json input
     try {
@@ -187,7 +187,7 @@ export async function entityAddComponent(component: string, family: string|undef
             for (const key of Object.keys(component_json)) {
                 // add component
                 entity.json!['minecraft:entity']['components'] ||= {};
-                if (entity.json!['minecraft:entity']['components'][key]) {
+                if (entity.json!['minecraft:entity']['components'][key] && !overwrite) {
                     entity.json!['minecraft:entity']['components'][key] = mergeDeep(entity.json!['minecraft:entity']['components'][key], component_json[key]);
                 }else {
                     entity.json!['minecraft:entity']['components'][key] = component_json[key];
