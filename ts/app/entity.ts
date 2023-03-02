@@ -203,7 +203,7 @@ export async function entityAddComponent(component: string, family: string|undef
     }
 }
 
-export async function entityAddDamageSensor(sensor: string, family: string|undefined, file: string) {
+export async function entityAddDamageSensor(sensor: string, family: string|undefined, file: string, start: boolean) {
     let sensor_json: any = {};
     // parse json input
     try {
@@ -231,7 +231,11 @@ export async function entityAddDamageSensor(sensor: string, family: string|undef
                 let old_object = entity.json!['minecraft:entity']['components']['minecraft:damage_sensor']['triggers'];
                 entity.json!['minecraft:entity']['components']['minecraft:damage_sensor']['triggers'] = [old_object];
             }
-            entity.json!['minecraft:entity']['components']['minecraft:damage_sensor']['triggers'].push(sensor_json);
+            if (!start) {
+                entity.json!['minecraft:entity']['components']['minecraft:damage_sensor']['triggers'].push(sensor_json);
+            } else {
+                entity.json!['minecraft:entity']['components']['minecraft:damage_sensor']['triggers'].unshift(sensor_json);
+            }
 
             // write file
             writeFileFromJSON(entity.file, entity.json, true);
