@@ -411,7 +411,7 @@ The `--client` argument means we'll also import the `pig.entity.json` file into 
 ## Modify Entities
 Modifies Bedrock entities. Rather than creating files, these commands will modify existing entities, adding things like animation references, components, and properties. 
 
-Most of these commands accept a `--file <file>` option, defaulting to `**/*.json` which is a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)) for every .json file in `BP/entities`. But you can specify a direct filename with `player.json`, every file in a certain folder like `vanilla/*.json`, or every entity that ends with 'skeleton' with `*skeleton.json`.
+Most of these commands require a `--file [file]` option, preset to `**/*.json` which is a [glob pattern](https://en.wikipedia.org/wiki/Glob_(programming)) for every .json file in `BP/entities`. If you provide `--file` without any value, it will default ot every entity, but you can specify a direct filename with `player.json`, every file in a certain folder like `vanilla/*.json`, or every entity that ends with 'skeleton' with `*skeleton.json`.
 
 Most commands also accept a `--type <family type>` which further filters the entities, only getting entities with a certain family type. So the options `--file **/*.json --family horse` will grab every file that includes the family type 'horse', even if that family type only exists in component group.
 ```
@@ -442,7 +442,7 @@ Arguments:
 
 Options:
   -t, --type <family type>  filter entities by family type
-  -f, --file <file>         the entity files that should be modified (default: "**/*.json")
+  -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -s, --script              should these animations be added to script
   -c, --create [anim type]  create the animation as well (choices: "ctrl", "anim", preset: "ctrl")
   -h, --help                display help for command
@@ -478,7 +478,7 @@ Arguments:
 
 Options:
   -t, --type <family type>  filter entities by family type
-  -f, --file <file>         the entity files that should be modified (default: "**/*.json")
+  -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -o, --overwrite           should the new component overwrite the old one rather than merge with it?
   -h, --help                display help for command
 ```
@@ -532,7 +532,7 @@ Arguments:
 
 Options:
   -t, --type <family type>  filter entities by family type
-  -f, --file <file>         the entity files that should be modified (default: "**/*.json")
+  -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -h, --help                display help for command
 ```
 ### Example(s)
@@ -573,7 +573,7 @@ Arguments:
 
 Options:
   -t, --type <family type>  filter entities by family type
-  -f, --file <file>         the entity files that should be modified (default: "**/*.json")
+  -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -s, --start               adds the new sensor to the start of the array, rather than the end
   -h, --help                display help for command
 ```
