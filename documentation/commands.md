@@ -637,6 +637,7 @@ Options:
   -v, --values <values...>        the values, either a list of enum values or a min-max
   -d, --default <default>         the default value
   -c, --client                    should use client_sync
+  -e, --event                     automatically generate events for the values
   -h, --help                      display help for command
 ```
 ### Example(s)
@@ -676,6 +677,12 @@ Now our output is:
 }
 ```
 The `range` property that is appropriate for int and floats has been changed to `values` as appropriate for enums. Additionally, the entries in `values` and `defualt` have automatically been converted to strings instead of numbers. 
+
+---
+```
+bed entity property add --file player.json --property int --values 1 10 --default 1 --event ldz:int_prop
+```
+The `--event` option combines the effects of `bed entity property event` into this command, and will automatically generate an event for every value. So in this case 10 events are created `set_int_prop_to_1`, `set_int_prop_to_2`, etc. up to 10. This can streamline the creation of properties and the events you're likely to add.
 
 ---
 Note that if your value can't be properly converted to a value, it will default to a string.
