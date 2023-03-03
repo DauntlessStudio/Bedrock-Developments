@@ -10,7 +10,7 @@ import * as Package from './app/package_manager';
 import axios from 'axios';
 
 let program = new Command();
-const version = '1.1.0'
+const version = '1.1.1'
 
 program
   .name('bed')
@@ -337,10 +337,10 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
 // #endregion
 
 async function printVersion() {
-  let result = await axios.get('https://registry.npmjs.org/bedrock-development-cli/latest');
+  let result = await axios.get('https://registry.npmjs.org/bedrock-development/latest');
   let latest_version = result.data.version;
   if (version !== latest_version) {
     console.log(`${Global.chalk.yellow(`A new release of bed is available:`)} ${Global.chalk.cyan(`${version} → ${latest_version}`)}`);
-    console.log(`${Global.chalk.yellow('npm i bedrock-development-cli@latest -g')}`);
+    console.log(`${Global.chalk.yellow('npm i bedrock-development@latest -g')}`);
   }
 }
