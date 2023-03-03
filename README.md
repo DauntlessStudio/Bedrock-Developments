@@ -13,3 +13,6 @@ bed --version
 ```
 ## Usage
 View the full command list and examples [here](documentation/commands.md).
+
+## Changelog
+View the changelog [here](documentation/changelog.md).

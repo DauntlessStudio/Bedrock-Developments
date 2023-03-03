@@ -10,7 +10,7 @@ import * as Package from './app/package_manager';
 import axios from 'axios';
 
 let program = new Command();
-const version = '1.0.16'
+const version = '1.1.0'
 
 program
   .name('bed')
