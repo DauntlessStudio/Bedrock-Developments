@@ -94,7 +94,7 @@ async function recursiveDownload(url: string) {
                     writeToLang(match.groups?.entry!, match.groups?.category!);
                 }
             }else {
-                writeToLang(contents.data, 'misc');
+                writeToLang(contents.data, 'misc', path);
             }
             continue;
         }

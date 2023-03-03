@@ -84,15 +84,14 @@ export function readSourceFile(path: string) {
  * @param entry the line to add to the lang file
  * @param category the category the entry should be added to
  */
-export function writeToLang(entry: string, category: string) {
-    let path = `${Global.project_rp}texts/en_US.lang`;
+export function writeToLang(entry: string, category: string, path: string = `${Global.project_rp}texts/en_US.lang`) {
     let data = '';
 
     makeDirectory(path);
 
     category = category.toUpperCase();
 
-    if (fs.existsSync(`${Global.project_rp}texts/en_US.lang`)) {
+    if (fs.existsSync(path)) {
         data = String(fs.readFileSync(path));
     }
 
