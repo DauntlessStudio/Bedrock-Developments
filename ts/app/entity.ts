@@ -1,6 +1,6 @@
 import * as Global from './globals';
 import { copyFile, readJSONFromFile, writeFileFromJSON, writeToLang } from './file_manager';
-import { getNamesObjects, getNameObject } from './utils';
+import { getNamesObjects, getNameObject, nameObject } from './utils';
 import { requestGet, requestURL, requestVanilla } from './github';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
@@ -16,7 +16,7 @@ const chalk = new Chalk.Instance();
  * @param type the type of entity to create
  * @param client should a client entity be created
  */
-export async function createNewEntity(names: string[], lang: boolean, type: string|undefined, client: boolean) {
+export async function createNewEntity(names: string[], lang: boolean, geo: boolean, texture: boolean, type: string|undefined, client: boolean) {
     let names_list = getNamesObjects(names);
     let json_entity;
     switch (type) {
@@ -46,11 +46,15 @@ export async function createNewEntity(names: string[], lang: boolean, type: stri
             client_entity!.json['minecraft:client_entity']['description']['geometry']['default'] = `geometry.${name.shortname}`;
             writeFileFromJSON(`${Global.project_rp}entity/${name.pathname}${name.shortname}.entity.json`, client_entity?.json);
 
-            let geometry = json_geometry;
-            geometry!.json['minecraft:geometry'][0]['description']['identifier'] = `geometry.${name.shortname}`;
-            writeFileFromJSON(`${Global.project_rp}models/entity/${name.pathname}${name.shortname}.geo.json`, geometry?.json);
+            if (geo) {
+                let geometry = json_geometry;
+                geometry!.json['minecraft:geometry'][0]['description']['identifier'] = `geometry.${name.shortname}`;
+                writeFileFromJSON(`${Global.project_rp}models/entity/${name.pathname}${name.shortname}.geo.json`, geometry?.json);
+            }
 
-            copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`)
+            if (texture) {
+                copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`);
+            }
         }
 
         if (lang) {
@@ -255,23 +259,31 @@ export async function entityAddDamageSensor(sensor: string, family: string|undef
     }
 }
 
-export async function entityAddProperty(names: string[], family: string|undefined, file: string, property: string, values: string[]|undefined, default_value: string|undefined, client: boolean) {
+export async function entityAddProperty(names: string[], family: string|undefined, file: string, property: string, values: string[]|undefined, default_value: string|undefined, client: boolean, event: boolean) {
     let names_list = getNamesObjects(names);
 
     // creates property object based on type
-    let object = {};
+    let object: any = {};
     switch (property) {
         case 'enum':
             object = {type: 'enum', values: values ? values : ['value'], client_sync: client, default: default_value ? default_value : 'value'};
             break;
         case 'float':
             object = {type: 'float', range: values ? values.map(Number) : [0.0, 1.0], client_sync: client, default: default_value ? Number(default_value) : 1.0};
+            values = [];
+            for (let index = object.range[0]; index <= object.range[1]; index++) {
+                values.push(index);
+            }
             break;
         case 'int':
             object = {type: 'int', range: values ? values.map(Number) : [0, 1], client_sync: client, default: default_value ? Number(default_value) : 1};
+            values = [];
+            for (let index = object.range[0]; index <= object.range[1]; index++) {
+                values.push(index);
+            }
             break;
         default:
-            object = {type: 'bool', client_sync: client, default: default_value ? default_value : false};
+            object = {type: 'bool', client_sync: client, default: default_value ? (default_value === 'true' || default_value === 'false' ? default_value === 'true' : default_value) : false};
             break;
     }
 
@@ -291,7 +303,12 @@ export async function entityAddProperty(names: string[], family: string|undefine
             // add properties
             for (const name of names_list) {
                 // assign property
-                entity.json!['minecraft:entity']['description']['properties'][name.fullname!] = object
+                entity.json!['minecraft:entity']['description']['properties'][name.fullname!] = object;
+                if (event && values) {
+                    for (const value of values) {
+                        addPropertyEvent(name, value, undefined, entity, property);
+                    }
+                }
             }
 
             // write file
@@ -320,10 +337,6 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
 
             // add properties
             for (const value of values) {
-                let event_name = `set_${name.shortname}_to_${value}`;
-                if (event) {
-                    event_name = event;
-                }
                 // initialize fields
                 let property_type = 'bool';
                 try {
@@ -334,28 +347,7 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
                 }
 
                 set_event = true;
-
-                entity.json!['minecraft:entity']['events'] ||= {};
-                entity.json!['minecraft:entity']['events'][event_name] = {set_property: {}}
-
-                // assign property
-                switch (property_type) {
-                    case 'enum':
-                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = value;
-                        break;
-                    case 'int':
-                        let int = !isNaN(parseInt(value)) ? parseInt(value) : value;
-                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = int;
-                        break;
-                    case 'float':
-                        let float = !isNaN(parseFloat(value)) ? parseFloat(value) : value;
-                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = float;
-                        break;
-                    default:
-                        let bool = Boolean(value) ? value === 'true' : value;
-                        entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = bool;
-                        break;
-                }
+                addPropertyEvent(name, value, event, entity, property_type);
             }
 
             // write file
@@ -368,6 +360,37 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
     } catch (error) {
         console.log(String(error));
         console.log(`${chalk.red(`No entities matched ${file}`)}`);
+    }
+}
+
+function addPropertyEvent(name: nameObject, value: string, event: string | undefined, entity: { json: any; file: string; }, property_type: string) {
+    let event_name = `set_${name.shortname}_to_${value}`;
+    if (event)
+    {
+        event_name = event;
+    }
+
+    entity.json!['minecraft:entity']['events'] ||= {};
+    entity.json!['minecraft:entity']['events'][event_name] = { set_property: {} };
+
+    // assign property
+    switch (property_type)
+    {
+        case 'enum':
+            entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = value;
+            break;
+        case 'int':
+            let int = !isNaN(parseInt(value)) ? parseInt(value) : value;
+            entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = int;
+            break;
+        case 'float':
+            let float = !isNaN(parseFloat(value)) ? parseFloat(value) : value;
+            entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = float;
+            break;
+        default:
+            let bool = Boolean(value) ? value === 'true' : value;
+            entity.json!['minecraft:entity']['events'][event_name]['set_property'][name.fullname!] = bool;
+            break;
     }
 }
 

@@ -7,6 +7,7 @@ import * as JSONC from 'comment-json';
 
 export enum itemType {
     basic='basic',
+    attachable='attachable',
     weapon='weapon',
     projectile='projectile',
     food='food',
@@ -91,7 +92,7 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
             writeToLang(`item.${name.fullname}.name=${name.displayname}`, 'item names');
         }
 
-        if (type === itemType.weapon) {
+        if (type === itemType.weapon || type === itemType.attachable) {
             createComplexAttachable(name.fullname!);
         }
     }
