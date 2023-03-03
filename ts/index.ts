@@ -148,6 +148,7 @@ property.command('add')
   .option('-v, --values <values...>', 'the values, either a list of enum values or a min-max')
   .option('-d, --default <default>', 'the default value')
   .option('-c, --client', 'should use client_sync')
+  .option('-e, --event', 'automatically generate events for the values')
   .action(triggerEntityAddProperty)
   .hook('postAction', printVersion);
 
@@ -276,7 +277,8 @@ async function triggerEntityAddProperty(names: string[], options: OptionValues) 
   const values = options.values;
   const default_value = options.default;
   const client = options.client;
-  await Entity.entityAddProperty(names, type, file, property, values, default_value, client);
+  const event = options.event;
+  await Entity.entityAddProperty(names, type, file, property, values, default_value, client, event);
 }
 
 async function triggerEntityAddPropertyEvent(names: string[], options: OptionValues) {
