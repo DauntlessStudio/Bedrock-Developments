@@ -850,6 +850,8 @@ The `name` can be whatever you like, but `display_name` is what will actually be
 Rather than manually specifying the Organization and Repo each time you use the program, it will check your Environment Variables, so they should be configured as:
 
 ![environment_variables](environment_var.jpg)
+
+
 If you aren't familiar with how to create your own GitHub token, talk to your packages administrator or follow this [guide](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 ```
