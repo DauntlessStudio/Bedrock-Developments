@@ -31,7 +31,7 @@ export declare function readSourceFile(path: string): string;
  * @param entry the line to add to the lang file
  * @param category the category the entry should be added to
  */
-export declare function writeToLang(entry: string, category: string): void;
+export declare function writeToLang(entry: string, category: string, path?: string): void;
 /**
  * @remarks writes a string of text to a file
  * @param path the path to write the file too
