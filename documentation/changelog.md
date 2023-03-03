@@ -1,6 +1,12 @@
 # Changelog
 ---
+## [1.1.2] - 3/3/2023
+---
+Bug fixes.
+## Fixed
+- Fixed issue where `bed pkg import` always wrote lang file changes to `en_US.lang` instead of the file on the package.
 ## [1.1.1] - 3/2/2023
+---
 Bug fixes.
 ## Fixed
 - The version check was still checking the old CLI tool. Now it correctly checks your version for this project.
