@@ -1,5 +1,10 @@
 # Changelog
 ---
+## [1.1.1] - 3/2/2023
+Bug fixes.
+## Fixed
+- The version check was still checking the old CLI tool. Now it correctly checks your version for this project.
+- The `bin` was not specified for this project, so it could not be run with `bed`.
 ## [1.1.0] - 3/2/2023
 ---
 This version deprecates the standalone [CLI Tool](https://github.com/DauntlessStudio/Bedrock-Development-CLI) in favor of folding the CLI directly into this project.
