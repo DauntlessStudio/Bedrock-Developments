@@ -139,7 +139,7 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
     let group_json: any = {};
     // parse json input
     try {
-        group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:]+)(['"])?:/g, '"$2":'));
+        group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:\$]+)(['"])?:/g, '"$2":'));
     } catch (error) {
         console.log(`${chalk.red(`Invalid JSON: ${group}`)}`);
         return;
@@ -159,7 +159,20 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
             for (const key of Object.keys(group_json)) {
                 // add group
                 entity.json!['minecraft:entity']['component_groups'] ||= {};
-                entity.json!['minecraft:entity']['component_groups'][key] = group_json[key];
+                
+                let component_group = {...group_json[key]};
+
+                // check if we should merge with source
+                for (const child of Object.keys(group_json[key])) {
+                    let clean_child = child.replace('$', '');
+                    if (child.startsWith('$') && entity.json!['minecraft:entity']['components'][clean_child]) {
+                        let child_component =  mergeDeep(entity.json!['minecraft:entity']['components'][clean_child], group_json[key][child]);
+                        delete component_group[child];
+                        component_group[clean_child] = child_component;
+                    }
+                }
+
+                entity.json!['minecraft:entity']['component_groups'][key] = component_group;
                 
                 // add events
                 entity.json!['minecraft:entity']['events'] ||= {};
