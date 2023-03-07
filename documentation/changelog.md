@@ -1,18 +1,25 @@
 # Changelog
 ---
-## [1.1.2] - 3/3/2023
+## [1.1.3] - 3/7/2023
+Bug fixes.
+## Fixed
+- Fixed issue where `bed new item --type attachable` would fail to add a transition back to the `no_item` state after adding multiple attachables.
+
 ---
+## [1.1.2] - 3/3/2023
 Bug fixes.
 ## Fixed
 - Fixed issue where `bed pkg import` always wrote lang file changes to `en_US.lang` instead of the file on the package.
-## [1.1.1] - 3/2/2023
+
 ---
+## [1.1.1] - 3/2/2023
 Bug fixes.
 ## Fixed
 - The version check was still checking the old CLI tool. Now it correctly checks your version for this project.
 - The `bin` was not specified for this project, so it could not be run with `bed`.
-## [1.1.0] - 3/2/2023
+
 ---
+## [1.1.0] - 3/2/2023
 This version deprecates the standalone [CLI Tool](https://github.com/DauntlessStudio/Bedrock-Development-CLI) in favor of folding the CLI directly into this project.
 ## Added
 - The CLI tool in its entirety, ported from [here](https://github.com/DauntlessStudio/Bedrock-Development-CLI).
