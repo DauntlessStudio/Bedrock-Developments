@@ -558,6 +558,23 @@ Notice that when writing the command, we escaped the quotes with \\", that preve
 ```
 Invalid JSON: {new_loot:{minecraft:loot:{table:loot_tables/custom.json}}}
 ```
+___
+```
+bed entity group {new_group:{$minecraft:type_family:{family:[\"test\"]}}} --file
+```
+The `$` decorator here tells the command to **merge** `minecraft:type_family` from the source file rather than overwrite it, resulting in:
+```json
+{
+    "new_group": {
+        "minecraft:type_family": {
+            "family": [
+                "player",
+                "test"
+            ]
+        }
+    }
+}
+```
 
 &nbsp;
 
