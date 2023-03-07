@@ -268,6 +268,9 @@ async function createComplexAttachable(name: string) {
 	player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][name_obj.shortname!]['animations'].push('ctrl.' + name_obj.shortname);
     for (const key in player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']) {
         player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'] = transitions.filter(function missingKey(transition: any) {return transition[key] === undefined;});
+        if (key !== 'no_item' && !player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'].includes({no_item: '!v.has_custom_item'})) {
+            player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'].push({no_item: '!v.has_custom_item'});
+        }
     }
     player_ac!.json['animation_controllers'][`controller.animation.player.custom_items.${name_obj.shortname!}`] = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/controller_entry.json`).replace(/example_item/g, name_obj.shortname!));
     writeFileFromJSON(player_ac!.file, player_ac!.json, true);
