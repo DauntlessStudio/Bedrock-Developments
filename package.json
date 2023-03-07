@@ -1,6 +1,6 @@
 {
   "name": "bedrock-development",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "APIs for creating and editing files related to Minecraft Bedrock development.",
   "main": "bin/index.js",
   "types": "bin/index.d.ts",

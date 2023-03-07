@@ -1,6 +1,6 @@
 # Changelog
 ---
-## [1.1.4] - 3/7/2023
+## [1.2.0] - 3/7/2023
 Added decorator to `bed entity group` command.
 ## Changed
 - Creating a new component group with the `bed entity group` command now supports merging components from the source file. `bed entity group {new_group:{$minecraft:type_family:{family:[\"test\"]}}} --file` for example will create a new component group called `new_group` and will copy the existing family type from the file and append `test` to the end. You can specify a component should **merge** rather than overwrite by putting the `$` decorator in front of the component name.
