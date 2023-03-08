@@ -139,7 +139,7 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
     let group_json: any = {};
     // parse json input
     try {
-        group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:\$]+)(['"])?:/g, '"$2":'));
+        group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:\$\.]+)(['"])?:/g, '"$2":'));
     } catch (error) {
         console.log(`${chalk.red(`Invalid JSON: ${group}`)}`);
         return;
@@ -193,7 +193,7 @@ export async function entityAddComponent(component: string, family: string|undef
     let component_json: any = {};
     // parse json input
     try {
-        component_json = JSONC.parse(component.replace(/(['"])?([a-z0-9A-Z_:]+)(['"])?:/g, '"$2":'));
+        component_json = JSONC.parse(component.replace(/(['"])?([a-z0-9A-Z_:\$\.]+)(['"])?:/g, '"$2":'));
     } catch (error) {
         console.log(`${chalk.red(`Invalid JSON: ${component}`)}`);
         return;

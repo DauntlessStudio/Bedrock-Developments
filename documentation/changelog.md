@@ -1,5 +1,10 @@
 # Changelog
 ---
+## [1.2.1] - 3/7/2023
+Bug Fixes.
+## Fixed
+- Fixed issue where `bed entity group` an `bed entity component` would fail to parse `.`, so components like `minecraft:behavior.anything` would fail.
+---
 ## [1.2.0] - 3/7/2023
 Added decorator to `bed entity group` command.
 ## Changed
