@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import {Command, Option, OptionValues} from 'commander';
+import {Argument, Command, Option, OptionValues} from 'commander';
 import * as Global from './app/globals';
 import * as Entity from './app/entity';
 import * as Item from './app/item';
@@ -193,6 +193,13 @@ world.command('list')
   .action(triggerWorldsList)
   .hook('postAction', printVersion);
 
+world.command('export')
+  .description('Export selected world as .mcworld')
+  .addArgument(new Argument('<index>', 'index of world to export').argParser(parseInt))
+  .option('-p, --packs', "package the world's behavior and resource packs")
+  .action(triggerWorldsExport)
+  .hook('postAction', printVersion);
+
 // #endregion
 
 program.parse();
@@ -355,6 +362,11 @@ async function triggerWorldsList(options: OptionValues) {
   worlds.forEach((value, index) => {
     console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
   })
+}
+
+async function triggerWorldsExport(index: number, options: OptionValues) {
+  const packs = options.packs;
+  World.worldExport(packs, index);
 }
 
 async function printVersion() {
