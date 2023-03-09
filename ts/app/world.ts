@@ -1,11 +1,10 @@
 import * as Global from './globals';
 import * as JSONC from 'comment-json';
 import * as fs from 'fs';
-import * as archiver from 'archiver';
-import path from 'path';
+import { archiveDirToZip, copyDir } from './file_manager';
 
-const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share"));
-const download = `${process.env.USERPROFILE}/Downloads`
+const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
+const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
 
 export function worldList() {
     try {
@@ -30,7 +29,7 @@ export function worldExport(include_packs: boolean = false, world_index: number)
     if (world_index < worlds.length) {
         let new_path = `${download}/${worlds[world_index].name}`;
 
-        console.log(`${Global.chalk.green(`Exporting ${worlds[world_index].path}...`)}`);
+        console.log(`${Global.chalk.green(`Exporting ${worlds[world_index].path}`)}`);
         copyDir(worlds[world_index].path, new_path);
 
         if (include_packs) {
@@ -44,19 +43,19 @@ export function worldExport(include_packs: boolean = false, world_index: number)
             }
 
             for (const bp of packs.bp) {
-                console.log(`${Global.chalk.green(`Exporting ${bp.name}...`)}`);
+                console.log(`${Global.chalk.green(`Exporting ${bp.name}`)}`);
                 copyDir(bp.path, `${new_path}/behavior_packs/${bp.name}`);
             }
 
             for (const rp of packs.rp) {
-                console.log(`${Global.chalk.green(`Exporting ${rp.name}...`)}`);
+                console.log(`${Global.chalk.green(`Exporting ${rp.name}`)}`);
                 copyDir(rp.path, `${new_path}/resource_packs/${rp.name}`);
             }
         }
 
-        console.log(`${Global.chalk.green(`Packaging World...`)}`);
+        console.log(`${Global.chalk.green(`Packaging World`)}`);
         archiveDirToZip(new_path, `${new_path}.mcworld`, () => {
-            console.log(`${Global.chalk.green(`Cleaning Up...`)}`);
+            console.log(`${Global.chalk.green(`Cleaning Up`)}`);
             fs.rmSync(new_path, { recursive: true, force: true });
 
             console.log(`${Global.chalk.green(`Packaged To ${new_path}.mcworld`)}`);
@@ -121,31 +120,4 @@ function getPackFromID(id: string, type: packType) {
             }
         }
     }
-}
-
-function copyDir(src: string, dest: string)
-{
-    fs.mkdirSync(dest, { recursive: true })
-    let entries = fs.readdirSync(src, { withFileTypes: true });
-
-    for (let entry of entries)
-    {
-        let srcPath = path.join(src, entry.name);
-        let destPath = path.join(dest, entry.name);
-
-        entry.isDirectory() ? copyDir(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
-    }
-}
-
-function archiveDirToZip(dir: string, zipPath: string, callback: Function) {
-    let output = fs.createWriteStream(zipPath);
-    let archive = archiver.default('zip', { zlib: { level: 9 } });
-   
-    output.on('close', () => {
-     callback();
-    });
-   
-    archive.pipe(output);
-    archive.directory(dir, '');
-    archive.finalize();
 }
