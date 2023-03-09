@@ -27,7 +27,7 @@ export async function createNewBlock(names: string[], lang: boolean, emissive: n
 
         if (geo) {
             block!.json['format_version'] = '1.19.51';
-            block!.json['minecraft:block']['components']['minecraft:collision_box'] = {origin: [0, 0, 0], size: [16.0, 16.0, 16.0]};
+            block!.json['minecraft:block']['components']['minecraft:collision_box'] = {origin: [-8, 0, -8], size: [16.0, 16.0, 16.0]};
             block!.json['minecraft:block']['components']['minecraft:geometry'] = `geometry.${name.shortname}`;
             block!.json['minecraft:block']['components']['minecraft:material_instances'] = {};
             block!.json['minecraft:block']['components']['minecraft:material_instances']['*'] = {texture: name.shortname, render_method: 'alpha_test'};
