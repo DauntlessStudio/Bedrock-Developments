@@ -7,6 +7,7 @@ import * as Block from './app/block';
 import * as Animation from './app/animations';
 import * as Function from './app/functions';
 import * as Package from './app/package_manager';
+import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
@@ -54,6 +55,7 @@ createNew.command('block')
   .option('--no-lang', 'do not add lang file')
   .option('-e, --emissive <emission>', 'block emmission level [0.0-1.0]')
   .option('-t, --table', 'create a loot table')
+  .option('-g, --geo', 'create a custom geo')
   .action(triggerCreateNewBlock)
   .hook('postAction', printVersion);
 
@@ -182,6 +184,17 @@ pkg.command('import')
 
 // #endregion
 
+// #region Wold Commands
+let world = program.command('world')
+  .description('Tools for working with worlds');
+
+world.command('list')
+  .description('List installed worlds')
+  .action(triggerWorldsList)
+  .hook('postAction', printVersion);
+
+// #endregion
+
 program.parse();
 
 async function setPaths() {
@@ -215,7 +228,8 @@ async function triggerCreateNewBlock(names: string[], options: OptionValues) {
   const lang = options.lang;
   const emissive = options.emissive;
   const table = options.table;
-  await Block.createNewBlock(names, lang, emissive, table);
+  const geo = options.geo;
+  await Block.createNewBlock(names, lang, emissive, table, geo);
 }
 
 async function triggerCreateNewAnimation(names: string[], options: OptionValues) {
@@ -335,6 +349,13 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
   await Entity.createVanillaEntity(names, client);
 }
 // #endregion
+
+async function triggerWorldsList(options: OptionValues) {
+  let worlds = World.worldList();
+  worlds.forEach((value, index) => {
+    console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
+  })
+}
 
 async function printVersion() {
   let result = await axios.get('https://registry.npmjs.org/bedrock-development/latest');

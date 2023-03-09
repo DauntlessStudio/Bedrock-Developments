@@ -2,7 +2,7 @@ import * as Global from './globals';
 import { copyFile, readJSONFromFile, writeFileFromJSON, writeToLang } from './file_manager';
 import { getNamesObjects } from './utils';
 
-export async function createNewBlock(names: string[], lang: boolean, emissive: number|undefined, table: boolean) {
+export async function createNewBlock(names: string[], lang: boolean, emissive: number|undefined, table: boolean, geo: boolean) {
     let names_list = getNamesObjects(names);
     let json_block = await (await readJSONFromFile(`${Global.app_root}/src/blocks/template.json`)).shift();
     let json_loot_table = await (await readJSONFromFile(`${Global.app_root}/src/loot_tables/template.loot.json`)).shift();
@@ -25,6 +25,18 @@ export async function createNewBlock(names: string[], lang: boolean, emissive: n
             writeFileFromJSON(`${Global.project_bp}loot_tables/blocks/${name.pathname}${name.shortname}.loot.json`, loot_table?.json);
         }
 
+        if (geo) {
+            block!.json['format_version'] = '1.19.51';
+            block!.json['minecraft:block']['components']['minecraft:collision_box'] = {origin: [0, 0, 0], size: [16.0, 16.0, 16.0]};
+            block!.json['minecraft:block']['components']['minecraft:geometry'] = `geometry.${name.shortname}`;
+            block!.json['minecraft:block']['components']['minecraft:material_instances'] = {};
+            block!.json['minecraft:block']['components']['minecraft:material_instances']['*'] = {texture: name.shortname, render_method: 'alpha_test'};
+
+            let json_geo = await (await readJSONFromFile(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
+            json_geo!.json['minecraft:geometry'][0]['description']['identifier'] =`geometry.${name.shortname}`;
+            writeFileFromJSON(`${Global.project_rp}models/blocks/${name.pathname}${name.shortname}.geo.json`, json_geo?.json);
+        }
+
         writeFileFromJSON(`${Global.project_bp}blocks/${name.pathname}${name.shortname}.json`, block?.json);
 
         json_block_texture!.json['texture_data'][name.shortname!] = {};
@@ -37,7 +49,7 @@ export async function createNewBlock(names: string[], lang: boolean, emissive: n
         copyFile(`${Global.app_root}/src/blocks/block.png`, `${Global.project_rp}textures/blocks/${name.pathname}${name.shortname}.png`);
 
         if (lang) {
-            writeToLang(`block.${name.fullname}.name=${name.displayname}`, 'block names');
+            writeToLang(`tile.${name.fullname}.name=${name.displayname}`, 'block names');
         }
     }
     
