@@ -29,7 +29,8 @@
     "commander": "^10.0.0",
     "comment-json": "^4.2.3",
     "glob": "^8.1.0",
-    "octokit": "^2.0.13"
+    "octokit": "^2.0.13",
+    "prismarine-nbt": "^2.2.1"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.1",

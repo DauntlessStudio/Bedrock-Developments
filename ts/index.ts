@@ -200,6 +200,15 @@ world.command('export')
   .action(triggerWorldsExport)
   .hook('postAction', printVersion);
 
+world.command('packs')
+  .description('Attach packs to world')
+  .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
+  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add').makeOptionMandatory())
+  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add').makeOptionMandatory())
+  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
+  .action(triggerWorldsPacks)
+  .hook('postAction', printVersion);
+
 // #endregion
 
 program.parse();
@@ -367,6 +376,13 @@ async function triggerWorldsList(options: OptionValues) {
 async function triggerWorldsExport(index: number, options: OptionValues) {
   const packs = options.packs;
   World.worldExport(packs, index);
+}
+
+async function triggerWorldsPacks(index: number, options: OptionValues) {
+  const bpack = options.bpack;
+  const rpack = options.rpack;
+  const experimental = options.experimental;
+  await World.worldPacks(index, bpack, rpack, experimental);
 }
 
 async function printVersion() {

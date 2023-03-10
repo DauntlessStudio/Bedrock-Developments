@@ -1,10 +1,17 @@
 import * as Global from './globals';
 import * as JSONC from 'comment-json';
 import * as fs from 'fs';
+import * as nbt from 'prismarine-nbt'
 import { archiveDirToZip, copyDir } from './file_manager';
 
 const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
+const header_bytes = 8;
+
+export enum experimentalToggle {
+    betaAPI='beta-api',
+    holiday='holiday-creator',
+}
 
 export function worldList() {
     try {
@@ -60,6 +67,60 @@ export function worldExport(include_packs: boolean = false, world_index: number)
 
             console.log(`${Global.chalk.green(`Packaged To ${new_path}.mcworld`)}`);
         });
+    }
+}
+
+export async function worldPacks(world_index: number, bpack: string, rpack: string, experimental: string|undefined) {
+    let worlds = worldList();
+    if (world_index < worlds.length) {
+        let bpID = getIDFromPack(bpack, packType.behavior);
+        let rpID = getIDFromPack(rpack, packType.resource);
+
+        if (bpID) {
+            let path = `${worlds[world_index].path}/world_behavior_packs.json`
+            let world_behavior_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+            world_behavior_packs.push({pack_id: bpID, version: [ 1, 0, 0 ]});
+            console.log(`${Global.chalk.green(`Added ${bpack} to ${path}`)}`);
+            fs.writeFileSync(path, JSONC.stringify(world_behavior_packs, null, Global.indent));
+        } else {
+            console.log(`${Global.chalk.red(`Failed to find ${bpack}`)}`);
+        }
+
+        if (rpID) {
+            let path = `${worlds[world_index].path}/world_resource_packs.json`
+            let world_resource_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+            world_resource_packs.push({pack_id: rpID, version: [ 1, 0, 0 ]});
+            console.log(`${Global.chalk.green(`Added ${rpack} to ${path}`)}`);
+            fs.writeFileSync(path, JSONC.stringify(world_resource_packs, null, Global.indent));
+        } else {
+            console.log(`${Global.chalk.red(`Failed to find ${rpack}`)}`);
+        }
+
+        if (experimental) {
+            let buffer = fs.readFileSync(`${worlds[world_index].path}/level.dat`);
+            const {parsed, type}: any = await nbt.parse(buffer);
+
+            switch (experimental) {
+                case experimentalToggle.betaAPI:
+                    parsed.value.experiments ||= nbt.comp({type: nbt.TagType.Compound, value: {}});
+                    parsed.value.experiments.value.gametest = nbt.byte(1);
+                    parsed.value.experiments.value.experiments_ever_used = nbt.byte(1);
+                    parsed.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
+                    break;
+            
+                default:
+                    break;
+            }
+
+            console.log(`${Global.chalk.green(`Writing Experiments`)}`);
+
+            // Write 8 metadata bytes in front of nbt data
+            let nbt_buffer = nbt.writeUncompressed(parsed, type);
+            let new_buffer: Buffer = buffer.subarray(0, header_bytes);
+            new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
+
+            fs.createWriteStream(`${worlds[world_index].path}/level.dat`).write(new_buffer);
+        }
     }
 }
 
@@ -119,5 +180,23 @@ function getPackFromID(id: string, type: packType) {
                 return {path: subpath, name: folder};
             }
         }
+    }
+}
+
+function getIDFromPack(pack: string, type: packType) {
+    let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
+
+    // Check dev packs first
+    let subpath = `${path}/development_${type}_packs/${pack}`;
+    if (fs.existsSync(`${subpath}/manifest.json`)) {
+        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
+        return manifest.header.uuid;
+    }
+
+    // Check other packs next
+    subpath = `${path}/${type}_packs/${pack}`;
+    if (fs.existsSync(`${subpath}/manifest.json`)) {
+        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
+        return manifest.header.uuid;
     }
 }
