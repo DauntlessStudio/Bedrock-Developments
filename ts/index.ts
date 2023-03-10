@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-import {Command, Option, OptionValues} from 'commander';
+import {Argument, Command, Option, OptionValues} from 'commander';
 import * as Global from './app/globals';
 import * as Entity from './app/entity';
 import * as Item from './app/item';
@@ -7,10 +7,11 @@ import * as Block from './app/block';
 import * as Animation from './app/animations';
 import * as Function from './app/functions';
 import * as Package from './app/package_manager';
+import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '1.2.1'
+const version = '1.3.0'
 
 program
   .name('bed')
@@ -54,6 +55,7 @@ createNew.command('block')
   .option('--no-lang', 'do not add lang file')
   .option('-e, --emissive <emission>', 'block emmission level [0.0-1.0]')
   .option('-t, --table', 'create a loot table')
+  .option('-g, --geo', 'create a custom geo')
   .action(triggerCreateNewBlock)
   .hook('postAction', printVersion);
 
@@ -182,6 +184,43 @@ pkg.command('import')
 
 // #endregion
 
+// #region World Commands
+let world = program.command('world')
+  .description('Tools for working with worlds');
+
+world.command('list')
+  .description('List installed worlds')
+  .action(triggerWorldsList)
+  .hook('postAction', printVersion);
+
+world.command('export')
+  .description('Export selected world as .mcworld')
+  .addArgument(new Argument('<index>', 'index of world to export').argParser(parseInt))
+  .option('-p, --packs', "package the world's behavior and resource packs")
+  .action(triggerWorldsExport)
+  .hook('postAction', printVersion);
+
+world.command('packs')
+  .description('Attach packs to world')
+  .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
+  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
+  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
+  .addOption(new Option('-d, --delete', 'should the packs be removed'))
+  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
+  .action(triggerWorldsPacks)
+  .hook('postAction', printVersion);
+
+world.command('new')
+  .description('Create new world')
+  .addArgument(new Argument('<name>', 'the wold name'))
+  .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
+  .addOption(new Option('-f, --flat', 'create a flat world'))
+  .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
+  .action(triggerWorldsNew)
+  .hook('postAction', printVersion);
+
+// #endregion
+
 program.parse();
 
 async function setPaths() {
@@ -215,7 +254,8 @@ async function triggerCreateNewBlock(names: string[], options: OptionValues) {
   const lang = options.lang;
   const emissive = options.emissive;
   const table = options.table;
-  await Block.createNewBlock(names, lang, emissive, table);
+  const geo = options.geo;
+  await Block.createNewBlock(names, lang, emissive, table, geo);
 }
 
 async function triggerCreateNewAnimation(names: string[], options: OptionValues) {
@@ -333,6 +373,37 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
   await setPaths();
   const client = options.client;
   await Entity.createVanillaEntity(names, client);
+}
+async function triggerWorldsList(options: OptionValues) {
+  let worlds = World.worldList();
+  worlds.forEach((value, index) => {
+    console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
+  })
+}
+
+async function triggerWorldsExport(index: number, options: OptionValues) {
+  const packs = options.packs;
+  World.worldExport(packs, index);
+}
+
+async function triggerWorldsPacks(index: number, options: OptionValues) {
+  const bpack = options.bpack;
+  const rpack = options.rpack;
+  const experimental = options.experimental;
+
+  if (options.delete) {
+    await World.worldRemovePacks(index, bpack, rpack, experimental !== undefined);
+  } else {
+    await World.worldAddPacks(index, bpack, rpack, experimental);
+  }
+}
+
+async function triggerWorldsNew(name: string, options: OptionValues) {
+  const test = options.test;
+  const flat = options.flat;
+  const mode = options.mode;
+
+  World.worldNew(name, test, flat, mode);
 }
 // #endregion
 

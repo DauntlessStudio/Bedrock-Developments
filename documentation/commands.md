@@ -21,6 +21,11 @@ Comprehensive list of all commands, with example uses.
     - [Package Manager (pkg)](#package-manager)
         - [List Packages (pkg list)](#list-packages)
         - [Import Packages (pkg import)](#import-packages)
+    - [Edit Worlds (world)](#edit-worlds)
+        - [List Worlds (world list)](#list-worlds)
+        - [Export World (world export)](#export-world)
+        - [Add Packs To World (world packs)](#add-packs-to-world)
+        - [Create New World (world new)](#create-new-world)
 
 ## General Usage
 CLI to assist Minecraft Bedrock Development. This is the root command, and all other commands are subcommands of this. At the root, you can specify certain paramaters that are globally used, like the paths to the Behavior Pack and Resource Pack, or the indent level for files.
@@ -163,6 +168,7 @@ Options:
   -l, --lang                 add lang file
   -e, --emissive <emission>  block emmission level [0.0-1.0]
   -t, --table                create a loot table
+  -g, --geo                  create a custom geo
   -h, --help                 display help for command
 ```
 ### Example(s)
@@ -177,6 +183,12 @@ This creates a new simple block with an empty loot table and a lang file referen
 bed new block --emissive 1.0 --table --lang ldz:test_lit_block
 ```
 This creates a new block that emits light level 15, a new loot table that drops itself, along with everything listed in the above example.
+
+---
+```
+bed new block --geo ldz:custom_geo
+```
+This creates a new block that uses custom geo, it will also generate a `custom_geo.geo.json` file.
 
 &nbsp;
 
@@ -944,6 +956,144 @@ bed pkg import 0
 bed pkg import "Example Package 1"
 ```
 Would both import the first package `Example Package 1`.
+
+&nbsp;
+
+---
+## Edit Worlds
+Tools for working with worlds
+
+```
+Usage: bed world [options] [command]
+
+Options:
+  -h, --help                display help for command
+
+Commands:
+  list                      List installed worlds
+  export [options] <index>  Export selected world as .mcworld
+  packs [options] <index>   Attach packs to world
+  new [options] <name>      Create new world
+  help [command]            display help for command
+```
+
+&nbsp;
+
+---
+## List Worlds
+List installed worlds.
+
+```
+Usage: bed world list [options]
+
+Options:
+  -h, --help  display help for command
+```
+### Example(s)
+---
+```
+bed world list
+```
+Lists all installed worlds in com.mojang.
+
+&nbsp;
+
+---
+## Export World
+Export selected world as .mcworld.
+
+```
+Usage: bed world export [options] <index>
+
+Arguments:
+  index        index of world to export
+
+Options:
+  -p, --packs  package the world's behavior and resource packs
+  -h, --help   display help for command
+```
+### Example(s)
+---
+You can export a world by index. Get the index list from [List Worlds](#list-worlds):
+```
+bed world export 0
+```
+Exports world at index 0 to your downloads folder.
+
+---
+```
+bed world export --packs 0
+```
+Exports world at index 0, and adds its referenced behavior packs and resource packs into the .mcworld file.
+
+&nbsp;
+
+---
+## Add Packs To World
+Attach packs to world. You can specify a behavior pack and resource pack to add, as well as what experimenatl toggles should be turned on. With the `--delete` option, you can also remove behavior packs and resource packs, as well as turn experiments off.
+
+```
+Usage: bed world packs [options] <index>
+
+Arguments:
+  index                        index of world to add packs to
+
+Options:
+  -b, --bpack <folder name>    the name of the behavior pack to add
+  -r, --rpack <folder name>    the name of the resource pack to add
+  -d, --delete                 should the packs be removed
+  -e, --experimental [toggle]  turn on experimental toggle (choices: "beta-api", "holiday-creator", preset: "beta-api")
+  -h, --help                   display help for command
+```
+### Example(s)
+---
+```
+bed world pack --bpack pack_bp --rpack pack_rp 0
+```
+Adds a behavior pack called `pack_bp` and a resource pack called `pack_rp` to the world at index 0.
+
+---
+```
+bed world pack --bpack pack_bp --rpack pack_rp 0 --experimental
+```
+Adds a behavior pack called `pack_bp` and a resource pack called `pack_rp` to the world at index 0, as well as turning the beta-api experimental toggle on.
+
+---
+```
+bed world pack 0 --delete --experimental
+```
+We can also use this command without the `--bpack` and `--rpack` options to just toggle experiments directly. This command turn experiments off for a world.
+
+&nbsp;
+
+---
+## Create New World
+Create new world. This command will create a new .mcworld file in your downloads and automatically import it into Minecraft.
+
+```
+Usage: bed world new [options] <name>
+
+Arguments:
+  name                         the wold name
+
+Options:
+  -t, --test                   create a test world with pre-configured gamerules
+  -f, --flat                   create a flat world
+  -m, --mode <gamemode>        gamemode (choices: "0", "1", "2", "3", "survival", "creative", "adventure", "spectator")
+  -h, --help                   display help for command
+```
+### Example(s)
+---
+```
+bed world new "My World"
+```
+Imports a new default world called "My World".
+
+---
+```
+bed world new --flat --mode 1 --test "Test World"
+```
+Imports a new superflat, creative world with gamerule presets to turn of things like weather, the daylight cycle, mob griefing, etc. called "Test World".
 
 &nbsp;
 
