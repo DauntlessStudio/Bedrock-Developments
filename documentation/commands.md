@@ -1093,7 +1093,7 @@ Imports a new default world called "My World".
 ```
 bed world new --flat --mode 1 --test "Test World"
 ```
-Imports a new superflat, creative world with gamerule presets to turn of things like weather, the daylight cycle, mob griefing, etc. called "Test World".
+Imports a new superflat, creative world with gamerule presets to turn off things like weather, the daylight cycle, mob griefing, etc. called "Test World".
 
 &nbsp;
 
