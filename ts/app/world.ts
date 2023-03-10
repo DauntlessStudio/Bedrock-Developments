@@ -3,6 +3,7 @@ import * as JSONC from 'comment-json';
 import * as fs from 'fs';
 import * as nbt from 'prismarine-nbt'
 import { archiveDirToZip, copyDir } from './file_manager';
+import {execSync} from 'child_process';
 
 const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
@@ -10,6 +11,13 @@ const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
 export enum experimentalToggle {
     betaAPI='beta-api',
     holiday='holiday-creator',
+}
+
+export enum gameMode {
+    survival,
+    creative,
+    adventure,
+    spectator
 }
 
 export function worldList() {
@@ -103,7 +111,7 @@ export async function worldAddPacks(world_index: number, bpack: string, rpack: s
 
                 switch (experimental) {
                     case experimentalToggle.betaAPI:
-                        nbtData.value.experiments ||= nbt.comp({type: nbt.TagType.Compound, value: {}});
+                        nbtData.value.experiments ||= {type: 'compound', value: {}};
                         nbtData.value.experiments.value.gametest = nbt.byte(1);
                         nbtData.value.experiments.value.experiments_ever_used = nbt.byte(1);
                         nbtData.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
@@ -170,6 +178,43 @@ export async function worldRemovePacks(world_index: number, bpack: string|undefi
             fs.copyFileSync(`${worlds[world_index].path}/level.dat`, `${worlds[world_index].path}/level.dat_old`);
         }
     }
+}
+
+export async function worldNew(worldName: string, testWorld: boolean, flatWorld: boolean, gamemode: number = 0) {
+    let path = `${download}/${worldName}`;
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+    }
+
+    fs.writeFileSync(`${path}/levelname.txt`, worldName);
+    fs.copyFileSync(`${Global.app_root}/src/world/level.dat`, `${path}/level.dat`);
+
+    await writeLevelDat(`${path}/level.dat`, (nbtData: any) => {
+        nbtData.value.LevelName = nbt.string(worldName);
+        nbtData.value.RandomSeed = nbt.long(Math.floor(Math.random() * 1000000000));
+        nbtData.value.GameType = nbt.int(gamemode);
+        
+        if (flatWorld) {
+            nbtData.value.Generator = nbt.int(2);
+        }
+
+        if (testWorld) {
+            nbtData.value.commandsEnabled = nbt.byte(1);
+            nbtData.value.dodaylightcycle = nbt.byte(0);
+            nbtData.value.domobloot = nbt.byte(0);
+            nbtData.value.domobspawning = nbt.byte(0);
+            nbtData.value.mobgriefing = nbt.byte(0);
+            nbtData.value.keepinventory = nbt.byte(1);
+            nbtData.value.doweathercycle = nbt.byte(0);
+        }
+    });
+
+    archiveDirToZip(path, `${path}.mcworld`, () => {
+        console.log(`${Global.chalk.green(`Opening World`)}`);
+        fs.rmSync(path, { recursive: true, force: true });
+
+        execSync(`${path}.mcworld`);
+    });
 }
 
 function worldGetPacks(path: string) {
@@ -255,7 +300,6 @@ function getIDFromPack(pack: string|undefined, type: packType) {
 
 async function writeLevelDat(path: string, write_callback: Function) {
     let buffer = fs.readFileSync(path);
-    console.log(buffer);
     const {parsed, type} = await nbt.parse(buffer);
     
     write_callback(parsed);
@@ -265,6 +309,17 @@ async function writeLevelDat(path: string, write_callback: Function) {
     let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
     new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
 
-    console.log(new_buffer);
     fs.createWriteStream(path).write(new_buffer);
+}
+
+function makeID(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result += '=';
 }

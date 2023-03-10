@@ -184,7 +184,7 @@ pkg.command('import')
 
 // #endregion
 
-// #region Wold Commands
+// #region World Commands
 let world = program.command('world')
   .description('Tools for working with worlds');
 
@@ -208,6 +208,16 @@ world.command('packs')
   .addOption(new Option('-d, --delete', 'should the packs be removed'))
   .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
   .action(triggerWorldsPacks)
+  .hook('postAction', printVersion);
+
+world.command('new')
+  .description('Create new world')
+  .addArgument(new Argument('<name>', 'the wold name'))
+  .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
+  .addOption(new Option('-f, --flat', 'create a flat world'))
+  .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
+  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
+  .action(triggerWorldsNew)
   .hook('postAction', printVersion);
 
 // #endregion
@@ -383,12 +393,20 @@ async function triggerWorldsPacks(index: number, options: OptionValues) {
   const bpack = options.bpack;
   const rpack = options.rpack;
   const experimental = options.experimental;
-  
+
   if (options.delete) {
     await World.worldRemovePacks(index, bpack, rpack, experimental !== undefined);
   } else {
     await World.worldAddPacks(index, bpack, rpack, experimental);
   }
+}
+
+async function triggerWorldsNew(name: string, options: OptionValues) {
+  const test = options.test;
+  const flat = options.flat;
+  const mode = options.mode;
+
+  World.worldNew(name, test, flat, mode);
 }
 
 async function printVersion() {
