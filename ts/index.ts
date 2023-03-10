@@ -203,8 +203,9 @@ world.command('export')
 world.command('packs')
   .description('Attach packs to world')
   .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
-  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add').makeOptionMandatory())
-  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add').makeOptionMandatory())
+  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
+  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
+  .addOption(new Option('-d, --delete', 'should the packs be removed'))
   .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
   .action(triggerWorldsPacks)
   .hook('postAction', printVersion);
@@ -382,7 +383,12 @@ async function triggerWorldsPacks(index: number, options: OptionValues) {
   const bpack = options.bpack;
   const rpack = options.rpack;
   const experimental = options.experimental;
-  await World.worldPacks(index, bpack, rpack, experimental);
+  
+  if (options.delete) {
+    await World.worldRemovePacks(index, bpack, rpack, experimental !== undefined);
+  } else {
+    await World.worldAddPacks(index, bpack, rpack, experimental);
+  }
 }
 
 async function printVersion() {

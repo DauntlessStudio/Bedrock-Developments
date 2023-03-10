@@ -70,7 +70,7 @@ export function worldExport(include_packs: boolean = false, world_index: number)
     }
 }
 
-export async function worldPacks(world_index: number, bpack: string, rpack: string, experimental: string|undefined) {
+export async function worldAddPacks(world_index: number, bpack: string, rpack: string, experimental: string|undefined) {
     let worlds = worldList();
     if (world_index < worlds.length) {
         let bpID = getIDFromPack(bpack, packType.behavior);
@@ -79,47 +79,99 @@ export async function worldPacks(world_index: number, bpack: string, rpack: stri
         if (bpID) {
             let path = `${worlds[world_index].path}/world_behavior_packs.json`
             let world_behavior_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+
             world_behavior_packs.push({pack_id: bpID, version: [ 1, 0, 0 ]});
             console.log(`${Global.chalk.green(`Added ${bpack} to ${path}`)}`);
             fs.writeFileSync(path, JSONC.stringify(world_behavior_packs, null, Global.indent));
-        } else {
+        } else if (bpack) {
             console.log(`${Global.chalk.red(`Failed to find ${bpack}`)}`);
         }
 
         if (rpID) {
             let path = `${worlds[world_index].path}/world_resource_packs.json`
             let world_resource_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+
             world_resource_packs.push({pack_id: rpID, version: [ 1, 0, 0 ]});
             console.log(`${Global.chalk.green(`Added ${rpack} to ${path}`)}`);
             fs.writeFileSync(path, JSONC.stringify(world_resource_packs, null, Global.indent));
-        } else {
+        } else if (rpack) {
             console.log(`${Global.chalk.red(`Failed to find ${rpack}`)}`);
         }
 
         if (experimental) {
-            let buffer = fs.readFileSync(`${worlds[world_index].path}/level.dat`);
-            const {parsed, type}: any = await nbt.parse(buffer);
+            writeLevelDat(`${worlds[world_index].path}/level.dat`, (nbtData: any) => {
+                console.log(`${Global.chalk.green(`Adding Experiments`)}`);
 
-            switch (experimental) {
-                case experimentalToggle.betaAPI:
-                    parsed.value.experiments ||= nbt.comp({type: nbt.TagType.Compound, value: {}});
-                    parsed.value.experiments.value.gametest = nbt.byte(1);
-                    parsed.value.experiments.value.experiments_ever_used = nbt.byte(1);
-                    parsed.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
-                    break;
-            
-                default:
-                    break;
+                switch (experimental) {
+                    case experimentalToggle.betaAPI:
+                        nbtData.value.experiments ||= nbt.comp({type: nbt.TagType.Compound, value: {}});
+                        nbtData.value.experiments.value.gametest = nbt.byte(1);
+                        nbtData.value.experiments.value.experiments_ever_used = nbt.byte(1);
+                        nbtData.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
+                        break;
+                
+                    default:
+                        break;
+                }
+            });
+        }
+    }
+}
+
+export async function worldRemovePacks(world_index: number, bpack: string|undefined, rpack: string|undefined, experimental: boolean) {
+    let worlds = worldList();
+    if (world_index < worlds.length) {
+        let bpID = getIDFromPack(bpack, packType.behavior);
+        let rpID = getIDFromPack(rpack, packType.resource);
+
+        if (bpID) {
+            let path = `${worlds[world_index].path}/world_behavior_packs.json`
+            let world_behavior_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+
+            let index = world_behavior_packs.indexOf({pack_id: bpID, version: [ 1, 0, 0 ]});
+            if (index > -1) {
+                world_behavior_packs.splice(index, 1);
             }
 
-            console.log(`${Global.chalk.green(`Writing Experiments`)}`);
+            console.log(`${Global.chalk.green(`Removed ${bpack} from ${path}`)}`);
+            fs.writeFileSync(path, JSONC.stringify(world_behavior_packs, null, Global.indent));
+        } else if (bpack) {
+            console.log(`${Global.chalk.red(`Failed to find ${bpack}`)}`);
+        }
 
-            // Write 8 metadata bytes in front of nbt data
-            let nbt_buffer = nbt.writeUncompressed(parsed, type);
-            let new_buffer: Buffer = buffer.subarray(0, header_bytes);
-            new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
+        if (rpID) {
+            let path = `${worlds[world_index].path}/world_resource_packs.json`
+            let world_resource_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
 
-            fs.createWriteStream(`${worlds[world_index].path}/level.dat`).write(new_buffer);
+            let index = world_resource_packs.indexOf({pack_id: bpID, version: [ 1, 0, 0 ]});
+            if (index > -1) {
+                world_resource_packs.splice(index, 1);
+            }
+
+            console.log(`${Global.chalk.green(`Removed ${rpack} from ${path}`)}`);
+            fs.writeFileSync(path, JSONC.stringify(world_resource_packs, null, Global.indent));
+        } else if (rpack) {
+            console.log(`${Global.chalk.red(`Failed to find ${rpack}`)}`);
+        }
+
+        if (experimental) {
+            writeLevelDat(`${worlds[world_index].path}/level.dat`, (nbtData: any) => {
+                console.log(nbtData.value.experiments);
+                console.log(`${Global.chalk.green(`Removing Experiments`)}`);
+                
+                nbtData.value.experiments = {type: 'compound', value: {
+                    data_driven_vanilla_blocks_and_items: nbt.byte(1),
+                    experiments_ever_used: nbt.byte(0),
+                    saved_with_toggled_experiments: nbt.byte(0),
+                }};
+
+                console.log(nbtData.value.experiments);
+            });
+
+            if (fs.existsSync(`${worlds[world_index].path}/level.dat_old`)) {
+                fs.unlinkSync(`${worlds[world_index].path}/level.dat_old`);
+            }
+            fs.copyFileSync(`${worlds[world_index].path}/level.dat`, `${worlds[world_index].path}/level.dat_old`);
         }
     }
 }
@@ -183,7 +235,11 @@ function getPackFromID(id: string, type: packType) {
     }
 }
 
-function getIDFromPack(pack: string, type: packType) {
+function getIDFromPack(pack: string|undefined, type: packType) {
+    if (!pack) {
+        return undefined;
+    }
+
     let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 
     // Check dev packs first
@@ -199,4 +255,19 @@ function getIDFromPack(pack: string, type: packType) {
         let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
         return manifest.header.uuid;
     }
+}
+
+async function writeLevelDat(path: string, write_callback: Function) {
+    let buffer = fs.readFileSync(path);
+    const {parsed, type} = await nbt.parse(buffer);
+    
+    write_callback(parsed);
+
+    // Write 8 metadata bytes in front of nbt data
+    let nbt_buffer = nbt.writeUncompressed(parsed, type);
+    let new_buffer: Buffer = buffer.subarray(0, header_bytes);
+    new_buffer[4] = 0x07;
+    new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
+
+    fs.createWriteStream(path).write(new_buffer);
 }
