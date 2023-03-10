@@ -1,5 +1,15 @@
 # Changelog
 ---
+## [1.3.0] - 3/7/2023
+Added world subcommands, bug fixes.
+## Added
+- The `bed world list` command.
+- The `bed world export` command.
+- The `bed world packs` command.
+- The `bed world new` command.
+## Fixed
+- Fixed issue where `bed entity group` used with the `$` decorator when the source file didn't have the decorated component would result in th `$` still being used in the group name i.e. `$minecraft:type_family`.
+---
 ## [1.2.1] - 3/7/2023
 Bug Fixes.
 ## Fixed

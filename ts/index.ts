@@ -11,7 +11,7 @@ import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '1.2.1'
+const version = '1.3.0'
 
 program
   .name('bed')
@@ -216,7 +216,6 @@ world.command('new')
   .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
   .addOption(new Option('-f, --flat', 'create a flat world'))
   .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
-  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
   .action(triggerWorldsNew)
   .hook('postAction', printVersion);
 
