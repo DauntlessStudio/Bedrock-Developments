@@ -165,8 +165,13 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
                 // check if we should merge with source
                 for (const child of Object.keys(group_json[key])) {
                     let clean_child = child.replace('$', '');
-                    if (child.startsWith('$') && entity.json!['minecraft:entity']['components'][clean_child]) {
-                        let child_component =  mergeDeep(entity.json!['minecraft:entity']['components'][clean_child], group_json[key][child]);
+                    if (child.startsWith('$')) {
+                        let child_component = group_json[key][child];
+
+                        if (entity.json!['minecraft:entity']['components'][clean_child]) {
+                            child_component = mergeDeep(entity.json!['minecraft:entity']['components'][clean_child], group_json[key][child]);
+                        }
+
                         delete component_group[child];
                         component_group[clean_child] = child_component;
                     }

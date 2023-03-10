@@ -375,8 +375,6 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
   const client = options.client;
   await Entity.createVanillaEntity(names, client);
 }
-// #endregion
-
 async function triggerWorldsList(options: OptionValues) {
   let worlds = World.worldList();
   worlds.forEach((value, index) => {
@@ -408,6 +406,7 @@ async function triggerWorldsNew(name: string, options: OptionValues) {
 
   World.worldNew(name, test, flat, mode);
 }
+// #endregion
 
 async function printVersion() {
   let result = await axios.get('https://registry.npmjs.org/bedrock-development/latest');
