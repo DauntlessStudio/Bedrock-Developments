@@ -156,7 +156,6 @@ export async function worldRemovePacks(world_index: number, bpack: string|undefi
 
         if (experimental) {
             writeLevelDat(`${worlds[world_index].path}/level.dat`, (nbtData: any) => {
-                console.log(nbtData.value.experiments);
                 console.log(`${Global.chalk.green(`Removing Experiments`)}`);
                 
                 nbtData.value.experiments = {type: 'compound', value: {
@@ -164,8 +163,6 @@ export async function worldRemovePacks(world_index: number, bpack: string|undefi
                     experiments_ever_used: nbt.byte(0),
                     saved_with_toggled_experiments: nbt.byte(0),
                 }};
-
-                console.log(nbtData.value.experiments);
             });
 
             if (fs.existsSync(`${worlds[world_index].path}/level.dat_old`)) {
