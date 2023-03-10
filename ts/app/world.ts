@@ -6,7 +6,6 @@ import { archiveDirToZip, copyDir } from './file_manager';
 
 const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
-const header_bytes = 8;
 
 export enum experimentalToggle {
     betaAPI='beta-api',
@@ -256,15 +255,16 @@ function getIDFromPack(pack: string|undefined, type: packType) {
 
 async function writeLevelDat(path: string, write_callback: Function) {
     let buffer = fs.readFileSync(path);
+    console.log(buffer);
     const {parsed, type} = await nbt.parse(buffer);
     
     write_callback(parsed);
 
     // Write 8 metadata bytes in front of nbt data
     let nbt_buffer = nbt.writeUncompressed(parsed, type);
-    let new_buffer: Buffer = buffer.subarray(0, header_bytes);
-    new_buffer[4] = 0x07;
+    let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
     new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
 
+    console.log(new_buffer);
     fs.createWriteStream(path).write(new_buffer);
 }
