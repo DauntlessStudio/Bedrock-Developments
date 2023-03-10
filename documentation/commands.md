@@ -168,6 +168,7 @@ Options:
   -l, --lang                 add lang file
   -e, --emissive <emission>  block emmission level [0.0-1.0]
   -t, --table                create a loot table
+  -g, --geo                  create a custom geo
   -h, --help                 display help for command
 ```
 ### Example(s)
@@ -182,6 +183,12 @@ This creates a new simple block with an empty loot table and a lang file referen
 bed new block --emissive 1.0 --table --lang ldz:test_lit_block
 ```
 This creates a new block that emits light level 15, a new loot table that drops itself, along with everything listed in the above example.
+
+---
+```
+bed new block --geo ldz:custom_geo
+```
+This creates a new block that uses custom geo, it will also generate a `custom_geo.geo.json` file.
 
 &nbsp;
 

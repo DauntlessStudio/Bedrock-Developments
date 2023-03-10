@@ -7,6 +7,7 @@ Added world subcommands, bug fixes.
 - The `bed world export` command.
 - The `bed world packs` command.
 - The `bed world new` command.
+- The `bed new block` command has the new option `--geo` which will create a block with custom geo.
 ## Fixed
 - Fixed issue where `bed entity group` used with the `$` decorator when the source file didn't have the decorated component would result in th `$` still being used in the group name i.e. `$minecraft:type_family`.
 ---
