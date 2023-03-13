@@ -25,40 +25,41 @@ enum armorPiece {
     boots='boots'
 }
 
+var item_texture_file_cache: any;
+
 export async function createNewItem(names: string[], lang: boolean, stack: number=64, type: itemType) {
     let names_list = getNamesObjects(names);
     let json_item_bp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_bp.json`)).shift();
     let json_item_rp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_rp.json`)).shift();
-    let json_item_texture = await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
     for (const name of names_list) {
         let item_bp = json_item_bp;
 
         switch (type) {
             case itemType.armor_set:
-                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_texture?.json, json_item_rp?.json);
-                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_texture?.json, json_item_rp?.json);
-                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_texture?.json, json_item_rp?.json);
-                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_rp?.json);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
                 return;
             case itemType.helmet: {
-                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.helmet, name, json_item_rp?.json);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
             case itemType.chestplate: {
-                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.chestplate, name, json_item_rp?.json);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
             case itemType.leggings: {
-                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.leggings, name, json_item_rp?.json);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
                 return;
             }
             case itemType.boots: {
-                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_texture?.json, json_item_rp?.json);
+                createArmorPiece(item_bp?.json, armorPiece.boots, name, json_item_rp?.json);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
@@ -83,9 +84,6 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
         item_rp!.json['minecraft:item']['components']['minecraft:icon'] = name.shortname;
         writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}.json`, item_rp?.json);
 
-        json_item_texture!.json['texture_data'][name.shortname!] = {};
-        json_item_texture!.json['texture_data'][name.shortname!]['textures'] = `textures/items/${name.pathname}${name.shortname}`;
-
         copyFile(`${Global.app_root}/src/items/item.png`, `${Global.project_rp}textures/items/${name.shortname}.png`);
 
         if (lang) {
@@ -97,16 +95,39 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
         }
     }
     
-    writeFileFromJSON(`${Global.project_rp}textures/item_texture.json`, json_item_texture?.json, true);
+    writeToItemTextureFromNames(names_list);
 }
 
-async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObject, item_texture: any, item_rp: any) {
+export async function writeToItemTextureFromNames(names: nameObject[]) {
+    item_texture_file_cache ||= await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
+
+    for (const name of names) {
+        item_texture_file_cache!.json['texture_data'][name.shortname!] = {};
+        item_texture_file_cache!.json['texture_data'][name.shortname!]['textures'] = `textures/items/${name.pathname}${name.shortname}`;
+    }
+    
+    writeFileFromJSON(`${Global.project_rp}textures/item_texture.json`, item_texture_file_cache?.json, true);
+}
+
+export async function writeToItemTextureFromObjects(objects: {name: string, path: string}[]) {
+    item_texture_file_cache ||= await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
+
+    for (const object of objects) {
+        item_texture_file_cache!.json['texture_data'][object.name] = {};
+        item_texture_file_cache!.json['texture_data'][object.name]['textures'] = object.path;
+    }
+    
+    writeFileFromJSON(`${Global.project_rp}textures/item_texture.json`, item_texture_file_cache?.json, true);
+}
+
+async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObject, item_rp: any) {
     armorItem['format_version'] = '1.16.100';
     armorItem['minecraft:item']['description']['category'] = 'equipment';
     armorItem['minecraft:item']['components']['minecraft:max_stack_size'] = 1;
     armorItem['minecraft:item']['components']['minecraft:armor'] = {protection: 5};
     armorItem['minecraft:item']['components']['minecraft:repairable'] = {repair_items: [{items: ['minecraft:stick'], repair_amount: 'query.remaining_durability + 0.05 * query.max_durability'}]};
     armorItem['minecraft:item']['components']['minecraft:durability'] = {max_durability: 200};
+    let item_texture: {name: string, path: string}[] = [];
 
     let attachable = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/armor.json`)) as any;
 
@@ -130,7 +151,7 @@ async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObj
             item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_helmet';
             writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_helmet.json`, item_rp);
 
-            item_texture['texture_data'][name.shortname + '_helmet'] = {textures: `textures/items/${name.pathname}${name.shortname}_helmet`};
+            item_texture.push({name: name.shortname + '_helmet', path: `textures/items/${name.pathname}${name.shortname}_helmet`});
             copyFile(`${Global.app_root}/src/items/armor/example_helmet.png`, `${Global.project_rp}textures/items/${name.shortname}_helmet.png`);
 
             writeToLang(`item.${name.fullname}_helmet.name=${name.displayname} Helmet`, 'item names');
@@ -154,7 +175,7 @@ async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObj
             item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_chestplate';
             writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_chestplate.json`, item_rp);
 
-            item_texture['texture_data'][name.shortname + '_chestplate'] = {textures: `textures/items/${name.pathname}${name.shortname}_chestplate`};
+            item_texture.push({name: name.shortname + '_chestplate', path: `textures/items/${name.pathname}${name.shortname}_chestplate`});
             copyFile(`${Global.app_root}/src/items/armor/example_chestplate.png`, `${Global.project_rp}textures/items/${name.shortname}_chestplate.png`);
     
             writeToLang(`item.${name.fullname}_chestplate.name=${name.displayname} Chestplate`, 'item names');
@@ -178,7 +199,7 @@ async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObj
             item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_leggings';
             writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_leggings.json`, item_rp);
 
-            item_texture['texture_data'][name.shortname + '_leggings'] = {textures: `textures/items/${name.pathname}${name.shortname}_leggings`};
+            item_texture.push({name: name.shortname + '_leggings', path: `textures/items/${name.pathname}${name.shortname}_leggings`});
             copyFile(`${Global.app_root}/src/items/armor/example_leggings.png`, `${Global.project_rp}textures/items/${name.shortname}_leggings.png`);
     
             writeToLang(`item.${name.fullname}_leggings.name=${name.displayname} Leggings`, 'item names');
@@ -202,7 +223,7 @@ async function createArmorPiece(armorItem: any, piece: armorPiece, name: nameObj
                 item_rp['minecraft:item']['components']['minecraft:icon'] = name.shortname + '_boots';
                 writeFileFromJSON(`${Global.project_rp}items/${name.pathname}${name.shortname}_boots.json`, item_rp);
 
-                item_texture['texture_data'][name.shortname + '_boots'] = {textures: `textures/items/${name.pathname}${name.shortname}_boots`};
+                item_texture.push({name: name.shortname + '_boots', path: `textures/items/${name.pathname}${name.shortname}_boots`});
                 copyFile(`${Global.app_root}/src/items/armor/example_boots.png`, `${Global.project_rp}textures/items/${name.shortname}_boots.png`);    
     
                 writeToLang(`item.${name.fullname}_boots.name=${name.displayname} Boots`, 'item names');

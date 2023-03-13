@@ -6,6 +6,7 @@ import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import mergeDeep from './merge_deep';
 import { createNewAnimation, createNewController } from './animations';
+import { writeToItemTextureFromNames, writeToItemTextureFromObjects } from './item';
 
 const chalk = new Chalk.Instance();
 
@@ -19,6 +20,8 @@ const chalk = new Chalk.Instance();
 export async function createNewEntity(names: string[], lang: boolean, geo: boolean, texture: boolean, type: string|undefined, client: boolean) {
     let names_list = getNamesObjects(names);
     let json_entity;
+    let create_spawn_egg = type != 'd';
+
     switch (type) {
         case 'h':
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_hostile.json`)).shift()
@@ -44,6 +47,13 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
             client_entity!.json['minecraft:client_entity']['description']['identifier'] = name.fullname;
             client_entity!.json['minecraft:client_entity']['description']['textures']['default'] = `textures/entity/${name.shortname}/default`;
             client_entity!.json['minecraft:client_entity']['description']['geometry']['default'] = `geometry.${name.shortname}`;
+
+            if (create_spawn_egg) {
+                client_entity!.json['minecraft:client_entity']['description']['spawn_egg'] = {texture: name.shortname};
+                copyFile(`${Global.app_root}/src/items/item.png`, `${Global.project_rp}textures/items/spawn_egg/${name.pathname}${name.shortname}.png`);
+                writeToItemTextureFromObjects([{name: name.shortname, path: `textures/items/spawn_egg/${name.pathname}${name.shortname}`}]);
+            }
+
             writeFileFromJSON(`${Global.project_rp}entity/${name.pathname}${name.shortname}.entity.json`, client_entity?.json);
 
             if (geo) {
@@ -59,7 +69,7 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
 
         if (lang) {
             writeToLang(`entity.${name.fullname}.name=${name.displayname}`, "entity names");
-            if (type != 'd') {
+            if (create_spawn_egg) {
                 writeToLang(`item.spawn_egg.${name.fullname}.name=${name.displayname}`, "spawn eggs");
             }
         }
