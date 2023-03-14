@@ -84,8 +84,9 @@ createNew.command('function')
   .argument('<names...>', 'function names as "foo/bar"')
   .option('-c, --commands <commands>', 'the function commands, seperated by ";"')
   .option('-n, --number <number>', 'the number of times commands should be created in the files', '1')
-  .option('-d, --description <description>', 'the description of the function to be used as a comment')
+  .option('-d, --description <description>', 'the description of the function, used as a comment')
   .option('-s, --source <source>', 'where is this function called from, used as a comment')
+  .option('-o, --origin <origin>', 'who is @s within this function, used as a comment')
   .addHelpText('before', 'special characters can be used to provide additional formatting. $(F)f inserts the filename into the command, $(I)i inserts the index of the batch generated command')
   .action(triggerCreateNewFunction)
   .hook('postAction', printVersion);
@@ -282,7 +283,8 @@ async function triggerCreateNewFunction(names: string[], options: OptionValues) 
   const number = options.number;
   const description = options.description;
   const source = options.source;
-  await Function.createNewFunction(names, commands, number, description, source);
+  const origin = options.origin;
+  await Function.createNewFunction(names, commands, number, description, source, origin);
 }
 
 async function triggerEntityAddAnim(names: string[], options: OptionValues) {
