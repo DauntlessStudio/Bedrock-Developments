@@ -196,8 +196,10 @@ export function archiveDirToZip(dir: string, zipPath: string, callback: Function
     let output = fs.createWriteStream(zipPath);
     let archive = archiver.default('zip', { zlib: { level: 9 } });
    
-    output.on('close', () => {
-     callback();
+    output.on('close', async () => {
+     await callback();
+     console.log(dir);
+     fs.rmSync(dir, { recursive: true, force: true, retryDelay: 10, maxRetries: 3 });
     });
    
     archive.pipe(output);

@@ -191,7 +191,7 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
 
     await writeLevelDat(`${path}/level.dat`, (nbtData: any) => {
         nbtData.value.LevelName = nbt.string(worldName);
-        nbtData.value.RandomSeed = nbt.long(Math.floor(Math.random() * 1000000000));
+        nbtData.value.RandomSeed = nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]);
         nbtData.value.GameType = nbt.int(gamemode);
         
         if (flatWorld) {
@@ -211,9 +211,8 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
 
     archiveDirToZip(path, `${path}.mcworld`, () => {
         console.log(`${Global.chalk.green(`Opening World`)}`);
-        fs.rmSync(path, { recursive: true, force: true });
 
-        execSync(`${path}.mcworld`);
+        execSync(`"${path}.mcworld"`);
     });
 }
 
@@ -310,16 +309,4 @@ async function writeLevelDat(path: string, write_callback: Function) {
     new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
 
     fs.createWriteStream(path).write(new_buffer);
-}
-
-function makeID(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result += '=';
 }
