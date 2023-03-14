@@ -74,8 +74,8 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
             item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 30000;
             item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
 
-            await createNewEntity([`projectile/${name.fullname}_projectile`], true, true, true, entityType.projectile, true);
             await createVanillaEntity(['player.json'], false);
+            await createNewEntity([`projectile/${name.fullname}_projectile`], true, true, true, entityType.projectile, true);
 
             let query = `q.is_item_name_any('slot.weapon.mainhand', 0, '${name.namespace}:${name.shortname}') && (q.is_using_item || variable.attack_time > 0)`;
             await createNewController([`player.${name.shortname}`], [`event entity @s add_${name.shortname}_projectile`], undefined, undefined, query, `!(${query})`);

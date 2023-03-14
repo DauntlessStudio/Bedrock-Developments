@@ -4,7 +4,7 @@ import { getNamesObjects, getNameObject, nameObject } from './utils';
 import { requestGet, requestURL, requestVanilla } from './github';
 import * as JSONC from 'comment-json';
 import mergeDeep from './merge_deep';
-import { createNewAnimation, createNewController } from './animations';
+import { createNewAnimation, createNewClientAnimation, createNewController } from './animations';
 import { writeToItemTextureFromNames, writeToItemTextureFromObjects } from './item';
 
 export enum entityType {
@@ -26,7 +26,9 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
     let json_entity;
     let create_spawn_egg = type === entityType.hostile || type === entityType.passive;
 
-    //TODO make type an enum and include projectile as an option
+    let json_client_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template.entity.json`)).shift();
+    let json_geometry = await (await readJSONFromFile(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
+
     switch (type) {
         case entityType.hostile:
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_hostile.json`)).shift()
@@ -35,15 +37,12 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_passive.json`)).shift()
             break;
         case entityType.projectile:
-            json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_prjectile.json`)).shift()
+            json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_projectile.json`)).shift()
             break;
         default:
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_dummy.json`)).shift()
             break;
     }
-
-    let json_client_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template.entity.json`)).shift();
-    let json_geometry = await (await readJSONFromFile(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
 
     for (const name of names_list) {
         let entity = json_entity;
@@ -56,6 +55,19 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
             client_entity!.json['minecraft:client_entity']['description']['identifier'] = name.fullname;
             client_entity!.json['minecraft:client_entity']['description']['textures']['default'] = `textures/entity/${name.shortname}/default`;
             client_entity!.json['minecraft:client_entity']['description']['geometry']['default'] = `geometry.${name.shortname}`;
+
+            if (type === entityType.projectile) {
+                client_entity!.json['minecraft:client_entity']['description']['animations'] = {facing: `animation.${name.shortname}.facing`};
+                client_entity!.json['minecraft:client_entity']['description']['scripts'] = {animate: ['facing']};
+                createNewClientAnimation([`${name.shortname}.facing`], {
+                    loop: true,
+                    bones: {
+                        body: {
+                            rotation: ["-q.body_x_rotation", "-q.body_y_rotation", 0]
+                        }
+                    }
+                });
+            }
 
             if (create_spawn_egg) {
                 client_entity!.json['minecraft:client_entity']['description']['spawn_egg'] = {texture: name.shortname};

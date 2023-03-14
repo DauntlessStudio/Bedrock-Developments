@@ -17,6 +17,19 @@ export async function createNewAnimation(names: string[], loop: boolean, command
     }
 }
 
+
+export async function createNewClientAnimation(names: string[], animation_contents: any) {
+    let names_list = getNamesObjects(names);
+
+    for (const name of names_list) {
+        let animation = await (await readJSONFromFile(`${Global.project_rp}animations/${name.pathname}${name.namespace}.json`, `${Global.app_root}/src/animations/template_bp.json`)).shift();
+
+        animation!.json['animations'][`animation.${name.fullname}`] = animation_contents;
+
+        writeFileFromJSON(`${Global.project_rp}animations/${name.pathname}${name.namespace}.json`, animation?.json, true);
+    }
+}
+
 export async function createNewController(names:string[], entry: string[], exit: string[]|undefined, anim: string[]|undefined, query: string, transition: string|undefined) {
     let names_list = getNamesObjects(names);
 
