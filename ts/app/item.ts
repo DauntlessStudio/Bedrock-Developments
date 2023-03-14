@@ -6,12 +6,14 @@ import { requestURL } from './github';
 import * as JSONC from 'comment-json';
 import { createNewEntity, createVanillaEntity, entityAddAnim, entityAddGroup, entityType } from './entity';
 import { createNewAnimation, createNewController } from './animations';
+import { createNewFunction } from './functions';
 
 export enum itemType {
     basic='basic',
     attachable='attachable',
     weapon='weapon',
     projectile='projectile',
+    usable='usable',
     food='food',
     armor_set='armor_set',
     helmet='helmet',
@@ -82,6 +84,18 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
             await entityAddAnim([`player.${name.shortname}`], undefined, 'player.json', true, undefined);
             await entityAddGroup(`{"${name.shortname}_projectile":{"minecraft:spawn_entity":{"entities":{"spawn_entity":"${name.namespace}:${name.shortname}_projectile","max_wait_time":0,"min_wait_time":0,"num_to_spawn":1,"single_use":true}}}}`, undefined, 'player.json');
         }
+
+        if (type === itemType.usable) {
+            item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 30000;
+            item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
+
+            await createVanillaEntity(['player.json'], false);
+
+            let query = `q.is_item_name_any('slot.weapon.mainhand', 0, '${name.namespace}:${name.shortname}') && (q.is_using_item || variable.attack_time > 0)`;
+            await createNewFunction([`player/${name.shortname}`], `say ${name.shortname}`, 1, `Runs when ${name.shortname} is used`, `controller.player.${name.shortname}`, `player`);
+            await createNewController([`player.${name.shortname}`], [`function player/${name.shortname}`], undefined, undefined, query, `!(${query})`);
+        }
+
         if (type === itemType.food) {
             item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 20;
             item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 5, saturation_modifier: 'supernatural', can_always_eat: true};

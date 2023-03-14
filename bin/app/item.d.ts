@@ -4,6 +4,7 @@ export declare enum itemType {
     attachable = "attachable",
     weapon = "weapon",
     projectile = "projectile",
+    usable = "usable",
     food = "food",
     armor_set = "armor_set",
     helmet = "helmet",
