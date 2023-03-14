@@ -17,7 +17,7 @@ export async function createNewAnimation(names: string[], loop: boolean, command
     }
 }
 
-export async function createNewController(names:string[], entry: string[], exit: string[]|undefined, anim: string[]|undefined, query: string|undefined, transition: string) {
+export async function createNewController(names:string[], entry: string[], exit: string[]|undefined, anim: string[]|undefined, query: string, transition: string|undefined) {
     let names_list = getNamesObjects(names);
 
     for (const name of names_list) {

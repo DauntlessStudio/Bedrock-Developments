@@ -4,6 +4,8 @@ import { readJSONFromFile, readSourceFile, writeFileFromJSON, writeToLang, copyF
 import { getNameObject, getNamesObjects, nameObject } from './utils';
 import { requestURL } from './github';
 import * as JSONC from 'comment-json';
+import { createNewEntity, createVanillaEntity, entityAddAnim, entityAddGroup, entityType } from './entity';
+import { createNewAnimation, createNewController } from './animations';
 
 export enum itemType {
     basic='basic',
@@ -71,6 +73,14 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
         if (type === itemType.projectile) {
             item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 30000;
             item_bp!.json['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
+
+            await createNewEntity([`projectile/${name.fullname}_projectile`], true, true, true, entityType.projectile, true);
+            await createVanillaEntity(['player.json'], false);
+
+            let query = `q.is_item_name_any('slot.weapon.mainhand', 0, '${name.namespace}:${name.shortname}') && (q.is_using_item || variable.attack_time > 0)`;
+            await createNewController([`player.${name.shortname}`], [`event entity @s add_${name.shortname}_projectile`], undefined, undefined, query, `!(${query})`);
+            await entityAddAnim([`player.${name.shortname}`], undefined, 'player.json', true, undefined);
+            await entityAddGroup(`{"${name.shortname}_projectile":{"minecraft:spawn_entity":{"entities":{"spawn_entity":"${name.namespace}:${name.shortname}_projectile","max_wait_time":0,"min_wait_time":0,"num_to_spawn":1,"single_use":true}}}}`, undefined, 'player.json');
         }
         if (type === itemType.food) {
             item_bp!.json['minecraft:item']['components']['minecraft:use_duration'] = 20;

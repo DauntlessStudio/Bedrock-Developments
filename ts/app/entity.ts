@@ -2,13 +2,17 @@ import * as Global from './globals';
 import { copyFile, readJSONFromFile, writeFileFromJSON, writeToLang } from './file_manager';
 import { getNamesObjects, getNameObject, nameObject } from './utils';
 import { requestGet, requestURL, requestVanilla } from './github';
-import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import mergeDeep from './merge_deep';
 import { createNewAnimation, createNewController } from './animations';
 import { writeToItemTextureFromNames, writeToItemTextureFromObjects } from './item';
 
-const chalk = new Chalk.Instance();
+export enum entityType {
+    dummy='dummy',
+    hostile='hostile',
+    passive='passive',
+    projectile='projectile'
+}
 
 /**
  * @remarks creates new entities
@@ -17,22 +21,27 @@ const chalk = new Chalk.Instance();
  * @param type the type of entity to create
  * @param client should a client entity be created
  */
-export async function createNewEntity(names: string[], lang: boolean, geo: boolean, texture: boolean, type: string|undefined, client: boolean) {
+export async function createNewEntity(names: string[], lang: boolean, geo: boolean, texture: boolean, type: entityType, client: boolean) {
     let names_list = getNamesObjects(names);
     let json_entity;
-    let create_spawn_egg = type != 'd';
+    let create_spawn_egg = type === entityType.hostile || type === entityType.passive;
 
+    //TODO make type an enum and include projectile as an option
     switch (type) {
-        case 'h':
+        case entityType.hostile:
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_hostile.json`)).shift()
             break;
-        case 'p':
+        case entityType.passive:
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_passive.json`)).shift()
+            break;
+        case entityType.projectile:
+            json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_prjectile.json`)).shift()
             break;
         default:
             json_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template_dummy.json`)).shift()
             break;
     }
+
     let json_client_entity = await (await readJSONFromFile(`${Global.app_root}/src/entities/template.entity.json`)).shift();
     let json_geometry = await (await readJSONFromFile(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
 
@@ -59,11 +68,24 @@ export async function createNewEntity(names: string[], lang: boolean, geo: boole
             if (geo) {
                 let geometry = json_geometry;
                 geometry!.json['minecraft:geometry'][0]['description']['identifier'] = `geometry.${name.shortname}`;
+
+                if (type === entityType.projectile) {
+                    geometry!.json['minecraft:geometry'][0]['description']['texture_width'] = 16;
+                    geometry!.json['minecraft:geometry'][0]['description']['texture_height'] = 16;
+
+                    geometry!.json['minecraft:geometry'][0]['bones'][0]['cubes'][0] = {origin: [-1, 0, -1], size: [2, 2, 2], uv: [0, 0]};
+                    geometry!.json['minecraft:geometry'][0]['bones'][0]['cubes'][0] = {origin: [-1, 0, -1], size: [2, 2, 2], uv: [0, 0]};
+                }
+
                 writeFileFromJSON(`${Global.project_rp}models/entity/${name.pathname}${name.shortname}.geo.json`, geometry?.json);
             }
 
             if (texture) {
-                copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`);
+                if (type === entityType.projectile) {
+                    copyFile(`${Global.app_root}/src/geos/small_texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`);
+                } else {
+                    copyFile(`${Global.app_root}/src/geos/texture.png`, `${Global.project_rp}textures/entity/${name.shortname}/default.png`);
+                }
             }
         }
 
@@ -104,7 +126,7 @@ export async function createVanillaEntity(names: string[], client: boolean) {
 
 export async function entityAddAnim(names: string[], family: string|undefined, file: string, script: boolean, create: string|undefined) {
     if (create && create === 'ctrl') {
-        await createNewController(names, ['say anim_name'], undefined, undefined, undefined, "true");
+        await createNewController(names, ['say anim_name'], undefined, undefined, "true", undefined);
     }
     if (create && create === 'anim') {
         await createNewAnimation(names, false, ['say anim_name'], 1.0);
@@ -117,7 +139,7 @@ export async function entityAddAnim(names: string[], family: string|undefined, f
         for (const entity of entities) {
             let set_anim = false;
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
             for (const name of names_list) {
@@ -133,7 +155,7 @@ export async function entityAddAnim(names: string[], family: string|undefined, f
                         }
                     }
                 } else {
-                    console.log(`${chalk.red(`No animation matched ${name.fullname!}`)}`)
+                    console.log(`${Global.chalk.red(`No animation matched ${name.fullname!}`)}`)
                 }
             }
             if (set_anim) {
@@ -141,7 +163,7 @@ export async function entityAddAnim(names: string[], family: string|undefined, f
             }
         }
     } catch (error) {
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
@@ -149,9 +171,13 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
     let group_json: any = {};
     // parse json input
     try {
-        group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:\$\.]+)(['"])?:/g, '"$2":'));
+        try {
+            group_json = JSONC.parse(group)
+        } catch {
+            group_json = JSONC.parse(group.replace(/(['"])?([a-z0-9A-Z_:\$\.]+)(['"])?:/g, '"$2":'));
+        }
     } catch (error) {
-        console.log(`${chalk.red(`Invalid JSON: ${group}`)}`);
+        console.log(`${Global.chalk.red(`Invalid JSON: ${group}`)}`);
         return;
     }
 
@@ -161,7 +187,7 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
         for (const entity of entities) {
             // check family type
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
 
@@ -200,7 +226,7 @@ export async function entityAddGroup(group: string, family: string|undefined, fi
         }
     } catch (error) {
         console.log(String(error));
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
@@ -210,7 +236,7 @@ export async function entityAddComponent(component: string, family: string|undef
     try {
         component_json = JSONC.parse(component.replace(/(['"])?([a-z0-9A-Z_:\$\.]+)(['"])?:/g, '"$2":'));
     } catch (error) {
-        console.log(`${chalk.red(`Invalid JSON: ${component}`)}`);
+        console.log(`${Global.chalk.red(`Invalid JSON: ${component}`)}`);
         return;
     }
 
@@ -220,7 +246,7 @@ export async function entityAddComponent(component: string, family: string|undef
         for (const entity of entities) {
             // check family type
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
 
@@ -240,7 +266,7 @@ export async function entityAddComponent(component: string, family: string|undef
         }
     } catch (error) {
         console.log(String(error));
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
@@ -250,7 +276,7 @@ export async function entityAddDamageSensor(sensor: string, family: string|undef
     try {
         sensor_json = JSONC.parse(sensor.replace(/(['"])?([a-z0-9A-Z_:]+)(['"])?:/g, '"$2":'));
     } catch (error) {
-        console.log(`${chalk.red(`Invalid JSON: ${sensor}`)}`);
+        console.log(`${Global.chalk.red(`Invalid JSON: ${sensor}`)}`);
         return;
     }
 
@@ -260,7 +286,7 @@ export async function entityAddDamageSensor(sensor: string, family: string|undef
         for (const entity of entities) {
             // check family type
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
             
@@ -283,7 +309,7 @@ export async function entityAddDamageSensor(sensor: string, family: string|undef
         }
     } catch (error) {
         console.log(String(error));
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
@@ -321,7 +347,7 @@ export async function entityAddProperty(names: string[], family: string|undefine
         for (const entity of entities) {
             // check family type
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
 
@@ -344,7 +370,7 @@ export async function entityAddProperty(names: string[], family: string|undefine
         }
     } catch (error) {
         console.log(String(error));
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
@@ -357,7 +383,7 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
         for (const entity of entities) {
             // check family type
             if (family && !isEntityFamilyType(entity.json, family)) {
-                console.log(`${chalk.red(`No entities family type included ${family}`)}`);
+                console.log(`${Global.chalk.red(`No entities family type included ${family}`)}`);
                 continue;
             }
 
@@ -370,7 +396,7 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
                 try {
                     property_type = entity.json!['minecraft:entity']['description']['properties'][name.fullname!]['type'];
                 } catch (error) {
-                    console.log(`${chalk.red(`${name.fullname} not found on ${entity.file}`)}`);
+                    console.log(`${Global.chalk.red(`${name.fullname} not found on ${entity.file}`)}`);
                     continue;
                 }
 
@@ -382,12 +408,12 @@ export async function entityAddPropertyEvent(values: string[], family: string|un
             if (set_event) {
                 writeFileFromJSON(entity.file, entity.json, true);
             }else {
-                console.log(`${chalk.red(`Failed to write to ${entity.file}`)}`);
+                console.log(`${Global.chalk.red(`Failed to write to ${entity.file}`)}`);
             }
         }
     } catch (error) {
         console.log(String(error));
-        console.log(`${chalk.red(`No entities matched ${file}`)}`);
+        console.log(`${Global.chalk.red(`No entities matched ${file}`)}`);
     }
 }
 
