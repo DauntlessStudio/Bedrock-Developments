@@ -291,6 +291,7 @@ async function createComplexAttachable(name: string) {
 
     // modify player.ac.json
     let player_ac = await (await readJSONFromFile(`${Global.project_rp}animation_controllers/player.ac.json`)).shift();
+    player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select'] ||= {states: {no_item: {}}};
     player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'] ||= [JSONC.parse(`{ "no_item": "!v.has_custom_item" }`)];
     player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'].push(JSONC.parse(`{ "${name_obj.shortname!}": "v.${name_obj.shortname!}" }`));
 	let transitions = player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'] as Array<Object>;
