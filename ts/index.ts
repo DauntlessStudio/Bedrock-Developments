@@ -15,7 +15,7 @@ const version = '1.3.0'
 
 program
   .name('bed')
-  .description('CLI to assist Minecraft Bedrock Development')
+  .description('CLI to assist Minecraft Bedrock development')
   .option('--rpath <rp>', 'Path to Resource Pack')
   .on('option:rpath', Global.setResourcePath)
   .option('--bpath <bp>', 'Path to Behavior Pack')
@@ -27,13 +27,13 @@ program
 
 // #region New Commands
 let createNew = program.command('new')
-  .description('Creates new Bedrock files');
+  .description('creates new bedrock files');
 
 createNew.command('entity')
-  .description('Creates new Bedrock entities')
+  .description('creates new bedrock entities')
   .argument('<names...>', 'entity names as "namespace:entity"')
   .option('--no-lang', 'do not add lang file')
-  .addOption(new Option('-t, --type <type>', 'set entity type: dummy, passive, hostile, projectile',).choices(Object.keys(Entity.entityType)).default(Entity.entityType.dummy))
+  .addOption(new Option('-t, --type <type>', 'set entity type',).choices(Object.keys(Entity.entityType)).default(Entity.entityType.dummy))
   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
   .option('--no-geo', 'do not add geo file')
   .option('--no-texture', 'do not add texture file')
@@ -41,7 +41,7 @@ createNew.command('entity')
   .hook('postAction', printVersion);
 
 createNew.command('item')
-  .description('Creates new Bedrock items')
+  .description('creates new bedrock items')
   .argument('<names...>', 'item names as "namespace:item"')
   .option('--no-lang', 'do not add lang file')
   .option('-s, --stack <stack_size>', 'max stack size', '64')
@@ -50,7 +50,7 @@ createNew.command('item')
   .hook('postAction', printVersion);
 
 createNew.command('block')
-  .description('Creates new Bedrock blocks')
+  .description('creates new bedrock blocks')
   .argument('<names...>', 'block names as "namespace:block"')
   .option('--no-lang', 'do not add lang file')
   .option('-e, --emissive <emission>', 'block emmission level [0.0-1.0]')
@@ -60,7 +60,7 @@ createNew.command('block')
   .hook('postAction', printVersion);
 
 createNew.command('anim')
-  .description('Creates new Bedrock behavior animations')
+  .description('creates new bedrock behavior animations')
   .argument('<names...>', 'animation names names as "entity.anim"')
   .option('-l, --loop', 'should the animation loop')
   .addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
@@ -69,7 +69,7 @@ createNew.command('anim')
   .hook('postAction', printVersion);
 
 createNew.command('ctrl')
-  .description('Creates new Bedrock behavior animation controllers')
+  .description('creates new bedrock behavior animation controllers')
   .argument('<names...>', 'controller names as "entity.anim"')
   .addOption(new Option('-e, --entry [on entry commands...]', 'the commands to play on entry').default(['/say anim_name']))
   .addOption(new Option('-x, --exit [on exit commands...]', 'the commands to play on exit').preset(['/say anim_name']))
@@ -80,7 +80,7 @@ createNew.command('ctrl')
   .hook('postAction', printVersion);
 
 createNew.command('function')
-  .description('Creates new Bedrock functions')
+  .description('creates new bedrock functions')
   .argument('<names...>', 'function names as "foo/bar"')
   .option('-c, --commands <commands>', 'the function commands, seperated by ";"')
   .option('-n, --number <number>', 'the number of times commands should be created in the files', '1')
@@ -92,7 +92,7 @@ createNew.command('function')
   .hook('postAction', printVersion);
 
 createNew.command('vanilla')
-  .description('Imports a vanilla Bedrock entity')
+  .description('imports a vanilla bedrock entity')
   .argument('<names...>', 'entity files as "player.json"')
   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
   .action(triggerCreateVanillaEntity)
@@ -101,10 +101,10 @@ createNew.command('vanilla')
 
 // #region Entity Commands
 let entity = program.command('entity')
-  .description('Modifies Bedrock entities');
+  .description('modifies bedrock entities');
 
 entity.command('anim')
-  .description('Adds an animation or animation controller reference to entities')
+  .description('adds an animation or animation controller reference to entities')
   .argument('<names...>', 'animation names as "entity.anim"')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -114,7 +114,7 @@ entity.command('anim')
   .hook('postAction', printVersion);
 
 entity.command('group')
-  .description('Adds a component group to entities')
+  .description('adds a component group to entities')
   .argument('<group>', 'the component group as a json object {group_name:{minecraft:is_baby:{}}}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -122,7 +122,7 @@ entity.command('group')
   .hook('postAction', printVersion);
 
 entity.command('component')
-  .description('Adds a component to entities')
+  .description('adds a component to entities')
   .argument('<component>', 'the component as a json object {minecraft:is_baby:{}}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -131,7 +131,7 @@ entity.command('component')
   .hook('postAction', printVersion);
 
 entity.command('sensor')
-  .description('Adds a damage sensor to entities')
+  .description('adds a damage sensor to entities')
   .argument('<sensor>', 'the damage sensor as a json object {cause: \\"all\\", deals_damage: false}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -140,10 +140,10 @@ entity.command('sensor')
   .hook('postAction', printVersion);
 
 let property = entity.command('property')
-  .description('Adds property or property events to entities');
+  .description('adds property or property events to entities');
 
 property.command('add')
-  .description('Adds a property to entities')
+  .description('adds a property to entities')
   .argument('<names...>', 'property names as "namespace:property"')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -156,7 +156,7 @@ property.command('add')
   .hook('postAction', printVersion);
 
 property.command('event')
-  .description('Adds a property event to entities')
+  .description('adds a property event to entities')
   .argument('<values...>', 'the values to set the property to')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -168,10 +168,10 @@ property.command('event')
 
 // #region Package Commands
 let pkg = program.command('pkg')
-  .description('Package manager for Bedrock files');
+  .description('package manager for bedrock files');
 
 pkg.command('list')
-  .description('List packages at repo')
+  .description('list packages at repo')
   .option('-d, --detailed', 'gets extra details about the package, if available')
   .option('-f --filter <filter>', 'filter the packages by name or category')
   .action(triggerPackagesList)
@@ -187,22 +187,22 @@ pkg.command('import')
 
 // #region World Commands
 let world = program.command('world')
-  .description('Tools for working with worlds');
+  .description('tools for working with worlds');
 
 world.command('list')
-  .description('List installed worlds')
+  .description('list installed worlds')
   .action(triggerWorldsList)
   .hook('postAction', printVersion);
 
 world.command('export')
-  .description('Export selected world as .mcworld')
+  .description('export selected world as .mcworld')
   .addArgument(new Argument('<index>', 'index of world to export').argParser(parseInt))
   .option('-p, --packs', "package the world's behavior and resource packs")
   .action(triggerWorldsExport)
   .hook('postAction', printVersion);
 
 world.command('packs')
-  .description('Attach packs to world')
+  .description('attach packs to world')
   .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
   .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
   .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
@@ -212,8 +212,8 @@ world.command('packs')
   .hook('postAction', printVersion);
 
 world.command('new')
-  .description('Create new world')
-  .addArgument(new Argument('<name>', 'the wold name'))
+  .description('create new world')
+  .addArgument(new Argument('<name>', 'the world name'))
   .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
   .addOption(new Option('-f, --flat', 'create a flat world'))
   .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
