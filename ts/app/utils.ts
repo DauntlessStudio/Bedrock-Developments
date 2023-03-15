@@ -51,3 +51,10 @@ export function getNamesObjects(inputs: string[]) {
 
     return names;
 }
+
+export function isNumeric(str: string|undefined) {
+    if (str === undefined) {
+        return false;
+    }
+    return !isNaN(Number(str)) && !isNaN(parseFloat(str));
+}

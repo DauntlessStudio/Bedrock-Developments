@@ -30,12 +30,14 @@
     "comment-json": "^4.2.3",
     "glob": "^8.1.0",
     "octokit": "^2.0.13",
-    "prismarine-nbt": "^2.2.1"
+    "prismarine-nbt": "^2.2.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.1",
     "@types/glob": "^8.0.1",
     "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.1",
     "typescript": "^4.9.4"
   }
 }

@@ -13,7 +13,7 @@ export declare function readJSONFromFile(path: string, default_path?: string): P
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean): void;
+export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean, log_exists?: boolean): void;
 /**
  *
  * @param source the file to be copied
@@ -51,7 +51,6 @@ export declare function writeBufferFileFromString(path: string, data: string, ov
  * @param path the path to delete the file from
  */
 export declare function deleteFile(path: string): void;
-export declare function deleteDirectory(path: string): void;
 /**
  * @remarks copies directory from source to destination recursively
  * @param src the source directory

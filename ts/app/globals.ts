@@ -42,6 +42,7 @@ export async function setResourcePath(rp:string|undefined) {
 
     set_paths = true;
 }
+
 export async function setBehaviorPath(bp:string|undefined) {
     project_bp = bp ? bp : `${project_root}${project_bp}`;
     project_bp = project_bp.replace(/\/|\\+/g, '/');
@@ -65,6 +66,7 @@ export async function setBehaviorPath(bp:string|undefined) {
 
     set_paths = true;
 }
+
 export function setIndentLevel(val:string) {
     if (Number(val)) {
         indent = '\t'.repeat(Number(val));

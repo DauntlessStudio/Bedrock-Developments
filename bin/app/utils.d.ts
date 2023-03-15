@@ -18,3 +18,4 @@ export declare function getNameObject(input: string): nameObject;
  * @returns an array of custom name objects
  */
 export declare function getNamesObjects(inputs: string[]): nameObject[];
+export declare function isNumeric(str: string | undefined): boolean;

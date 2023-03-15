@@ -2,11 +2,23 @@ import * as Global from './globals';
 import * as JSONC from 'comment-json';
 import * as fs from 'fs';
 import * as nbt from 'prismarine-nbt'
-import { archiveDirToZip, copyDirectory, deleteDirectory } from './file_manager';
+import { archiveDirToZip, copyDirectory, writeFileFromJSON } from './file_manager';
 import {execSync} from 'child_process';
+import { isNumeric } from './utils';
+import { v4 } from 'uuid';
 
 const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 const download = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
+
+interface worldOptions{
+    name?: string;
+    behavior_pack?: string;
+    resource_pack?: string;
+    experimental?: experimentalToggle;
+    gamemode?: gameMode;
+    flatworld?: boolean;
+    testworld?: boolean;
+}
 
 export enum experimentalToggle {
     betaAPI='beta-api',
@@ -20,6 +32,20 @@ export enum gameMode {
     spectator
 }
 
+export enum exportType {
+    world = 'world',
+    template = 'template',
+}
+
+enum packType {
+    behavior = 'behavior',
+    resource = 'resource',
+}
+
+/**
+ * @remarks gets the array of worlds installed
+ * @returns an array of worlds with their internal name and paths
+ */
 export function worldList() {
     try {
         let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang/minecraftWorlds`;
@@ -38,13 +64,22 @@ export function worldList() {
     }
 }
 
-export function worldExport(include_packs: boolean = false, world_index: number){
-    let worlds = worldList();
-    if (world_index < worlds.length) {
-        let new_path = `${download}/${worlds[world_index].name}`;
+/**
+ * @remarks exports a world into the user's download folder
+ * @param worldOptions contains options used for exporting the world
+ * @param include_packs should the behavior and resource packs be packaged as well
+ * @param type should it export to mcworld or mctemplate
+ */
+export async function worldExport(worldOptions: worldOptions, include_packs: boolean = false, type: exportType = exportType.world){
+    const world = getWorld(worldOptions);
 
-        console.log(`${Global.chalk.green(`Exporting ${worlds[world_index].path}`)}`);
-        copyDirectory(worlds[world_index].path, new_path);
+    if (world) {
+        const new_path = `${download}/${world.name}`;
+
+        await writeWorldManifest(world);
+
+        console.log(`${Global.chalk.green(`Exporting ${world.path}`)}`);
+        copyDirectory(world.path, new_path);
 
         if (include_packs) {
             let packs = worldGetPacks(new_path);
@@ -68,120 +103,62 @@ export function worldExport(include_packs: boolean = false, world_index: number)
         }
 
         console.log(`${Global.chalk.green(`Packaging World`)}`);
-        archiveDirToZip(new_path, `${new_path}.mcworld`, () => {
+        archiveDirToZip(new_path, `${new_path}.mc${type}`, () => {
             console.log(`${Global.chalk.green(`Cleaning Up`)}`);
             fs.rmSync(new_path, { recursive: true, force: true });
 
-            console.log(`${Global.chalk.green(`Packaged To ${new_path}.mcworld`)}`);
+            console.log(`${Global.chalk.green(`Packaged ${world.name}.mc${type} To ${download}`)}`);
+            execSync(`start %windir%\\explorer.exe "${download.replace(/\//g, '\\')}"`);
         });
     }
 }
 
-export async function worldAddPacks(world_index: number, bpack: string, rpack: string, experimental: string|undefined) {
-    let worlds = worldList();
-    if (world_index < worlds.length) {
-        let bpID = getIDFromPack(bpack, packType.behavior);
-        let rpID = getIDFromPack(rpack, packType.resource);
+/**
+ * @remarks adds a behavior and resource pack to a world and can activate experimental features
+ * @param worldOptions options containing the packs to add and experiment preferences
+ */
+export async function worldAddPacks(worldOptions: worldOptions) {
+    const world = getWorld(worldOptions);
 
-        if (bpID) {
-            let path = `${worlds[world_index].path}/world_behavior_packs.json`
-            let world_behavior_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+    if (world) {
+        addPackToWorld(world.path, getIDFromPack(worldOptions.behavior_pack, packType.behavior), worldOptions.behavior_pack, packType.behavior);
+        addPackToWorld(world.path, getIDFromPack(worldOptions.resource_pack, packType.resource), worldOptions.resource_pack, packType.resource);
 
-            world_behavior_packs.push({pack_id: bpID, version: [ 1, 0, 0 ]});
-            console.log(`${Global.chalk.green(`Added ${bpack} to ${path}`)}`);
-            fs.writeFileSync(path, JSONC.stringify(world_behavior_packs, null, Global.indent));
-        } else if (bpack) {
-            console.log(`${Global.chalk.red(`Failed to find ${bpack}`)}`);
-        }
+        writeLevelDat(`${world.path}/level.dat`, (nbtData: any) => {
+            addExperimentsToDat(nbtData, worldOptions.experimental);
+        });
+    }
+}
 
-        if (rpID) {
-            let path = `${worlds[world_index].path}/world_resource_packs.json`
-            let world_resource_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+/**
+ * @remarks removes a behavior and resource pack to a world and can deactivate experimental features
+ * @param worldOptions options containing the packs to remove and experiment preferences
+ */
+export async function worldRemovePacks(worldOptions: worldOptions) {
+    const world = getWorld(worldOptions);
 
-            world_resource_packs.push({pack_id: rpID, version: [ 1, 0, 0 ]});
-            console.log(`${Global.chalk.green(`Added ${rpack} to ${path}`)}`);
-            fs.writeFileSync(path, JSONC.stringify(world_resource_packs, null, Global.indent));
-        } else if (rpack) {
-            console.log(`${Global.chalk.red(`Failed to find ${rpack}`)}`);
-        }
+    if (world) {
+        removePackFromWorld(world.path, getIDFromPack(worldOptions.behavior_pack, packType.behavior), worldOptions.behavior_pack, packType.behavior);
+        removePackFromWorld(world.path, getIDFromPack(worldOptions.resource_pack, packType.resource), worldOptions.resource_pack, packType.resource);
 
-        if (experimental) {
-            writeLevelDat(`${worlds[world_index].path}/level.dat`, (nbtData: any) => {
-                console.log(`${Global.chalk.green(`Adding Experiments`)}`);
-
-                switch (experimental) {
-                    case experimentalToggle.betaAPI:
-                        nbtData.value.experiments ||= {type: 'compound', value: {}};
-                        nbtData.value.experiments.value.gametest = nbt.byte(1);
-                        nbtData.value.experiments.value.experiments_ever_used = nbt.byte(1);
-                        nbtData.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
-                        break;
-                
-                    default:
-                        break;
-                }
+        if (worldOptions.experimental) {
+            writeLevelDat(`${world.path}/level.dat`, (nbtData: any) => {
+                removeExperimentsFromDat(nbtData, worldOptions.experimental);
             });
+
+            fs.copyFileSync(`${world.path}/level.dat`, `${world.path}/level.dat_old`);
         }
     }
 }
 
-export async function worldRemovePacks(world_index: number, bpack: string|undefined, rpack: string|undefined, experimental: boolean) {
-    let worlds = worldList();
-    if (world_index < worlds.length) {
-        let bpID = getIDFromPack(bpack, packType.behavior);
-        let rpID = getIDFromPack(rpack, packType.resource);
+/**
+ * adds a world to the list of minecraft worlds, automatically importing it
+ * @param worldName the name of the world to create
+ * @param worldOptions the options for generating the world
+ */
+export async function worldNew(worldName: string, worldOptions: worldOptions) {
+    const path = `${download}/${worldName}`;
 
-        if (bpID) {
-            let path = `${worlds[world_index].path}/world_behavior_packs.json`
-            let world_behavior_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
-
-            let index = world_behavior_packs.indexOf({pack_id: bpID, version: [ 1, 0, 0 ]});
-            if (index > -1) {
-                world_behavior_packs.splice(index, 1);
-            }
-
-            console.log(`${Global.chalk.green(`Removed ${bpack} from ${path}`)}`);
-            fs.writeFileSync(path, JSONC.stringify(world_behavior_packs, null, Global.indent));
-        } else if (bpack) {
-            console.log(`${Global.chalk.red(`Failed to find ${bpack}`)}`);
-        }
-
-        if (rpID) {
-            let path = `${worlds[world_index].path}/world_resource_packs.json`
-            let world_resource_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
-
-            let index = world_resource_packs.indexOf({pack_id: bpID, version: [ 1, 0, 0 ]});
-            if (index > -1) {
-                world_resource_packs.splice(index, 1);
-            }
-
-            console.log(`${Global.chalk.green(`Removed ${rpack} from ${path}`)}`);
-            fs.writeFileSync(path, JSONC.stringify(world_resource_packs, null, Global.indent));
-        } else if (rpack) {
-            console.log(`${Global.chalk.red(`Failed to find ${rpack}`)}`);
-        }
-
-        if (experimental) {
-            writeLevelDat(`${worlds[world_index].path}/level.dat`, (nbtData: any) => {
-                console.log(`${Global.chalk.green(`Removing Experiments`)}`);
-                
-                nbtData.value.experiments = {type: 'compound', value: {
-                    data_driven_vanilla_blocks_and_items: nbt.byte(1),
-                    experiments_ever_used: nbt.byte(0),
-                    saved_with_toggled_experiments: nbt.byte(0),
-                }};
-            });
-
-            if (fs.existsSync(`${worlds[world_index].path}/level.dat_old`)) {
-                fs.unlinkSync(`${worlds[world_index].path}/level.dat_old`);
-            }
-            fs.copyFileSync(`${worlds[world_index].path}/level.dat`, `${worlds[world_index].path}/level.dat_old`);
-        }
-    }
-}
-
-export async function worldNew(worldName: string, testWorld: boolean, flatWorld: boolean, gamemode: number = 0) {
-    let path = `${download}/${worldName}`;
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
     }
@@ -189,16 +166,19 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
     fs.writeFileSync(`${path}/levelname.txt`, worldName);
     fs.copyFileSync(`${Global.app_root}/src/world/level.dat`, `${path}/level.dat`);
 
+    addPackToWorld(path, getIDFromPack(worldOptions.behavior_pack, packType.behavior), worldOptions.behavior_pack, packType.behavior);
+    addPackToWorld(path, getIDFromPack(worldOptions.resource_pack, packType.resource), worldOptions.resource_pack, packType.resource);
+
     await writeLevelDat(`${path}/level.dat`, (nbtData: any) => {
         nbtData.value.LevelName = nbt.string(worldName);
         nbtData.value.RandomSeed = nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]);
-        nbtData.value.GameType = nbt.int(gamemode);
+        nbtData.value.GameType = nbt.int(worldOptions.gamemode ? worldOptions.gamemode : gameMode.survival);
         
-        if (flatWorld) {
+        if (worldOptions.flatworld) {
             nbtData.value.Generator = nbt.int(2);
         }
 
-        if (testWorld) {
+        if (worldOptions.testworld) {
             nbtData.value.commandsEnabled = nbt.byte(1);
             nbtData.value.dodaylightcycle = nbt.byte(0);
             nbtData.value.domobloot = nbt.byte(0);
@@ -207,6 +187,8 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
             nbtData.value.keepinventory = nbt.byte(1);
             nbtData.value.doweathercycle = nbt.byte(0);
         }
+
+        addExperimentsToDat(nbtData, worldOptions.experimental);
     });
 
     archiveDirToZip(path, `${path}.mcworld`, () => {
@@ -215,6 +197,23 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
         execSync(`"${path}.mcworld"`);
         fs.rmSync(`${path}.mcworld`);
     });
+}
+
+function getWorld(worldOptions: worldOptions) {
+    const worlds = worldList();
+
+    if (isNumeric(worldOptions.name!) && worlds.length >= Number(worldOptions.name)) {
+        return worlds[Number(worldOptions.name)];
+    }
+
+    for (const world of worlds) {
+        if (worldOptions.name && world.name === worldOptions.name) {
+            return world;
+        }
+    }
+
+    console.log(`${Global.chalk.red(`Failed To Find World`)}`);
+    return undefined;
 }
 
 function worldGetPacks(path: string) {
@@ -246,10 +245,59 @@ function worldGetPacks(path: string) {
     return {bp: bp_packs, rp: rp_packs};
 }
 
-enum packType {
-    behavior = 'behavior',
-    resource = 'resource',
+function addPackToWorld(world_path: string, pack_id: string, pack_path: string|undefined, pack_type: packType) {
+    if (pack_id) {
+        const path = `${world_path}/world_${pack_type}_packs.json`
+        const world_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+
+        world_packs.push({pack_id: pack_id, version: [ 1, 0, 0 ]});
+        fs.writeFileSync(path, JSONC.stringify(world_packs, null, Global.indent));
+
+        console.log(`${Global.chalk.green(`Added ${pack_path} to ${path}`)}`);
+    } else if (pack_path) {
+        console.log(`${Global.chalk.red(`Failed to find ${pack_path}`)}`);
+    }
 }
+
+function removePackFromWorld(world_path: string, pack_id: string, pack_path: string|undefined, pack_type: packType) {
+    if (pack_id) {
+        let path = `${world_path}/world_${packType}_packs.json`
+        let world_packs: any = fs.existsSync(path) ? JSONC.parse(String(fs.readFileSync(path))) : [];
+
+        let index = world_packs.indexOf({pack_id: pack_id, version: [ 1, 0, 0 ]});
+        if (index > -1) {
+            world_packs.splice(index, 1);
+        }
+
+        console.log(`${Global.chalk.green(`Removed ${pack_path} from ${path}`)}`);
+        fs.writeFileSync(path, JSONC.stringify(world_packs, null, Global.indent));
+    } else if (pack_path) {
+        console.log(`${Global.chalk.red(`Failed to find ${pack_path}`)}`);
+    }
+}
+
+function getIDFromPack(pack: string|undefined, type: packType) {
+    if (!pack) {
+        return undefined;
+    }
+
+    let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
+
+    // Check dev packs first
+    let subpath = `${path}/development_${type}_packs/${pack}`;
+    if (fs.existsSync(`${subpath}/manifest.json`)) {
+        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
+        return manifest.header.uuid;
+    }
+
+    // Check other packs next
+    subpath = `${path}/${type}_packs/${pack}`;
+    if (fs.existsSync(`${subpath}/manifest.json`)) {
+        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
+        return manifest.header.uuid;
+    }
+}
+
 function getPackFromID(id: string, type: packType) {
     let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 
@@ -276,31 +324,13 @@ function getPackFromID(id: string, type: packType) {
     }
 }
 
-function getIDFromPack(pack: string|undefined, type: packType) {
-    if (!pack) {
-        return undefined;
-    }
-
-    let path = `${appdata}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
-
-    // Check dev packs first
-    let subpath = `${path}/development_${type}_packs/${pack}`;
-    if (fs.existsSync(`${subpath}/manifest.json`)) {
-        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
-        return manifest.header.uuid;
-    }
-
-    // Check other packs next
-    subpath = `${path}/${type}_packs/${pack}`;
-    if (fs.existsSync(`${subpath}/manifest.json`)) {
-        let manifest: any = JSONC.parse(String(fs.readFileSync(`${subpath}/manifest.json`)));
-        return manifest.header.uuid;
-    }
+async function readLevelDat(path: string) {
+    const {parsed, type} = await nbt.parse(fs.readFileSync(path));
+    return {parsed, type};
 }
 
 async function writeLevelDat(path: string, write_callback: Function) {
-    let buffer = fs.readFileSync(path);
-    const {parsed, type} = await nbt.parse(buffer);
+    const {parsed, type} = await readLevelDat(path);
     
     write_callback(parsed);
 
@@ -313,4 +343,65 @@ async function writeLevelDat(path: string, write_callback: Function) {
     stream.write(new_buffer);
     stream.end();
     return;
+}
+
+function addExperimentsToDat(nbtData: any, experiments: experimentalToggle|undefined) {
+    if (experiments) {
+        console.log(`${Global.chalk.green(`Adding Experiments`)}`);
+
+        switch (experiments) {
+            case experimentalToggle.betaAPI:
+                nbtData.value.experiments ||= {type: 'compound', value: {}};
+                nbtData.value.experiments.value.gametest = nbt.byte(1);
+                nbtData.value.experiments.value.experiments_ever_used = nbt.byte(1);
+                nbtData.value.experiments.value.saved_with_toggled_experiments = nbt.byte(1);
+                break;
+        
+            default:
+                break;
+        }
+    }
+}
+
+function removeExperimentsFromDat(nbtData: any, experiments: experimentalToggle|undefined) {
+    if (experiments) {
+        console.log(`${Global.chalk.green(`Removing Experiments`)}`);
+            
+        nbtData.value.experiments = {type: 'compound', value: {
+            data_driven_vanilla_blocks_and_items: nbt.byte(1),
+            experiments_ever_used: nbt.byte(0),
+            saved_with_toggled_experiments: nbt.byte(0),
+        }};
+    }
+}
+
+async function writeWorldManifest(world: {name: string, path: string}) {
+    const {parsed}: any = await readLevelDat(`${world.path}/level.dat`);
+    const version_array = parsed.value.lastOpenedWithVersion.value.value.slice(0, 3);
+    
+    const manifest = {
+        format_version : 2,
+        header : 
+        {
+            base_game_version : version_array,
+            description : "",
+            lock_template_options : true,
+            name : world.name,
+            platform_locked : false,
+            uuid : v4(),
+            version : [ 1, 0, 0 ]
+        },
+        modules : 
+        [
+            
+            {
+                description : "",
+                type : "world_template",
+                uuid : v4(),
+                version : [ 1, 0, 0 ]
+            }
+        ]
+    }
+
+    writeFileFromJSON(`${world.path}/manifest.json`, manifest, false, false);
 }

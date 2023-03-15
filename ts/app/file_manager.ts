@@ -50,13 +50,13 @@ export async function readJSONFromFile(path: string, default_path: string='') {
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false) {
+export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false, log_exists: boolean=true) {
     makeDirectory(path);
 
     if (!fs.existsSync(path) || overwrite) {
         fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent));
         console.log(`${chalk.green(`Wrote JSON to: ${path}`)}`);
-    }else {
+    }else if (log_exists) {
         console.log(`${chalk.red(`File already existed at ${path}`)}`);
     }
 }
@@ -164,31 +164,6 @@ function makeDirectory(path: string) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, {recursive: true});
         console.log(`${chalk.yellow(`Creating Directory at: ${dir}`)}`);
-    }
-}
-
-export function deleteDirectory(path: string) {
-    if (fs.existsSync(path)) {
-        for (const file of fs.readdirSync(path, {withFileTypes: true})) {
-            const subpath = Path.join(path, file.name);
-            if (file.isDirectory()) {
-               deleteDirectory(subpath); 
-            } else if (fs.existsSync(subpath)) {
-                console.log(`Delete File: ${subpath}`);
-                try {
-                    fs.unlinkSync(subpath);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        }
-        if (fs.readdirSync(path).length) {
-            console.log(`Remaining Files:`);
-            fs.readdirSync(path).forEach((x) => {console.log(x)});
-            deleteDirectory(path);
-        }else {
-            fs.rmdirSync(path);
-        }
     }
 }
 

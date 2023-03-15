@@ -196,14 +196,15 @@ world.command('list')
 
 world.command('export')
   .description('export selected world as .mcworld')
-  .addArgument(new Argument('<index>', 'index of world to export').argParser(parseInt))
+  .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
   .option('-p, --packs', "package the world's behavior and resource packs")
+  .addOption(new Option('-t, --type <export type>', 'what format should be exported').default(World.exportType.world).choices(Object.values(World.exportType)))
   .action(triggerWorldsExport)
   .hook('postAction', printVersion);
 
 world.command('packs')
   .description('attach packs to world')
-  .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
+  .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
   .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
   .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
   .addOption(new Option('-d, --delete', 'should the packs be removed'))
@@ -217,6 +218,9 @@ world.command('new')
   .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
   .addOption(new Option('-f, --flat', 'create a flat world'))
   .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
+  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
+  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
+  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
   .action(triggerWorldsNew)
   .hook('postAction', printVersion);
 
@@ -376,36 +380,31 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
   const client = options.client;
   await Entity.createVanillaEntity(names, client);
 }
-async function triggerWorldsList(options: OptionValues) {
+
+async function triggerWorldsList() {
   let worlds = World.worldList();
   worlds.forEach((value, index) => {
     console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
   })
 }
 
-async function triggerWorldsExport(index: number, options: OptionValues) {
+async function triggerWorldsExport(world: string, options: OptionValues) {
   const packs = options.packs;
-  World.worldExport(packs, index);
+  const type = options.type;
+
+  World.worldExport({name: world}, packs, type);
 }
 
-async function triggerWorldsPacks(index: number, options: OptionValues) {
-  const bpack = options.bpack;
-  const rpack = options.rpack;
-  const experimental = options.experimental;
-
+async function triggerWorldsPacks(world: string, options: OptionValues) {
   if (options.delete) {
-    await World.worldRemovePacks(index, bpack, rpack, experimental !== undefined);
+    await World.worldRemovePacks({name: world, behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental});
   } else {
-    await World.worldAddPacks(index, bpack, rpack, experimental);
+    await World.worldAddPacks({name: world, behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental});
   }
 }
 
 async function triggerWorldsNew(name: string, options: OptionValues) {
-  const test = options.test;
-  const flat = options.flat;
-  const mode = options.mode;
-
-  World.worldNew(name, test, flat, mode);
+  World.worldNew(name, {behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental, testworld: options.test, flatworld: options.flat, gamemode: options.mode});
 }
 // #endregion
 
