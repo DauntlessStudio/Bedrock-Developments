@@ -2,7 +2,7 @@ import * as Global from './globals';
 import * as JSONC from 'comment-json';
 import * as fs from 'fs';
 import * as nbt from 'prismarine-nbt'
-import { archiveDirToZip, copyDir } from './file_manager';
+import { archiveDirToZip, copyDirectory, deleteDirectory } from './file_manager';
 import {execSync} from 'child_process';
 
 const appdata = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
@@ -44,7 +44,7 @@ export function worldExport(include_packs: boolean = false, world_index: number)
         let new_path = `${download}/${worlds[world_index].name}`;
 
         console.log(`${Global.chalk.green(`Exporting ${worlds[world_index].path}`)}`);
-        copyDir(worlds[world_index].path, new_path);
+        copyDirectory(worlds[world_index].path, new_path);
 
         if (include_packs) {
             let packs = worldGetPacks(new_path);
@@ -58,12 +58,12 @@ export function worldExport(include_packs: boolean = false, world_index: number)
 
             for (const bp of packs.bp) {
                 console.log(`${Global.chalk.green(`Exporting ${bp.name}`)}`);
-                copyDir(bp.path, `${new_path}/behavior_packs/${bp.name}`);
+                copyDirectory(bp.path, `${new_path}/behavior_packs/${bp.name}`);
             }
 
             for (const rp of packs.rp) {
                 console.log(`${Global.chalk.green(`Exporting ${rp.name}`)}`);
-                copyDir(rp.path, `${new_path}/resource_packs/${rp.name}`);
+                copyDirectory(rp.path, `${new_path}/resource_packs/${rp.name}`);
             }
         }
 
@@ -213,6 +213,7 @@ export async function worldNew(worldName: string, testWorld: boolean, flatWorld:
         console.log(`${Global.chalk.green(`Opening World`)}`);
 
         execSync(`"${path}.mcworld"`);
+        fs.rmSync(`${path}.mcworld`);
     });
 }
 
@@ -308,5 +309,8 @@ async function writeLevelDat(path: string, write_callback: Function) {
     let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
     new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
 
-    fs.createWriteStream(path).write(new_buffer);
+    let stream = fs.createWriteStream(path);
+    stream.write(new_buffer);
+    stream.end();
+    return;
 }

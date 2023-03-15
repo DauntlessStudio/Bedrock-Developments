@@ -4,7 +4,7 @@ import * as Global from './globals';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import * as archiver from 'archiver';
-import path from 'path';
+import Path from 'path';
 
 const chalk = new Chalk.Instance();
 
@@ -167,22 +167,47 @@ function makeDirectory(path: string) {
     }
 }
 
+export function deleteDirectory(path: string) {
+    if (fs.existsSync(path)) {
+        for (const file of fs.readdirSync(path, {withFileTypes: true})) {
+            const subpath = Path.join(path, file.name);
+            if (file.isDirectory()) {
+               deleteDirectory(subpath); 
+            } else if (fs.existsSync(subpath)) {
+                console.log(`Delete File: ${subpath}`);
+                try {
+                    fs.unlinkSync(subpath);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+        if (fs.readdirSync(path).length) {
+            console.log(`Remaining Files:`);
+            fs.readdirSync(path).forEach((x) => {console.log(x)});
+            deleteDirectory(path);
+        }else {
+            fs.rmdirSync(path);
+        }
+    }
+}
+
 /**
  * @remarks copies directory from source to destination recursively
  * @param src the source directory
  * @param dest the target directory
  */
-export function copyDir(src: string, dest: string)
+export function copyDirectory(src: string, dest: string)
 {
     fs.mkdirSync(dest, { recursive: true })
     let entries = fs.readdirSync(src, { withFileTypes: true });
 
     for (let entry of entries)
     {
-        let srcPath = path.join(src, entry.name);
-        let destPath = path.join(dest, entry.name);
+        let srcPath = Path.join(src, entry.name);
+        let destPath = Path.join(dest, entry.name);
 
-        entry.isDirectory() ? copyDir(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
+        entry.isDirectory() ? copyDirectory(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
     }
 }
 
@@ -198,8 +223,7 @@ export function archiveDirToZip(dir: string, zipPath: string, callback: Function
    
     output.on('close', async () => {
      await callback();
-     console.log(dir);
-     fs.rmSync(dir, { recursive: true, force: true, retryDelay: 10, maxRetries: 3 });
+     fs.rmSync(dir, {recursive: true, force: true});
     });
    
     archive.pipe(output);

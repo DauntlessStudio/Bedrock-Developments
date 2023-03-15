@@ -51,12 +51,13 @@ export declare function writeBufferFileFromString(path: string, data: string, ov
  * @param path the path to delete the file from
  */
 export declare function deleteFile(path: string): void;
+export declare function deleteDirectory(path: string): void;
 /**
  * @remarks copies directory from source to destination recursively
  * @param src the source directory
  * @param dest the target directory
  */
-export declare function copyDir(src: string, dest: string): void;
+export declare function copyDirectory(src: string, dest: string): void;
 /**
  * @remarks compresses a directory to a zip-like file
  * @param dir the directory to compress
