@@ -243,7 +243,7 @@ async function triggerCreateNewEntity(names: string[], options: OptionValues) {
   const geo = options.geo;
   const texture = options.texture;
   const client = options.client;
-  await Entity.createNewEntity(names, lang, geo, texture, type, client);
+  await Entity.createNewEntity(names, lang, {client: client, type: type, geo: geo, texture: texture});
 }
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
@@ -297,14 +297,14 @@ async function triggerEntityAddAnim(names: string[], options: OptionValues) {
   const file = options.file;
   const script = options.script;
   const create = options.create;
-  await Entity.entityAddAnim(names, family, file, script, create);
+  await Entity.entityAddAnim(names, {family: family, file: file}, script, create);
 }
 
 async function triggerEntityAddGroup(group: string, options: OptionValues) {
   await setPaths();
   const family = options.type;
   const file = options.file;
-  await Entity.entityAddGroup(group, family, file);
+  await Entity.entityAddGroup(group, {family: family, file: file});
 }
 
 async function triggerEntityAddComponent(component: string, options: OptionValues) {
@@ -312,7 +312,7 @@ async function triggerEntityAddComponent(component: string, options: OptionValue
   const family = options.type;
   const file = options.file;
   const overwrite = options.overwrite;
-  await Entity.entityAddComponent(component, family, file, overwrite);
+  await Entity.entityAddComponent(component, {family: family, file: file}, overwrite);
 }
 
 async function triggerEntityAddProperty(names: string[], options: OptionValues) {
@@ -324,7 +324,7 @@ async function triggerEntityAddProperty(names: string[], options: OptionValues) 
   const default_value = options.default;
   const client = options.client;
   const event = options.event;
-  await Entity.entityAddProperty(names, type, file, property, values, default_value, client, event);
+  await Entity.entityAddProperty(names, {family: type, file: file}, property, values, default_value, client, event);
 }
 
 async function triggerEntityAddPropertyEvent(names: string[], options: OptionValues) {
@@ -333,7 +333,7 @@ async function triggerEntityAddPropertyEvent(names: string[], options: OptionVal
   const file = options.file;
   const property = options.property;
   const event = options.event;
-  await Entity.entityAddPropertyEvent(names, type, file, property, event);
+  await Entity.entityAddPropertyEvent(names, {family: type, file: file}, property, event);
 }
 
 async function triggerEntityAddDamageSensor(sensor: string, options: OptionValues) {
@@ -341,7 +341,7 @@ async function triggerEntityAddDamageSensor(sensor: string, options: OptionValue
   const type = options.type;
   const file = options.file;
   const start = options.start;
-  await Entity.entityAddDamageSensor(sensor, type, file, start);
+  await Entity.entityAddDamageSensor(sensor, {family: type, file: file}, start);
 }
 
 async function triggerPackagesList(options: OptionValues) {

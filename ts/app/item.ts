@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as Global from './globals';
-import { readJSONFromFile, readSourceFile, writeFileFromJSON, writeToLang, copyFile } from './file_manager';
+import { readJSONFromGlob, readSourceFile, writeFileFromJSON, writeToLang, copyFile } from './file_manager';
 import { getNameObject, getNamesObjects, nameObject } from './utils';
 import { requestURL } from './github';
 import * as JSONC from 'comment-json';
@@ -33,8 +33,8 @@ var item_texture_file_cache: any;
 
 export async function createNewItem(names: string[], lang: boolean, stack: number=64, type: itemType) {
     let names_list = getNamesObjects(names);
-    let json_item_bp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_bp.json`)).shift();
-    let json_item_rp = await (await readJSONFromFile(`${Global.app_root}/src/items/template_rp.json`)).shift();
+    let json_item_bp = await (await readJSONFromGlob(`${Global.app_root}/src/items/template_bp.json`)).shift();
+    let json_item_rp = await (await readJSONFromGlob(`${Global.app_root}/src/items/template_rp.json`)).shift();
     for (const name of names_list) {
         let item_bp = json_item_bp;
 
@@ -123,7 +123,7 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
 }
 
 export async function writeToItemTextureFromNames(names: nameObject[]) {
-    item_texture_file_cache ||= await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
+    item_texture_file_cache ||= await (await readJSONFromGlob(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
 
     for (const name of names) {
         item_texture_file_cache!.json['texture_data'][name.shortname!] = {};
@@ -134,7 +134,7 @@ export async function writeToItemTextureFromNames(names: nameObject[]) {
 }
 
 export async function writeToItemTextureFromObjects(objects: {name: string, path: string}[]) {
-    item_texture_file_cache ||= await (await readJSONFromFile(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
+    item_texture_file_cache ||= await (await readJSONFromGlob(`${Global.project_rp}textures/item_texture.json`, `${Global.app_root}/src/items/item_texture.json`)).shift();
 
     for (const object of objects) {
         item_texture_file_cache!.json['texture_data'][object.name] = {};
@@ -268,7 +268,7 @@ async function createComplexAttachable(name: string) {
         player_entity = JSONC.parse(response.data);
         writeFileFromJSON(`${Global.project_rp}entity/player.entity.json`, player_entity);
     }else {
-        player_entity ||= await (await readJSONFromFile(`${Global.project_rp}entity/player.entity.json`)).shift()?.json;
+        player_entity ||= await (await readJSONFromGlob(`${Global.project_rp}entity/player.entity.json`)).shift()?.json;
     }
 
     // if entity hasn't been initialized, setup attachable requirements
@@ -304,7 +304,7 @@ async function createComplexAttachable(name: string) {
     writeFileFromJSON(`${Global.project_rp}entity/player.entity.json`, player_entity, true);
 
     // modify player.ac.json
-    let player_ac = await (await readJSONFromFile(`${Global.project_rp}animation_controllers/player.ac.json`)).shift();
+    let player_ac = await (await readJSONFromGlob(`${Global.project_rp}animation_controllers/player.ac.json`)).shift();
     player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select'] ||= {states: {no_item: {}}};
     player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'] ||= [JSONC.parse(`{ "no_item": "!v.has_custom_item" }`)];
     player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'].push(JSONC.parse(`{ "${name_obj.shortname!}": "v.${name_obj.shortname!}" }`));
@@ -322,7 +322,7 @@ async function createComplexAttachable(name: string) {
     writeFileFromJSON(player_ac!.file, player_ac!.json, true);
 
     // modify player.anim.json
-    let rp_anim = await (await readJSONFromFile(`${Global.project_rp}animations/player.anim.json`)).shift();
+    let rp_anim = await (await readJSONFromGlob(`${Global.project_rp}animations/player.anim.json`)).shift();
     rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.idle.first_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -90, 0, 0 ] } } }');
     rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.idle.third_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -30, 0, 0 ] } } }');
     rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.attack.first_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.5, "bones": { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] }, "position": { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } }');
@@ -330,7 +330,7 @@ async function createComplexAttachable(name: string) {
     writeFileFromJSON(rp_anim!.file, rp_anim!.json, true);
 
     // modify item.anim.json
-    rp_anim = await (await readJSONFromFile(`${Global.project_rp}animations/item.anim.json`, `${Global.app_root}/src/attachables/item.anim.json`)).shift();
+    rp_anim = await (await readJSONFromGlob(`${Global.project_rp}animations/item.anim.json`, `${Global.app_root}/src/attachables/item.anim.json`)).shift();
     rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.idle.first_person`] = {};
     rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.idle.third_person`] = {};
     rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.attack.first_person`] = {};
@@ -338,15 +338,15 @@ async function createComplexAttachable(name: string) {
     writeFileFromJSON(`${Global.project_rp}animations/item.anim.json`, rp_anim!.json, true);
 
     async function attachablePlayerAnimations() {
-        let player_controller_source = await (await readJSONFromFile(`${Global.app_root}/src/attachables/player.ac.json`)).shift();
-        let player_controller_target = await (await readJSONFromFile(`${Global.project_rp}animation_controllers/player.ac.json`, `${Global.app_root}/src/attachables/player.ac.json`)).shift();
+        let player_controller_source = await (await readJSONFromGlob(`${Global.app_root}/src/attachables/player.ac.json`)).shift();
+        let player_controller_target = await (await readJSONFromGlob(`${Global.project_rp}animation_controllers/player.ac.json`, `${Global.app_root}/src/attachables/player.ac.json`)).shift();
         for (const key in Object.keys(player_controller_source!.json['animation_controllers'])) {
             player_controller_target!.json['animation_controllers'][key] = player_controller_source!.json['animation_controllers'][key]
         }
         writeFileFromJSON(`${Global.project_rp}animation_controllers/player.ac.json`, player_controller_target?.json, true);
 
-        let player_anim_source = await (await readJSONFromFile(`${Global.app_root}/src/attachables/player.anim.json`)).shift();
-        let player_anim_target = await (await readJSONFromFile(`${Global.project_rp}animations/player.anim.json`, `${Global.app_root}/src/attachables/player.anim.json`)).shift();
+        let player_anim_source = await (await readJSONFromGlob(`${Global.app_root}/src/attachables/player.anim.json`)).shift();
+        let player_anim_target = await (await readJSONFromGlob(`${Global.project_rp}animations/player.anim.json`, `${Global.app_root}/src/attachables/player.anim.json`)).shift();
         for (const key in Object.keys(player_anim_source!.json['animations'])) {
             player_anim_target!.json['animations'][key] = player_anim_source!.json['animations'][key]
         }

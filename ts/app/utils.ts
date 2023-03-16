@@ -58,3 +58,14 @@ export function isNumeric(str: string|undefined) {
     }
     return !isNaN(Number(str)) && !isNaN(parseFloat(str));
 }
+
+export function pushUnique(arr: any[], value: any) {
+    if (!arr.includes(value)) {
+        arr.push(value);
+    }
+}
+
+export function jsonJoin(source: any, target: any) {
+    let new_obj = {...source, ...target};
+    Object.assign(source, new_obj);
+}

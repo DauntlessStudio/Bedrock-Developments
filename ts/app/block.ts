@@ -1,13 +1,21 @@
 import * as Global from './globals';
-import { copyFile, readJSONFromFile, writeFileFromJSON, writeToLang } from './file_manager';
+import { copyFile, readJSONFromGlob, writeFileFromJSON, writeToLang } from './file_manager';
 import { getNamesObjects } from './utils';
 
+/**
+ * @remarks creates a new block
+ * @param names new block names
+ * @param lang should the lang entry be added
+ * @param emissive how emissive is the block
+ * @param table should a loot table be created
+ * @param geo should the block use custom geo
+ */
 export async function createNewBlock(names: string[], lang: boolean, emissive: number|undefined, table: boolean, geo: boolean) {
     let names_list = getNamesObjects(names);
-    let json_block = await (await readJSONFromFile(`${Global.app_root}/src/blocks/template.json`)).shift();
-    let json_loot_table = await (await readJSONFromFile(`${Global.app_root}/src/loot_tables/template.loot.json`)).shift();
-    let json_block_texture = await (await readJSONFromFile(`${Global.project_rp}textures/terrain_texture.json`, `${Global.app_root}/src/blocks/terrain_texture.json`)).shift();
-    let json_blocks = await (await readJSONFromFile(`${Global.project_rp}blocks.json`, `${Global.app_root}/src/blocks/blocks.json`)).shift();
+    let json_block = await (await readJSONFromGlob(`${Global.app_root}/src/blocks/template.json`)).shift();
+    let json_loot_table = await (await readJSONFromGlob(`${Global.app_root}/src/loot_tables/template.loot.json`)).shift();
+    let json_block_texture = await (await readJSONFromGlob(`${Global.project_rp}textures/terrain_texture.json`, `${Global.app_root}/src/blocks/terrain_texture.json`)).shift();
+    let json_blocks = await (await readJSONFromGlob(`${Global.project_rp}blocks.json`, `${Global.app_root}/src/blocks/blocks.json`)).shift();
 
     for (const name of names_list) {
         let block = json_block;
@@ -32,7 +40,7 @@ export async function createNewBlock(names: string[], lang: boolean, emissive: n
             block!.json['minecraft:block']['components']['minecraft:material_instances'] = {};
             block!.json['minecraft:block']['components']['minecraft:material_instances']['*'] = {texture: name.shortname, render_method: 'alpha_test'};
 
-            let json_geo = await (await readJSONFromFile(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
+            let json_geo = await (await readJSONFromGlob(`${Global.app_root}/src/geos/cube.geo.json`)).shift();
             json_geo!.json['minecraft:geometry'][0]['description']['identifier'] =`geometry.${name.shortname}`;
             writeFileFromJSON(`${Global.project_rp}models/blocks/${name.pathname}${name.shortname}.geo.json`, json_geo?.json);
         }
