@@ -101,9 +101,8 @@ export function writeFileFromJSON(path: string, json: any, overwrite: boolean=fa
  * @param write_options additional options for how the file should be written
  */
 export async function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {overwrite?: boolean, log_exists?: boolean}) {
-    console.log(path_options.source_path);
     const json_file = await readJSONFromPath(path_options.source_path, path_options.default_path)
-    callback(json_file.json);
+    await callback(json_file.json);
     writeFileFromJSON(path_options.target_path, json_file.json, write_options?.overwrite, write_options?.log_exists)
 }
 

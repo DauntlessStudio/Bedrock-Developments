@@ -260,7 +260,7 @@ async function triggerCreateNewBlock(names: string[], options: OptionValues) {
   const emissive = options.emissive;
   const table = options.table;
   const geo = options.geo;
-  await Block.createNewBlock(names, lang, emissive, table, geo);
+  await Block.createNewBlock(names, lang, {emissive: emissive, table: table, geo: geo});
 }
 
 async function triggerCreateNewAnimation(names: string[], options: OptionValues) {

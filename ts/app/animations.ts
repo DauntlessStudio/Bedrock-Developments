@@ -1,6 +1,6 @@
 import * as Global from './globals';
-import { readJSONFromGlob, writeFileFromJSON } from './file_manager';
-import { getNamesObjects } from './utils';
+import { modifyAndWriteFile, modifyAndWriteGlob, readJSONFromGlob, writeFileFromJSON } from './file_manager';
+import { getNamesObjects, jsonJoin } from './utils';
 
 /**
  * @remarks adds new server side animations
@@ -10,17 +10,15 @@ import { getNamesObjects } from './utils';
  * @param time the animation length
  */
 export async function createNewAnimation(names: string[], loop: boolean, commands: string[], time: number) {
-    let names_list = getNamesObjects(names);
+    const names_list = getNamesObjects(names);
 
     for (const name of names_list) {
-        let animation = await (await readJSONFromGlob(`${Global.project_bp}animations/${name.pathname}${name.namespace}.json`, `${Global.app_root}/src/animations/template_bp.json`)).shift();;
-        animation!.json['animations'][`animation.${name.fullname}`] = {};
-        animation!.json['animations'][`animation.${name.fullname}`]['animation_length'] = time;
-        animation!.json['animations'][`animation.${name.fullname}`]['loop'] = loop;
-        animation!.json['animations'][`animation.${name.fullname}`]['timeline'] = {};
-        animation!.json['animations'][`animation.${name.fullname}`]['timeline']['0.0'] = getCommands(commands, name.shortname!);
+        const source_path = `${Global.project_bp}animations/${name.pathname}${name.namespace}.json`;
+        const default_path = `${Global.app_root}/src/animations/template_bp.json`;
 
-        writeFileFromJSON(`${Global.project_bp}animations/${name.pathname}${name.namespace}.json`, animation?.json, true);
+        await modifyAndWriteFile({source_path: source_path, default_path: default_path, target_path: source_path}, (animation: any) => {
+            jsonJoin(animation['animations'], {[`animation.${name.fullname}`]: {animation_length: time, loop: loop, timeline: {['0.0']: getCommands(commands, name.shortname)}}});
+        }, {overwrite: true});
     }
 }
 
@@ -30,14 +28,15 @@ export async function createNewAnimation(names: string[], loop: boolean, command
  * @param animation_contents the animation itself as a json object
  */
 export async function createNewClientAnimation(names: string[], animation_contents: any) {
-    let names_list = getNamesObjects(names);
+    const names_list = getNamesObjects(names);
 
     for (const name of names_list) {
-        let animation = await (await readJSONFromGlob(`${Global.project_rp}animations/${name.pathname}${name.namespace}.json`, `${Global.app_root}/src/animations/template_bp.json`)).shift();
+        const source_path = `${Global.project_bp}animations/${name.pathname}${name.namespace}.json`;
+        const default_path = `${Global.app_root}/src/animations/template_bp.json`;
 
-        animation!.json['animations'][`animation.${name.fullname}`] = animation_contents;
-
-        writeFileFromJSON(`${Global.project_rp}animations/${name.pathname}${name.namespace}.json`, animation?.json, true);
+        await modifyAndWriteFile({source_path: source_path, default_path: default_path, target_path: source_path}, (animation: any) => {
+            jsonJoin(animation['animations'], {[`animation.${name.fullname}`]: animation_contents});
+        }, {overwrite: true});
     }
 }
 
@@ -54,22 +53,36 @@ export async function createNewController(names:string[], entry: string[], exit:
     let names_list = getNamesObjects(names);
 
     for (const name of names_list) {
-        let animation = await (await readJSONFromGlob(`${Global.project_bp}animation_controllers/${name.pathname}${name.namespace}.json`, `${Global.app_root}/src/animations/controller_template_bp.json`)).shift();;
-        animation!.json['animation_controllers'][`controller.animation.${name.fullname}`] = {initial_state: 'default', states: {default: {transitions: [{}]}}};
-        animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states']['default']['transitions'][0][name.shortname!] = String(query);
-        animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname!] = {};
-        animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname!]['on_entry'] = getCommands(entry, `${name.shortname}`);
-        if (anim) {
-            animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname!]['animations'] = anim;
-        }
-        if (transition) {
-            animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname!]['transitions'] = [{default: String(transition)}];
-        }
-        if (exit) {
-            animation!.json['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname!]['on_exit'] = getCommands(exit, `${name.shortname}`);
-        }
+        const source_path = `${Global.project_bp}animation_controllers/${name.pathname}${name.namespace}.json`;
+        const default_path = `${Global.app_root}/src/animations/controller_template_bp.json`;
 
-        writeFileFromJSON(`${Global.project_bp}animation_controllers/${name.pathname}${name.namespace}.json`, animation?.json, true);
+        await modifyAndWriteFile({source_path: source_path, default_path: default_path, target_path: source_path}, (animation: any) => {
+            jsonJoin(animation['animation_controllers'], {
+                [`controller.animation.${name.fullname}`]: {
+                    initial_state: 'default',
+                    states: {
+                        default: {
+                            transitions: [
+                                {[name.shortname]: query}
+                            ]
+                        },
+                        [name.shortname]: {
+                            on_entry: getCommands(entry, `${name.shortname}`)
+                        }
+                    }
+                }
+            });
+            
+            if (anim) {
+                animation['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname]['animations'] = anim;
+            }
+            if (transition) {
+                animation['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname]['transitions'] = [{default: transition}];
+            }
+            if (exit) {
+                animation['animation_controllers'][`controller.animation.${name.fullname}`]['states'][name.shortname]['on_exit'] = getCommands(exit, `${name.shortname}`);
+            }
+        }, {overwrite: true});
     }
 }
 
