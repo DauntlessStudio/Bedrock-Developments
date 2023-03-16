@@ -164,6 +164,7 @@ export async function entityAddAnim(names: string[], file_options: fileOptions, 
         for (const name of names_list) {
             if (anims.has(name.fullname!)) {
                 let shortname = anims.get(name.fullname!)?.includes('controller') ? `ctrl.${name.shortname}` : name.shortname;
+                entity['minecraft:entity']['description']['animations'] ||= {}
                 jsonJoin(entity['minecraft:entity']['description']['animations'], {[shortname]: anims.get(name.fullname!)});
                 if (script) {
                     entity['minecraft:entity']['description']['scripts'] ||= {animate: []};

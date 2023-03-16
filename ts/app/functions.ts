@@ -15,7 +15,7 @@ export async function createNewFunction(names: string[], commands: string, numbe
     for (const name of names_list) {
         let desc = options.description ? `## ${options.description.toUpperCase()}` : `## ${name.fullname?.toUpperCase()}`;
         let src = options.source ? `## ${options.source.toUpperCase()}` : `## CALLED FROM ???`;
-        let org = origin ? `## @s=${origin.toUpperCase()}` : `## @s=???`;
+        let org = options.origin ? `## @s=${options.origin.toUpperCase()}` : `## @s=???`;
         let data = `${desc}\n${src}\n${org}\n`;
         for (let index = 1; index <= number; index++) {
             for (let command of command_list) {

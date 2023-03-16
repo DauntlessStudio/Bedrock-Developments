@@ -31,7 +31,7 @@ export async function createNewClientAnimation(names: string[], animation_conten
     const names_list = getNamesObjects(names);
 
     for (const name of names_list) {
-        const source_path = `${Global.project_bp}animations/${name.pathname}${name.namespace}.json`;
+        const source_path = `${Global.project_rp}animations/${name.pathname}${name.namespace}.json`;
         const default_path = `${Global.app_root}/src/animations/template_bp.json`;
 
         await modifyAndWriteFile({source_path: source_path, default_path: default_path, target_path: source_path}, (animation: any) => {
