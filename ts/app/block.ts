@@ -28,7 +28,7 @@ export async function createNewBlock(names: string[], lang: boolean, options: bl
             block['minecraft:block']['description']['identifier'] = name.fullname;
 
             if (options.emissive) {
-                block['minecraft:block']['components']['minecraft:block_light_emission'] = Number(options.emissive);
+                block['minecraft:block']['components']['minecraft:light_emission'] = Math.floor(Number(options.emissive));
             }
 
             if (options.geo) {
@@ -47,7 +47,7 @@ export async function createNewBlock(names: string[], lang: boolean, options: bl
             if (options.table) {
                 block['minecraft:block']['components']['minecraft:loot'] = `loot_tables/blocks/${name.pathname}${name.shortname}.json`;
 
-                await modifyAndWriteFile({source_path: `${Global.app_root}/src/loot_tables/template.loot.json`, target_path: `${Global.project_bp}loot_tables/blocks/${name.pathname}${name.shortname}.loot.json`}, (loot_table: any) => {
+                await modifyAndWriteFile({source_path: `${Global.app_root}/src/loot_tables/template.loot.json`, target_path: `${Global.project_bp}loot_tables/blocks/${name.pathname}${name.shortname}.json`}, (loot_table: any) => {
                     loot_table['pools'][0]['entries'][0]['name'] = name.fullname;
                 });
             }
