@@ -1,8 +1,6 @@
-import * as fs from 'fs';
 import * as Global from './globals';
-import { readJSONFromGlob, readSourceFile, writeFileFromJSON, writeToLang, copyFile, modifyAndWriteFile, readJSONFromPath } from './file_manager';
+import { readSourceFile, writeFileFromJSON, writeToLang, copyFile, modifyAndWriteFile, readJSONFromPath } from './file_manager';
 import { getNameObject, getNamesObjects, jsonJoin, nameObject } from './utils';
-import { requestURL } from './github';
 import * as JSONC from 'comment-json';
 import { createNewEntity, createVanillaEntity, entityAddAnim, entityAddGroup, entityType } from './entity';
 import { createNewController } from './animations';
