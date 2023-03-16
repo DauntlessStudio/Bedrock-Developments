@@ -163,6 +163,11 @@ export function writeToLang(entry: string, category: string, path: string = `${G
         data = String(fs.readFileSync(path));
     }
 
+    if (data.includes(entry)) {
+        console.log(`${chalk.red(`${path} already contains "${entry}"`)}`);
+        return;
+    }
+
     let match = data.match(`\\b${category}\\b.+`);
     if (match) {
         data = data.replace(match[0], `${match[0]}\n${entry}`);
