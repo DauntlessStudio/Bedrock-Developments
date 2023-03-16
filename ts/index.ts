@@ -11,11 +11,11 @@ import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '1.3.0'
+const version = '2.0.0'
 
 program
   .name('bed')
-  .description('CLI to assist Minecraft Bedrock Development')
+  .description('CLI to assist Minecraft Bedrock development')
   .option('--rpath <rp>', 'Path to Resource Pack')
   .on('option:rpath', Global.setResourcePath)
   .option('--bpath <bp>', 'Path to Behavior Pack')
@@ -27,13 +27,13 @@ program
 
 // #region New Commands
 let createNew = program.command('new')
-  .description('Creates new Bedrock files');
+  .description('creates new bedrock files');
 
 createNew.command('entity')
-  .description('Creates new Bedrock entities')
+  .description('creates new bedrock entities')
   .argument('<names...>', 'entity names as "namespace:entity"')
   .option('--no-lang', 'do not add lang file')
-  .addOption(new Option('-t, --type <char>', 'set entity type: dummy, passive, hostile',).choices(['d', 'h', 'p']).default('d', 'dummy'))
+  .addOption(new Option('-t, --type <type>', 'set entity type',).choices(Object.keys(Entity.entityType)).default(Entity.entityType.dummy))
   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
   .option('--no-geo', 'do not add geo file')
   .option('--no-texture', 'do not add texture file')
@@ -41,7 +41,7 @@ createNew.command('entity')
   .hook('postAction', printVersion);
 
 createNew.command('item')
-  .description('Creates new Bedrock items')
+  .description('creates new bedrock items')
   .argument('<names...>', 'item names as "namespace:item"')
   .option('--no-lang', 'do not add lang file')
   .option('-s, --stack <stack_size>', 'max stack size', '64')
@@ -50,17 +50,17 @@ createNew.command('item')
   .hook('postAction', printVersion);
 
 createNew.command('block')
-  .description('Creates new Bedrock blocks')
+  .description('creates new bedrock blocks')
   .argument('<names...>', 'block names as "namespace:block"')
   .option('--no-lang', 'do not add lang file')
-  .option('-e, --emissive <emission>', 'block emmission level [0.0-1.0]')
+  .option('-e, --emissive <emission>', 'block emmission level [1-15]')
   .option('-t, --table', 'create a loot table')
   .option('-g, --geo', 'create a custom geo')
   .action(triggerCreateNewBlock)
   .hook('postAction', printVersion);
 
 createNew.command('anim')
-  .description('Creates new Bedrock behavior animations')
+  .description('creates new bedrock behavior animations')
   .argument('<names...>', 'animation names names as "entity.anim"')
   .option('-l, --loop', 'should the animation loop')
   .addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
@@ -69,7 +69,7 @@ createNew.command('anim')
   .hook('postAction', printVersion);
 
 createNew.command('ctrl')
-  .description('Creates new Bedrock behavior animation controllers')
+  .description('creates new bedrock behavior animation controllers')
   .argument('<names...>', 'controller names as "entity.anim"')
   .addOption(new Option('-e, --entry [on entry commands...]', 'the commands to play on entry').default(['/say anim_name']))
   .addOption(new Option('-x, --exit [on exit commands...]', 'the commands to play on exit').preset(['/say anim_name']))
@@ -80,18 +80,19 @@ createNew.command('ctrl')
   .hook('postAction', printVersion);
 
 createNew.command('function')
-  .description('Creates new Bedrock functions')
+  .description('creates new bedrock functions')
   .argument('<names...>', 'function names as "foo/bar"')
   .option('-c, --commands <commands>', 'the function commands, seperated by ";"')
   .option('-n, --number <number>', 'the number of times commands should be created in the files', '1')
-  .option('-d, --description <description>', 'the description of the function to be used as a comment')
+  .option('-d, --description <description>', 'the description of the function, used as a comment')
   .option('-s, --source <source>', 'where is this function called from, used as a comment')
+  .option('-o, --origin <origin>', 'who is @s within this function, used as a comment')
   .addHelpText('before', 'special characters can be used to provide additional formatting. $(F)f inserts the filename into the command, $(I)i inserts the index of the batch generated command')
   .action(triggerCreateNewFunction)
   .hook('postAction', printVersion);
 
 createNew.command('vanilla')
-  .description('Imports a vanilla Bedrock entity')
+  .description('imports a vanilla bedrock entity')
   .argument('<names...>', 'entity files as "player.json"')
   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
   .action(triggerCreateVanillaEntity)
@@ -100,10 +101,10 @@ createNew.command('vanilla')
 
 // #region Entity Commands
 let entity = program.command('entity')
-  .description('Modifies Bedrock entities');
+  .description('modifies bedrock entities');
 
 entity.command('anim')
-  .description('Adds an animation or animation controller reference to entities')
+  .description('adds an animation or animation controller reference to entities')
   .argument('<names...>', 'animation names as "entity.anim"')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -113,7 +114,7 @@ entity.command('anim')
   .hook('postAction', printVersion);
 
 entity.command('group')
-  .description('Adds a component group to entities')
+  .description('adds a component group to entities')
   .argument('<group>', 'the component group as a json object {group_name:{minecraft:is_baby:{}}}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -121,7 +122,7 @@ entity.command('group')
   .hook('postAction', printVersion);
 
 entity.command('component')
-  .description('Adds a component to entities')
+  .description('adds a component to entities')
   .argument('<component>', 'the component as a json object {minecraft:is_baby:{}}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -130,7 +131,7 @@ entity.command('component')
   .hook('postAction', printVersion);
 
 entity.command('sensor')
-  .description('Adds a damage sensor to entities')
+  .description('adds a damage sensor to entities')
   .argument('<sensor>', 'the damage sensor as a json object {cause: \\"all\\", deals_damage: false}')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -139,10 +140,10 @@ entity.command('sensor')
   .hook('postAction', printVersion);
 
 let property = entity.command('property')
-  .description('Adds property or property events to entities');
+  .description('adds property or property events to entities');
 
 property.command('add')
-  .description('Adds a property to entities')
+  .description('adds a property to entities')
   .argument('<names...>', 'property names as "namespace:property"')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -155,7 +156,7 @@ property.command('add')
   .hook('postAction', printVersion);
 
 property.command('event')
-  .description('Adds a property event to entities')
+  .description('adds a property event to entities')
   .argument('<values...>', 'the values to set the property to')
   .option('-t, --type <family type>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
@@ -167,10 +168,10 @@ property.command('event')
 
 // #region Package Commands
 let pkg = program.command('pkg')
-  .description('Package manager for Bedrock files');
+  .description('package manager for bedrock files');
 
 pkg.command('list')
-  .description('List packages at repo')
+  .description('list packages at repo')
   .option('-d, --detailed', 'gets extra details about the package, if available')
   .option('-f --filter <filter>', 'filter the packages by name or category')
   .action(triggerPackagesList)
@@ -186,23 +187,24 @@ pkg.command('import')
 
 // #region World Commands
 let world = program.command('world')
-  .description('Tools for working with worlds');
+  .description('tools for working with worlds');
 
 world.command('list')
-  .description('List installed worlds')
+  .description('list installed worlds')
   .action(triggerWorldsList)
   .hook('postAction', printVersion);
 
 world.command('export')
-  .description('Export selected world as .mcworld')
-  .addArgument(new Argument('<index>', 'index of world to export').argParser(parseInt))
+  .description('export selected world as .mcworld')
+  .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
   .option('-p, --packs', "package the world's behavior and resource packs")
+  .addOption(new Option('-t, --type <export type>', 'what format should be exported').default(World.exportType.world).choices(Object.values(World.exportType)))
   .action(triggerWorldsExport)
   .hook('postAction', printVersion);
 
 world.command('packs')
-  .description('Attach packs to world')
-  .addArgument(new Argument('<index>', 'index of world to add packs to').argParser(parseInt))
+  .description('attach packs to world')
+  .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
   .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
   .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
   .addOption(new Option('-d, --delete', 'should the packs be removed'))
@@ -211,11 +213,14 @@ world.command('packs')
   .hook('postAction', printVersion);
 
 world.command('new')
-  .description('Create new world')
-  .addArgument(new Argument('<name>', 'the wold name'))
+  .description('create new world')
+  .addArgument(new Argument('<name>', 'the world name'))
   .addOption(new Option('-t, --test', 'create a test world with pre-configured gamerules'))
   .addOption(new Option('-f, --flat', 'create a flat world'))
   .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(Object.keys(World.gameMode)))
+  .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
+  .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
+  .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
   .action(triggerWorldsNew)
   .hook('postAction', printVersion);
 
@@ -238,7 +243,7 @@ async function triggerCreateNewEntity(names: string[], options: OptionValues) {
   const geo = options.geo;
   const texture = options.texture;
   const client = options.client;
-  await Entity.createNewEntity(names, lang, geo, texture, type, client);
+  await Entity.createNewEntity(names, lang, {client: client, type: type, geo: geo, texture: texture});
 }
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
@@ -255,7 +260,7 @@ async function triggerCreateNewBlock(names: string[], options: OptionValues) {
   const emissive = options.emissive;
   const table = options.table;
   const geo = options.geo;
-  await Block.createNewBlock(names, lang, emissive, table, geo);
+  await Block.createNewBlock(names, lang, {emissive: emissive, table: table, geo: geo});
 }
 
 async function triggerCreateNewAnimation(names: string[], options: OptionValues) {
@@ -282,7 +287,8 @@ async function triggerCreateNewFunction(names: string[], options: OptionValues) 
   const number = options.number;
   const description = options.description;
   const source = options.source;
-  await Function.createNewFunction(names, commands, number, description, source);
+  const origin = options.origin;
+  await Function.createNewFunction(names, commands, number, {description: description, source: source, origin: origin});
 }
 
 async function triggerEntityAddAnim(names: string[], options: OptionValues) {
@@ -291,14 +297,14 @@ async function triggerEntityAddAnim(names: string[], options: OptionValues) {
   const file = options.file;
   const script = options.script;
   const create = options.create;
-  await Entity.entityAddAnim(names, family, file, script, create);
+  await Entity.entityAddAnim(names, {family: family, file: file}, script, create);
 }
 
 async function triggerEntityAddGroup(group: string, options: OptionValues) {
   await setPaths();
   const family = options.type;
   const file = options.file;
-  await Entity.entityAddGroup(group, family, file);
+  await Entity.entityAddGroup(group, {family: family, file: file});
 }
 
 async function triggerEntityAddComponent(component: string, options: OptionValues) {
@@ -306,7 +312,7 @@ async function triggerEntityAddComponent(component: string, options: OptionValue
   const family = options.type;
   const file = options.file;
   const overwrite = options.overwrite;
-  await Entity.entityAddComponent(component, family, file, overwrite);
+  await Entity.entityAddComponent(component, {family: family, file: file}, overwrite);
 }
 
 async function triggerEntityAddProperty(names: string[], options: OptionValues) {
@@ -318,7 +324,7 @@ async function triggerEntityAddProperty(names: string[], options: OptionValues) 
   const default_value = options.default;
   const client = options.client;
   const event = options.event;
-  await Entity.entityAddProperty(names, type, file, property, values, default_value, client, event);
+  await Entity.entityAddProperty(names, {family: type, file: file}, property, values, default_value, client, event);
 }
 
 async function triggerEntityAddPropertyEvent(names: string[], options: OptionValues) {
@@ -327,7 +333,7 @@ async function triggerEntityAddPropertyEvent(names: string[], options: OptionVal
   const file = options.file;
   const property = options.property;
   const event = options.event;
-  await Entity.entityAddPropertyEvent(names, type, file, property, event);
+  await Entity.entityAddPropertyEvent(names, {family: type, file: file}, property, event);
 }
 
 async function triggerEntityAddDamageSensor(sensor: string, options: OptionValues) {
@@ -335,7 +341,7 @@ async function triggerEntityAddDamageSensor(sensor: string, options: OptionValue
   const type = options.type;
   const file = options.file;
   const start = options.start;
-  await Entity.entityAddDamageSensor(sensor, type, file, start);
+  await Entity.entityAddDamageSensor(sensor, {family: type, file: file}, start);
 }
 
 async function triggerPackagesList(options: OptionValues) {
@@ -374,36 +380,31 @@ async function triggerCreateVanillaEntity(names: string[], options: OptionValues
   const client = options.client;
   await Entity.createVanillaEntity(names, client);
 }
-async function triggerWorldsList(options: OptionValues) {
+
+async function triggerWorldsList() {
   let worlds = World.worldList();
   worlds.forEach((value, index) => {
     console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
   })
 }
 
-async function triggerWorldsExport(index: number, options: OptionValues) {
+async function triggerWorldsExport(world: string, options: OptionValues) {
   const packs = options.packs;
-  World.worldExport(packs, index);
+  const type = options.type;
+
+  World.worldExport({name: world}, packs, type);
 }
 
-async function triggerWorldsPacks(index: number, options: OptionValues) {
-  const bpack = options.bpack;
-  const rpack = options.rpack;
-  const experimental = options.experimental;
-
+async function triggerWorldsPacks(world: string, options: OptionValues) {
   if (options.delete) {
-    await World.worldRemovePacks(index, bpack, rpack, experimental !== undefined);
+    await World.worldRemovePacks({name: world, behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental});
   } else {
-    await World.worldAddPacks(index, bpack, rpack, experimental);
+    await World.worldAddPacks({name: world, behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental});
   }
 }
 
 async function triggerWorldsNew(name: string, options: OptionValues) {
-  const test = options.test;
-  const flat = options.flat;
-  const mode = options.mode;
-
-  World.worldNew(name, test, flat, mode);
+  World.worldNew(name, {behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental, testworld: options.test, flatworld: options.flat, gamemode: options.mode});
 }
 // #endregion
 

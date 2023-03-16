@@ -18,3 +18,6 @@ export declare function getNameObject(input: string): nameObject;
  * @returns an array of custom name objects
  */
 export declare function getNamesObjects(inputs: string[]): nameObject[];
+export declare function isNumeric(str: string | undefined): boolean;
+export declare function pushUnique(arr: any[], value: any): void;
+export declare function jsonJoin(source: any, target: any): void;

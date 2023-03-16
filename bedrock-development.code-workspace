@@ -25,5 +25,43 @@
         "files.associations": {
             "*.json": "jsonc" // Opens .json files as jsonc (json with comments) so adding comments does not show errors
         }
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Install",
+                "command": "if exist ../node_modules (echo Packages Installed) else (npm i)",
+                "type": "shell",
+                "runOptions": {
+                    "runOn": "folderOpen"
+                },
+                "presentation": {
+                    "reveal": "silent",
+                    "close": true
+                },
+                "isBackground": true,
+                "icon": {
+                    "id": "arrow-down"
+                }
+            },
+            {
+                "label": "Watch",
+                "command": "npx tsc -w",
+                "type": "shell",
+                "runOptions": {
+                    "runOn": "folderOpen"
+                },
+                "presentation": {
+                    "reveal": "silent"
+                },
+                "dependsOn":["Install"],
+                "isBackground": true,
+                "group": "build",
+                "icon": {
+                    "id": "eye-watch"
+                }
+            }
+        ]
     }
 }

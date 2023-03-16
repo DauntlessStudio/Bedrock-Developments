@@ -4,16 +4,31 @@ import * as Global from './globals';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import * as archiver from 'archiver';
-import path from 'path';
+import Path from 'path';
 
 const chalk = new Chalk.Instance();
+export class jsonFile {
+    json: any = {};
+    file: string = '';
+    constructor(json: any, file: string) {
+        this.json = json;
+        this.file = file;
+    }
+}
+
+interface pathOptions {
+    source_path: string,
+    default_path?: string,
+    target_path: string,
+}
 
 /**
- * @remarks gets a json object from a file glob
- * @param path The glob pattern for json files
- * @returns an array of objects containing the filepath that matched the glob pattern and the json object
+ * @remarks gets json files from a blob pattern
+ * @param path the path to the source file
+ * @param default_path the path to the default source file if path is invalid
+ * @returns a list of files matching the glob
  */
-export async function readJSONFromFile(path: string, default_path: string='') {
+export async function readJSONFromGlob(path: string, default_path: string='') {
     // path to glob
     path = path.replace(/\/|\\+/g, '/');
     const glob_files = new Promise<string[]>((resolve, reject) => {
@@ -31,12 +46,14 @@ export async function readJSONFromFile(path: string, default_path: string='') {
     }
 
     // gets json objects from blob path
-    let return_values = [];
+    let return_values: jsonFile[] = [];
     let data;
     try {
         for (const file of files) {
-            data = String(fs.readFileSync(file));
-            return_values.push({json: JSONC.parse(data) as any, file: file});
+            if (fs.existsSync(file)) {
+                data = String(fs.readFileSync(file));
+                return_values.push(new jsonFile(JSONC.parse(data), file));
+            }
         }
     } catch (error) {
         throw new Error(String(error));
@@ -45,19 +62,68 @@ export async function readJSONFromFile(path: string, default_path: string='') {
 }
 
 /**
+ * @remarkds gets a json file from a direct string
+ * @param path the path to the source file
+ * @param default_path the path to the default source file if path is invalid
+ * @returns the json file
+ */
+export async function readJSONFromPath(path: string, default_path: string='') {
+    let read_path = fs.existsSync(path) ? path : default_path;
+
+    try {
+        return new jsonFile(JSONC.parse(String(fs.readFileSync(read_path))), read_path)
+    } catch (error) {
+        throw new Error(String(error));
+    }
+}
+
+/**
  * @remarks writes a json object to disk
  * @param path the path to write the file to
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false) {
+export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false, log_exists: boolean=true) {
     makeDirectory(path);
+    const filename = Path.basename(path).split('.').shift();
 
     if (!fs.existsSync(path) || overwrite) {
-        fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent));
+        fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent).replace(/\$[nN]/g, filename!));
         console.log(`${chalk.green(`Wrote JSON to: ${path}`)}`);
-    }else {
+    }else if (log_exists) {
         console.log(`${chalk.red(`File already existed at ${path}`)}`);
+    }
+}
+
+/**
+ * @remarks reads a json file, modifies it with the callback, and writes it to the target path
+ * @param path_options the source and target paths
+ * @param callback a callback to modify the json before writing
+ * @param write_options additional options for how the file should be written
+ */
+export async function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {overwrite?: boolean, log_exists?: boolean}) {
+    const json_file = await readJSONFromPath(path_options.source_path, path_options.default_path)
+    await callback(json_file.json);
+    writeFileFromJSON(path_options.target_path, json_file.json, write_options?.overwrite, write_options?.log_exists)
+}
+
+/**
+ * @remarks reads a json file, modifies it with the callback, and writes it to the target path
+ * @param path_options the source and target paths
+ * @param callback a callback to modify the json before writing
+ * @param write_options additional options for how the file should be written
+ */
+export async function modifyAndWriteGlob(source_path: string, callback: Function, write_options?: {overwrite?: boolean, log_exists?: boolean}) {
+    const json_files = await readJSONFromGlob(source_path);
+    if (json_files.length) {
+        const write_files = json_files.filter((element) => callback(element.json));
+
+        for (const file of write_files) {
+            writeFileFromJSON(file.file, file.json, write_options?.overwrite, write_options?.log_exists);
+        }
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -95,6 +161,11 @@ export function writeToLang(entry: string, category: string, path: string = `${G
 
     if (fs.existsSync(path)) {
         data = String(fs.readFileSync(path));
+    }
+
+    if (data.includes(entry)) {
+        console.log(`${chalk.red(`${path} already contains "${entry}"`)}`);
+        return;
     }
 
     let match = data.match(`\\b${category}\\b.+`);
@@ -172,17 +243,17 @@ function makeDirectory(path: string) {
  * @param src the source directory
  * @param dest the target directory
  */
-export function copyDir(src: string, dest: string)
+export function copyDirectory(src: string, dest: string)
 {
     fs.mkdirSync(dest, { recursive: true })
     let entries = fs.readdirSync(src, { withFileTypes: true });
 
     for (let entry of entries)
     {
-        let srcPath = path.join(src, entry.name);
-        let destPath = path.join(dest, entry.name);
+        let srcPath = Path.join(src, entry.name);
+        let destPath = Path.join(dest, entry.name);
 
-        entry.isDirectory() ? copyDir(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
+        entry.isDirectory() ? copyDirectory(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
     }
 }
 
@@ -196,8 +267,9 @@ export function archiveDirToZip(dir: string, zipPath: string, callback: Function
     let output = fs.createWriteStream(zipPath);
     let archive = archiver.default('zip', { zlib: { level: 9 } });
    
-    output.on('close', () => {
-     callback();
+    output.on('close', async () => {
+     await callback();
+     fs.rmSync(dir, {recursive: true, force: true});
     });
    
     archive.pipe(output);

@@ -2,14 +2,21 @@ import * as Global from './globals';
 import { writeFileFromString } from './file_manager';
 import { getNamesObjects } from './utils';
 
-export async function createNewFunction(names: string[], commands: string, number: number, description: string|undefined, source: string|undefined) {
+interface functionOptions {
+    description?: string,
+    source?: string,
+    origin?: string,
+}
+
+export async function createNewFunction(names: string[], commands: string, number: number, options: functionOptions) {
     let names_list = getNamesObjects(names);
     commands ||= 'say $f';
     let command_list = commands.split(/;|\n/);
     for (const name of names_list) {
-        let desc = description ? `## ${description.toUpperCase()}` : `## ${name.fullname?.toUpperCase()}`;
-        let src = source ? `## ${source.toUpperCase()}` : `## CALLED FROM ???`;
-        let data = `${desc}\n${src}\n`;
+        let desc = options.description ? `## ${options.description.toUpperCase()}` : `## ${name.fullname?.toUpperCase()}`;
+        let src = options.source ? `## ${options.source.toUpperCase()}` : `## CALLED FROM ???`;
+        let org = options.origin ? `## @s=${options.origin.toUpperCase()}` : `## @s=???`;
+        let data = `${desc}\n${src}\n${org}\n`;
         for (let index = 1; index <= number; index++) {
             for (let command of command_list) {
                 command = command.replace(/\$[fF]/, name.fullname!);

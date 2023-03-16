@@ -1,19 +1,54 @@
-/**
- * @remarks gets a json object from a file glob
- * @param path The glob pattern for json files
- * @returns an array of objects containing the filepath that matched the glob pattern and the json object
- */
-export declare function readJSONFromFile(path: string, default_path?: string): Promise<{
+export declare class jsonFile {
     json: any;
     file: string;
-}[]>;
+    constructor(json: any, file: string);
+}
+interface pathOptions {
+    source_path: string;
+    default_path?: string;
+    target_path: string;
+}
+/**
+ * @remarks gets json files from a blob pattern
+ * @param path the path to the source file
+ * @param default_path the path to the default source file if path is invalid
+ * @returns a list of files matching the glob
+ */
+export declare function readJSONFromGlob(path: string, default_path?: string): Promise<jsonFile[]>;
+/**
+ * @remarkds gets a json file from a direct string
+ * @param path the path to the source file
+ * @param default_path the path to the default source file if path is invalid
+ * @returns the json file
+ */
+export declare function readJSONFromPath(path: string, default_path?: string): Promise<jsonFile>;
 /**
  * @remarks writes a json object to disk
  * @param path the path to write the file to
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean): void;
+export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean, log_exists?: boolean): void;
+/**
+ * @remarks reads a json file, modifies it with the callback, and writes it to the target path
+ * @param path_options the source and target paths
+ * @param callback a callback to modify the json before writing
+ * @param write_options additional options for how the file should be written
+ */
+export declare function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {
+    overwrite?: boolean;
+    log_exists?: boolean;
+}): Promise<void>;
+/**
+ * @remarks reads a json file, modifies it with the callback, and writes it to the target path
+ * @param path_options the source and target paths
+ * @param callback a callback to modify the json before writing
+ * @param write_options additional options for how the file should be written
+ */
+export declare function modifyAndWriteGlob(source_path: string, callback: Function, write_options?: {
+    overwrite?: boolean;
+    log_exists?: boolean;
+}): Promise<boolean>;
 /**
  *
  * @param source the file to be copied
@@ -56,7 +91,7 @@ export declare function deleteFile(path: string): void;
  * @param src the source directory
  * @param dest the target directory
  */
-export declare function copyDir(src: string, dest: string): void;
+export declare function copyDirectory(src: string, dest: string): void;
 /**
  * @remarks compresses a directory to a zip-like file
  * @param dir the directory to compress
@@ -64,3 +99,4 @@ export declare function copyDir(src: string, dest: string): void;
  * @param callback the callback to run when the compression finishes
  */
 export declare function archiveDirToZip(dir: string, zipPath: string, callback: Function): void;
+export {};

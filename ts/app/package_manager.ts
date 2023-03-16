@@ -1,7 +1,6 @@
 import * as Global from './globals';
-import { Octokit } from 'octokit';
-import { deleteFile, readJSONFromFile, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
-import { requestGet, requestURL, requestVanilla } from './github';
+import { deleteFile, readJSONFromGlob, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
+import { requestGet, requestURL } from './github';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 
@@ -54,7 +53,7 @@ async function recursiveDownload(url: string) {
         //TODO item_texture, and terrain_texture
         if (/hud_screen.json$/.test(path)) {
             try {
-                let hud_screen = await readJSONFromFile(`${Global.project_rp}ui/hud_screen.json`);
+                let hud_screen = await readJSONFromGlob(`${Global.project_rp}ui/hud_screen.json`);
                 if (hud_screen.length) {
                     let import_hud: any = JSONC.parse(contents.data);
                     let new_hud = {...import_hud, ...hud_screen[0].json};
@@ -68,7 +67,7 @@ async function recursiveDownload(url: string) {
 
         if (/_ui_defs.json$/.test(path)) {
             try {
-                let _ui_defs = await readJSONFromFile(`${Global.project_rp}ui/_ui_defs.json`);
+                let _ui_defs = await readJSONFromGlob(`${Global.project_rp}ui/_ui_defs.json`);
                 if (_ui_defs.length) {
                     let import_defs: any = JSONC.parse(contents.data);
                     let new_defs = {ui_defs: [...import_defs['ui_defs'], ..._ui_defs[0].json['ui_defs']]};
