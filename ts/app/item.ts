@@ -122,12 +122,17 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
                 break;
             }
             case itemType.attachable || itemType.weapon: {
+                await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
+                    setBehaviorItemBasics(item, name, stack);
+                });
+                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
+                    setResourceItemBasics(item, name);
+                });
                 createComplexAttachable(name.fullname);
                 break;
             }
             default: {
                 await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    console.log("HI");
                     setBehaviorItemBasics(item, name, stack);
                 });
                 await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
@@ -213,6 +218,7 @@ await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.
     await writeToItemTextureFromObjects([{name: `name.shortname_${armor[piece].name}`, path: `textures/items/${name.pathname}${name.shortname}_${armor[piece].name}`}]);
 }
 
+// TODO Refactor this function
 async function createComplexAttachable(name: string) {
     let name_obj = getNameObject(name);
     // get player entity
