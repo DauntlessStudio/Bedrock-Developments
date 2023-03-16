@@ -1,5 +1,5 @@
 import * as Global from './globals';
-import { modifyAndWriteFile, modifyAndWriteGlob, readJSONFromGlob, writeFileFromJSON } from './file_manager';
+import { modifyAndWriteFile } from './file_manager';
 import { getNamesObjects, jsonJoin } from './utils';
 
 /**

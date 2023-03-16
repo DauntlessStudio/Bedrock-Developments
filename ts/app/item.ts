@@ -5,7 +5,7 @@ import { getNameObject, getNamesObjects, jsonJoin, nameObject } from './utils';
 import { requestURL } from './github';
 import * as JSONC from 'comment-json';
 import { createNewEntity, createVanillaEntity, entityAddAnim, entityAddGroup, entityType } from './entity';
-import { createNewAnimation, createNewController } from './animations';
+import { createNewController } from './animations';
 import { createNewFunction } from './functions';
 
 export enum itemType {

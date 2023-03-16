@@ -1,5 +1,5 @@
 import * as Global from './globals';
-import { copyFile, modifyAndWriteFile, modifyAndWriteGlob, readJSONFromGlob, readJSONFromPath, writeFileFromJSON, writeToLang } from './file_manager';
+import { copyFile, modifyAndWriteFile, modifyAndWriteGlob, readJSONFromGlob, writeFileFromJSON, writeToLang } from './file_manager';
 import { getNamesObjects, getNameObject, nameObject, pushUnique, jsonJoin } from './utils';
 import { requestURL, requestVanilla } from './github';
 import * as JSONC from 'comment-json';

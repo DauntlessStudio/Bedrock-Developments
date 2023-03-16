@@ -1,7 +1,6 @@
 import * as Global from './globals';
-import { Octokit } from 'octokit';
 import { deleteFile, readJSONFromGlob, writeBufferFileFromString, writeFileFromJSON, writeFileFromString, writeToLang } from './file_manager';
-import { requestGet, requestURL, requestVanilla } from './github';
+import { requestGet, requestURL } from './github';
 import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 
