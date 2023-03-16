@@ -29,7 +29,7 @@ export declare function createNewEntity(names: string[], lang: boolean, entity_o
  * @param names the vanilla entities to import
  * @param client should the corresponding client entity file be imported
  */
-export declare function createVanillaEntity(names: string[], client: boolean): Promise<void>;
+export declare function createVanillaEntity(names: string[], client: boolean, server?: boolean): Promise<void>;
 /**
  * @remarks adds an animation to an entity
  * @param names the animation names as entity.name

@@ -1,12 +1,13 @@
 import * as fs from 'fs';
 import * as Global from './globals';
-import { readJSONFromGlob, readSourceFile, writeFileFromJSON, writeToLang, copyFile, modifyAndWriteFile } from './file_manager';
+import { readJSONFromGlob, readSourceFile, writeFileFromJSON, writeToLang, copyFile, modifyAndWriteFile, readJSONFromPath } from './file_manager';
 import { getNameObject, getNamesObjects, jsonJoin, nameObject } from './utils';
 import { requestURL } from './github';
 import * as JSONC from 'comment-json';
 import { createNewEntity, createVanillaEntity, entityAddAnim, entityAddGroup, entityType } from './entity';
 import { createNewController } from './animations';
 import { createNewFunction } from './functions';
+import mergeDeep from './merge_deep';
 
 export enum itemType {
     basic='basic',
@@ -218,130 +219,136 @@ await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.
     await writeToItemTextureFromObjects([{name: `name.shortname_${armor[piece].name}`, path: `textures/items/${name.pathname}${name.shortname}_${armor[piece].name}`}]);
 }
 
-// TODO Refactor this function
-async function createComplexAttachable(name: string) {
-    let name_obj = getNameObject(name);
-    // get player entity
-    let player_entity: any;
-    if (!fs.existsSync(`${Global.project_rp}entity/player.entity.json`)) {
-        let response = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/resource_pack/entity/player.entity.json`);
-        player_entity = JSONC.parse(response.data);
-        writeFileFromJSON(`${Global.project_rp}entity/player.entity.json`, player_entity);
-    }else {
-        player_entity ||= await (await readJSONFromGlob(`${Global.project_rp}entity/player.entity.json`)).shift()?.json;
-    }
+async function createComplexAttachable(name_str: string) {
+    const name = getNameObject(name_str);
 
-    // if entity hasn't been initialized, setup attachable requirements
-    if (!JSON.stringify(player_entity).includes('has_custom_item')) {
-        attachablePlayerEntity();
-        await attachablePlayerAnimations();
-    }
+    await createVanillaEntity(['player.json'], true, false);
+    await modifyAndWriteFile({source_path: `${Global.project_rp}entity/player.entity.json`, target_path: `${Global.project_rp}entity/player.entity.json`}, async (player: any) => {
+        if (!JSONC.stringify(player).includes('has_custom_item')) {
+            Object.assign(player, mergeDeep(player, attachable_player))
+            await initializeAttachablePlayerAnims();
+        }
+        
+	    player['minecraft:client_entity']['description']['animations'][`ctrl.${name.shortname}`] = `controller.animation.player.custom_items.${name.shortname}`;
+	    player['minecraft:client_entity']['description']['animations'][`${name.shortname}.idle.first_person`] = `animation.player.${name.shortname}.idle.first_person`;
+	    player['minecraft:client_entity']['description']['animations'][`${name.shortname}.idle.third_person`] = `animation.player.${name.shortname}.idle.third_person`;
+	    player['minecraft:client_entity']['description']['animations'][`${name.shortname}.attack.first_person`] = `animation.player.${name.shortname}.attack.first_person`;
+	    player['minecraft:client_entity']['description']['animations'][`${name.shortname}.attack.third_person`] = `animation.player.${name.shortname}.attack.third_person`;
+
+        addItemToPreAnimation(player, name);
+    }, {overwrite: true});
 
     // attachable file
-    let attachable = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/attachable.json`).replace(/namespace/g, name_obj.namespace!).replace(/example_item/g, name_obj.shortname!));
-    writeFileFromJSON(`${Global.project_rp}attachables/${name_obj.shortname}.json`, attachable);
+    const attachable = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/attachable.json`).replace(/namespace/g, name.namespace!).replace(/example_item/g, name.shortname!));
+    writeFileFromJSON(`${Global.project_rp}attachables/${name.shortname}.json`, attachable);
 
     // player geo file
-    let player_geo = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/player.geo.json`).replace(/example_item/g, name_obj.shortname!));
-    writeFileFromJSON(`${Global.project_rp}models/entity/player/${name_obj.shortname}.geo.json`, player_geo);
+    const player_geo = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/player.geo.json`).replace(/example_item/g, name.shortname!));
+    writeFileFromJSON(`${Global.project_rp}models/entity/player/${name.shortname}.geo.json`, player_geo);
 
     // texture file
-    copyFile(`${Global.app_root}/src/attachables/attachable.png`, `${Global.project_rp}textures/attachables/${name_obj.shortname}.png`);
-
-    // modify player.entity.json
-	player_entity['minecraft:client_entity']['description']['animations']['ctrl.' + name_obj.shortname!] = 'controller.animation.player.custom_items.' + name_obj.shortname!;
-	player_entity['minecraft:client_entity']['description']['animations'][name_obj.shortname! + '.idle.first_person'] = 'animation.player.' + name_obj.shortname! + '.idle.first_person';
-	player_entity['minecraft:client_entity']['description']['animations'][name_obj.shortname! + '.idle.third_person'] = 'animation.player.' + name_obj.shortname! + '.idle.third_person';
-	player_entity['minecraft:client_entity']['description']['animations'][name_obj.shortname! + '.attack.first_person'] = 'animation.player.' + name_obj.shortname! + '.attack.first_person';
-	player_entity['minecraft:client_entity']['description']['animations'][name_obj.shortname! + '.attack.third_person'] = 'animation.player.' + name_obj.shortname! + '.attack.third_person';
-
-    // player.entity.json pre_animation
-    let pre_anim = player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'] as Array<string>;
-    let index = pre_anim.findIndex(element => element.includes('has_custom_item'));
-    pre_anim[index] =  pre_anim[index].replace(';', ` || v.${name_obj.shortname};`);
-    pre_anim.splice(index, 0, `v.${name_obj.shortname} = (q.get_equipped_item_name == '${name_obj.shortname}');`);
-    player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'] = pre_anim;
-    writeFileFromJSON(`${Global.project_rp}entity/player.entity.json`, player_entity, true);
-
+    copyFile(`${Global.app_root}/src/attachables/attachable.png`, `${Global.project_rp}textures/attachables/${name.shortname}.png`);
+    
     // modify player.ac.json
-    let player_ac = await (await readJSONFromGlob(`${Global.project_rp}animation_controllers/player.ac.json`)).shift();
-    player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select'] ||= {states: {no_item: {}}};
-    player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'] ||= [JSONC.parse(`{ "no_item": "!v.has_custom_item" }`)];
-    player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'].push(JSONC.parse(`{ "${name_obj.shortname!}": "v.${name_obj.shortname!}" }`));
-	let transitions = player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']['no_item']['transitions'] as Array<Object>;
-	player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][name_obj.shortname!] ||= {};
-	player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][name_obj.shortname!]['animations'] ||= [];
-	player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][name_obj.shortname!]['animations'].push('ctrl.' + name_obj.shortname);
-    for (const key in player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states']) {
-        player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'] = transitions.filter(function missingKey(transition: any) {return transition[key] === undefined;});
-        if (key !== 'no_item' && !player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'].includes({no_item: '!v.has_custom_item'})) {
-            player_ac!.json['animation_controllers']['controller.animation.player.custom_item.select']['states'][key]['transitions'].push({no_item: '!v.has_custom_item'});
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animation_controllers/player.ac.json`, target_path: `${Global.project_rp}animation_controllers/player.ac.json`}, (animation_controller: any) => {
+        animation_controller['animation_controllers'] = mergeDeep(animation_controller['animation_controllers'], {
+            ['controller.animation.player.custom_item.select']: {
+                states: {
+                    no_item: {},
+                    [name.shortname]: {
+                        animations: [`ctrl.${name.shortname}`]
+                    }
+                }
+            },
+            [`controller.animation.player.custom_items.${name.shortname}`]: JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/controller_entry.json`).replace(/example_item/g, name.shortname))
+        });
+        
+        const state_list = Object.keys(animation_controller['animation_controllers']['controller.animation.player.custom_item.select']['states']);
+        for (const state of state_list) {
+            const transitions = state_list.
+            filter(val => val.includes(state)).
+            map(val => {
+                const variable = val.includes('no_item') ? '!v.has_custom_item' : `v.${val}`;
+                return {[val]: variable};
+            });
+
+            animation_controller['animation_controllers']['controller.animation.player.custom_item.select']['states'][state]['transitions'] = transitions;
         }
-    }
-    player_ac!.json['animation_controllers'][`controller.animation.player.custom_items.${name_obj.shortname!}`] = JSONC.parse(readSourceFile(`${Global.app_root}/src/attachables/controller_entry.json`).replace(/example_item/g, name_obj.shortname!));
-    writeFileFromJSON(player_ac!.file, player_ac!.json, true);
+    }, {overwrite: true});
 
     // modify player.anim.json
-    let rp_anim = await (await readJSONFromGlob(`${Global.project_rp}animations/player.anim.json`)).shift();
-    rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.idle.first_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -90, 0, 0 ] } } }');
-    rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.idle.third_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -30, 0, 0 ] } } }');
-    rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.attack.first_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.5, "bones": { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] }, "position": { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } }');
-    rp_anim!.json['animations'][`animation.player.${name_obj.shortname!}.attack.third_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.3, "bones" : { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } }');
-    writeFileFromJSON(rp_anim!.file, rp_anim!.json, true);
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/player.anim.json`, target_path: `${Global.project_rp}animations/player.anim.json`}, (animation: any) => {
+        animation['animations'][`animation.player.${name.shortname}.idle.first_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -90, 0, 0 ] } } }');
+        animation['animations'][`animation.player.${name.shortname}.idle.third_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -30, 0, 0 ] } } }');
+        animation['animations'][`animation.player.${name.shortname}.attack.first_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.5, "bones": { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] }, "position": { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } }');
+        animation['animations'][`animation.player.${name.shortname}.attack.third_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.3, "bones" : { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } }');
+    }, {overwrite: true});
 
     // modify item.anim.json
-    rp_anim = await (await readJSONFromGlob(`${Global.project_rp}animations/item.anim.json`, `${Global.app_root}/src/attachables/item.anim.json`)).shift();
-    rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.idle.first_person`] = {};
-    rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.idle.third_person`] = {};
-    rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.attack.first_person`] = {};
-    rp_anim!.json['animations'][`animation.item.${name_obj.shortname!}.attack.third_person`] = {};
-    writeFileFromJSON(`${Global.project_rp}animations/item.anim.json`, rp_anim!.json, true);
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/item.anim.json`, default_path: `${Global.app_root}/src/attachables/item.anim.json`, target_path: `${Global.project_rp}animations/item.anim.json`}, (animation: any) => {
+        animation['animations'][`animation.item.${name.shortname!}.idle.first_person`] = {};
+        animation['animations'][`animation.item.${name.shortname!}.idle.third_person`] = {};
+        animation['animations'][`animation.item.${name.shortname!}.attack.first_person`] = {};
+        animation['animations'][`animation.item.${name.shortname!}.attack.third_person`] = {};
+    }, {overwrite: true});
+}
 
-    async function attachablePlayerAnimations() {
-        let player_controller_source = await (await readJSONFromGlob(`${Global.app_root}/src/attachables/player.ac.json`)).shift();
-        let player_controller_target = await (await readJSONFromGlob(`${Global.project_rp}animation_controllers/player.ac.json`, `${Global.app_root}/src/attachables/player.ac.json`)).shift();
-        for (const key in Object.keys(player_controller_source!.json['animation_controllers'])) {
-            player_controller_target!.json['animation_controllers'][key] = player_controller_source!.json['animation_controllers'][key]
+async function initializeAttachablePlayerAnims() {
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animation_controllers/player.ac.json`, default_path: `${Global.app_root}/src/attachables/player.ac.json`, target_path: `${Global.project_rp}animation_controllers/player.ac.json`}, async (animation_controller: any) => {
+        const player_controller_source = await readJSONFromPath(`${Global.app_root}/src/attachables/player.ac.json`);
+
+        animation_controller = mergeDeep(animation_controller, player_controller_source);
+    }, {overwrite: true});
+
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/player.anim.json`, default_path: `${Global.app_root}/src/attachables/player.anim.json`, target_path: `${Global.project_rp}animations/player.anim.json`}, async (animation: any) => {
+        const player_anim_source = readJSONFromPath(`${Global.app_root}/src/attachables/player.anim.json`);
+
+        animation = mergeDeep(animation, player_anim_source);
+    }, {overwrite: true});
+
+    copyFile(`${Global.app_root}/src/attachables/vanilla_fixes.anim.json`, `${Global.project_rp}animations/vanilla_fixes.anim.json`);
+}
+
+function addItemToPreAnimation(player: any, name: nameObject) {
+    const pre_anim = player['minecraft:client_entity']['description']['scripts']['pre_animation'] as Array<string>;
+    const index = pre_anim.findIndex(element => element.includes('has_custom_item'));
+
+    pre_anim[index] =  pre_anim[index].replace(';', ` || v.${name.shortname};`);
+    pre_anim.splice(index, 0, `v.${name.shortname} = (q.get_equipped_item_name == '${name.shortname}');`);
+
+    player['minecraft:client_entity']['description']['scripts']['pre_animation'] = pre_anim;
+}
+
+const attachable_player = {
+    ['minecraft:client_entity']: {
+        description: {
+            scripts: {
+                initialize: ['variable.bob_animation = 0.0;'],
+                variables: {
+                    ['variable.attack_time']: 'public',
+                },
+                pre_animation: [
+                    'v.has_custom_item = 0;',
+                    'v.dampen_left_arm_swing  = 0;',
+                    'v.dampen_right_arm_swing = 0;',
+                    'v.disable_arm_swing = 0;',
+                    'v.disable_leg_swing = q.is_riding;',
+                    'v.aim_left_arm = 0;',
+                    'v.aim_right_arm = 0;',
+                ],
+                animate: [
+                    'ctrl.custom_item.select',
+                    {["custom_item.first_person.base"]: "v.is_first_person && v.has_custom_item"},
+                    {["custom_item.third_person.right"]: "!v.is_first_person && v.has_custom_item && v.aim_left_arm"},
+                    {["custom_item.third_person.left"]: "!v.is_first_person && v.has_custom_item && v.aim_right_arm"},
+                ]
+            },
+            animations: {
+                ['ctrl.custom_item.select']: 'controller.animation.player.custom_item.select',
+                ['custom_item.first_person.base']: 'animation.player.custom_item.base_first_person_pose',
+                ['custom_item.third_person.right']: 'animation.player.custom_item.third_person_aim_arm.right',
+                ['custom_item.third_person.left']: 'animation.player.custom_item.third_person_aim_arm.left',
+            }
         }
-        writeFileFromJSON(`${Global.project_rp}animation_controllers/player.ac.json`, player_controller_target?.json, true);
-
-        let player_anim_source = await (await readJSONFromGlob(`${Global.app_root}/src/attachables/player.anim.json`)).shift();
-        let player_anim_target = await (await readJSONFromGlob(`${Global.project_rp}animations/player.anim.json`, `${Global.app_root}/src/attachables/player.anim.json`)).shift();
-        for (const key in Object.keys(player_anim_source!.json['animations'])) {
-            player_anim_target!.json['animations'][key] = player_anim_source!.json['animations'][key]
-        }
-        writeFileFromJSON(`${Global.project_rp}animations/player.anim.json`, player_anim_target?.json, true);
-
-        copyFile(`${Global.app_root}/src/attachables/vanilla_fixes.anim.json`, `${Global.project_rp}animations/vanilla_fixes.anim.json`);
-    }
-
-    function attachablePlayerEntity() {
-        player_entity['minecraft:client_entity']['description']['scripts'] ||= {};
-        player_entity['minecraft:client_entity']['description']['scripts']['initialize'] ||= [];
-        player_entity['minecraft:client_entity']['description']['scripts']['initialize'].push('variable.bob_animation = 0.0;');
-
-        player_entity['minecraft:client_entity']['description']['scripts']['variables'] ||= {};
-        player_entity['minecraft:client_entity']['description']['scripts']['variables']['variable.attack_time'] = 'public';
-
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'] ||= {};
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.has_custom_item = 0;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.dampen_left_arm_swing  = 0;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.dampen_right_arm_swing = 0;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.disable_arm_swing = 0;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.disable_leg_swing = q.is_riding;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.aim_left_arm = 0;');
-        player_entity['minecraft:client_entity']['description']['scripts']['pre_animation'].push('v.aim_right_arm = 0;');
-
-        player_entity['minecraft:client_entity']['description']['scripts']['animate'] ||= [];
-        player_entity['minecraft:client_entity']['description']['scripts']['animate'].push('ctrl.custom_item.select');
-        player_entity['minecraft:client_entity']['description']['scripts']['animate'].push(JSONC.parse('{"custom_item.first_person.base": "v.is_first_person && v.has_custom_item"}'));
-        player_entity['minecraft:client_entity']['description']['scripts']['animate'].push(JSONC.parse('{"custom_item.third_person.right": "!v.is_first_person && v.has_custom_item && v.aim_left_arm"}'));
-        player_entity['minecraft:client_entity']['description']['scripts']['animate'].push(JSONC.parse('{"custom_item.third_person.left": "!v.is_first_person && v.has_custom_item && v.aim_right_arm"}'));
-
-        player_entity['minecraft:client_entity'] ||= {};
-        player_entity['minecraft:client_entity']['description']['animations']['ctrl.custom_item.select'] = 'controller.animation.player.custom_item.select';
-        player_entity['minecraft:client_entity']['description']['animations']['custom_item.first_person.base'] = 'animation.player.custom_item.base_first_person_pose';
-        player_entity['minecraft:client_entity']['description']['animations']['custom_item.third_person.right'] = 'animation.player.custom_item.third_person_aim_arm.right';
-        player_entity['minecraft:client_entity']['description']['animations']['custom_item.third_person.left'] = 'animation.player.custom_item.third_person_aim_arm.left';
     }
 }

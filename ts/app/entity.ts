@@ -113,13 +113,15 @@ async function createClientEntity(name: nameObject, options: newEntityOptions, c
  * @param names the vanilla entities to import
  * @param client should the corresponding client entity file be imported
  */
-export async function createVanillaEntity(names: string[], client: boolean) {
+export async function createVanillaEntity(names: string[], client: boolean, server: boolean = true) {
     try {
         for (const name of names) {
-            let files = await requestVanilla(name, 'behavior_pack/entities');
-            for (const file of files) {
-                let data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
-                writeFileFromJSON(file.path.replace('behavior_pack/', Global.project_bp), JSONC.parse(data.data));
+            if (server) {
+                let files = await requestVanilla(name, 'behavior_pack/entities');
+                for (const file of files) {
+                    let data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
+                    writeFileFromJSON(file.path.replace('behavior_pack/', Global.project_bp), JSONC.parse(data.data), false, false);
+                }
             }
 
             if (client) {
@@ -129,7 +131,7 @@ export async function createVanillaEntity(names: string[], client: boolean) {
                         continue;
                     }
                     let data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
-                    writeFileFromJSON(file.path.replace('resource_pack/', Global.project_rp), JSONC.parse(data.data));
+                    writeFileFromJSON(file.path.replace('resource_pack/', Global.project_rp), JSONC.parse(data.data), false, false);
                 }
             }
         }
