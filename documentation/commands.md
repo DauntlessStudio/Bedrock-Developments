@@ -45,9 +45,10 @@ Options:
   -h, --help             display help for command
 
 Commands:
-  new                    Creates new Bedrock files
-  entity                 Modifies Bedrock entities
-  pkg                    Package manager for Bedrock files
+  new                    creates new bedrock files
+  entity                 modifies bedrock entities
+  pkg                    package manager for bedrock files
+  world                  tools for working with worlds
 ```
 ### Example(s)
 ---
@@ -96,9 +97,11 @@ Arguments:
   names              entity names as "namespace:entity"
 
 Options:
-  -l, --lang         add lang file
-  -t, --type <char>  set entity type: dummy, passive, hostile (choices: "d", "h", "p", default: dummy)
+  --no-lang          do not add lang file
+  -t, --type <type>  set entity type (choices: "dummy", "hostile", "passive", "projectile", default: "dummy")
   -c, --client       create client entity in the resource path. Will also create a default geo and texture for the entity
+  --no-geo           do not add geo file
+  --no-texture       do not add texture file
   -h, --help         display help for command
 ```
 ### Example(s)
@@ -110,7 +113,7 @@ This outputs a file at `BP/entities/test.json`, creating a dummy entity with bas
 
 ---
 ```
-bed new entity --type h --client --lang ldz:test
+bed new entity --type hostile --clientg ldz:test
 ```
 This specifies that the entity should be hostile, that it should create the client files (the rp entity, geo, and texture files), and that lines will be added to the lang file. The lang file gets the Entity Name, and because it is hostile or passive, rather than a dummy it will also create a Spawn Egg entry.
 
@@ -128,7 +131,7 @@ Arguments:
 Options:
   --no-lang                 do not add lang file
   -s, --stack <stack_size>  max stack size (default: "64")
-  -t, --type <item_type>    basic (choices: "basic", "weapon", "projectile", "food", "armor_set", "helmet", "chestplate", "leggings", "boots")
+  -t, --type <item_type>    basic (choices: "basic", "attachable", "weapon", "projectile", "usable", "food", "armor_set", "helmet", "chestplate", "leggings", "boots")
   -h, --help                display help for command
 ```
 ### Example(s)
@@ -140,7 +143,7 @@ This creates an item with all defaults, making a basic item with a stack size of
 
 ---
 ```
-bed new item --type weapon --stack 1 ldz:test_weapon
+bed new item --type attachable --stack 1 ldz:test_weapon
 ```
 This is the syntax for creating an attachable. In addition to all the files mentioned in the previous example, this adds an `RP/entity/player.entity.json` with all the variables and animations needed for attachables, along with the attachable file, modifications to the player animations, and a custom geo and texture for the new attachable.
 
@@ -165,8 +168,8 @@ Arguments:
   names                      block names as "namespace:block"
 
 Options:
-  -l, --lang                 add lang file
-  -e, --emissive <emission>  block emmission level [0.0-1.0]
+  --no-lang                  do not add lang file
+  -e, --emissive <emission>  block emmission level [1-15]
   -t, --table                create a loot table
   -g, --geo                  create a custom geo
   -h, --help                 display help for command
@@ -174,13 +177,13 @@ Options:
 ### Example(s)
 ---
 ```
-bed new block --lang ldz:test_block
+bed new block ldz:test_block
 ```
-This creates a new simple block with an empty loot table and a lang file reference. A block file, as well as a texture and terrain_texture entity are generated.
+This creates a new simple block with an empty loot table and a lang file reference. A block file, as well as a texture and terrain_texture entry are generated.
 
 ---
 ```
-bed new block --emissive 1.0 --table --lang ldz:test_lit_block
+bed new block --emissive 15 --table --lang ldz:test_lit_block
 ```
 This creates a new block that emits light level 15, a new loot table that drops itself, along with everything listed in the above example.
 
@@ -331,8 +334,9 @@ Arguments:
 Options:
   -c, --commands <commands>        the function commands, seperated by ";"
   -n, --number <number>            the number of times commands should be created in the files (default: "1")
-  -d, --description <description>  the description of the function to be used as a comment
+  -d, --description <description>  the description of the function, used as a comment
   -s, --source <source>            where is this function called from, used as a comment
+  -o, --origin <origin>            who is @s within this function, used as a comment
   -h, --help                       display help for command
 ```
 ### Example(s)
@@ -344,17 +348,19 @@ This creates a new function at `BP/functions/foo.mcfunction` with the defaults, 
 ```mcfunction
 ## FOO
 ## CALLED FROM ???
+## @S = ???
 
 say foo
 ```
 ---
 ```
-bed new function --description "A test function" --source "a developer" --commands "execute as @s[tag=dev] run say this is a test" admin/test
+bed new function --description "A test function" --source "a developer" --origin player --commands "execute as @s[tag=dev] run say this is a test" admin/test
 ```
 Here we specify the function's description, where it's called from, and what command it should run. Additionally we specify the folder it should go in, so at `BP/functions/admin/test.mcfunction` we have:
 ```mcfunction
 ## A TEST FUNCTION
 ## A DEVELOPER FUNCTION
+## @S = PLAYER
 
 execute as @s[tag=dev] run say this is a test
 ```
@@ -367,6 +373,7 @@ This creates a function at `BP/functions/player/set_count` where the two command
 ```mcfunction
 ## SET_COUNT
 ## CALLED FROM ???
+## @S = ???
 
 scoreboard players set @s Count 1
 say My score is 1
@@ -1006,11 +1013,12 @@ Export selected world as .mcworld.
 Usage: bed world export [options] <index>
 
 Arguments:
-  index        index of world to export
+  name|index                the name or index of world to add packs to
 
 Options:
-  -p, --packs  package the world's behavior and resource packs
-  -h, --help   display help for command
+  -p, --packs               package the world's behavior and resource packs
+  -t, --type <export type>  what format should be exported (choices: "world", "template", default: "world")
+  -h, --help                display help for command
 ```
 ### Example(s)
 ---
@@ -1036,7 +1044,7 @@ Attach packs to world. You can specify a behavior pack and resource pack to add,
 Usage: bed world packs [options] <index>
 
 Arguments:
-  index                        index of world to add packs to
+  name|index                   the name or index of world to add packs to
 
 Options:
   -b, --bpack <folder name>    the name of the behavior pack to add
@@ -1080,6 +1088,9 @@ Options:
   -t, --test                   create a test world with pre-configured gamerules
   -f, --flat                   create a flat world
   -m, --mode <gamemode>        gamemode (choices: "0", "1", "2", "3", "survival", "creative", "adventure", "spectator")
+  -b, --bpack <folder name>    the name of the behavior pack to add
+  -r, --rpack <folder name>    the name of the resource pack to add
+  -e, --experimental [toggle]  turn on experimental toggle (choices: "beta-api", "holiday-creator", preset: "beta-api")
   -h, --help                   display help for command
 ```
 ### Example(s)

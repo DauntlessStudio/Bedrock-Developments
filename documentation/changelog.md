@@ -1,5 +1,26 @@
 # Changelog
 ---
+## [2.0.0] - 3/7/2023
+Major refactoring, bug fixes, and improvements across the board.
+## Added
+- The `bed new entity --type projectile` option has been added. This will automatically create an entity that can be fired as a projectle.
+- The `bed new item --type usable` option has been added. This will automatically create a new function, and a player animation controller that will invoke that function when using the item.
+- The `bed new function --origin` option has been added, this provides a comment specifying who @s is withing the function context.
+- The `bed world export --type` option has been added, and can be specified as `world` or `template` to create a `.mcworld` or `.mctemplate` file respectively.
+- The `bed world new` subcommand now has the additional options: `--bpack`, `--rpack`, and `--experimental` to streamline the process of adding packs to a new world.
+- Any command that writes a `.json` file now supports the `$n` keyword, replacing instances where `$n` appears with the filename. For example `bed entity --file **/*.json --overwrite {minecraft:type_family:{family:[\"$n\"]}}` would overwrite the family type of every entity in the project with the name of its file.
+## Changed
+- The `bed new entity --type` option has been updated to accept full words rather than single characters.
+- The `bed new entity` command will now automatically create a placeholder spawn egg texture when used with the `passive` or `hostile` `--type` options.
+- The `bed new item --type projectile` option now will automatically create a new projectile entity, a player animation controller to detect interacting with the item, and a component group to spawn the new projectile on the player. 
+- The `bed world export` and `bed world packs` commands now accept either and index or a world name to target the world. When using a name, it will target the first name in the worlds folder who's levelname.txt file matches the argument.
+- Any command that writes an entry to `en_US.lang` will no longer add an entry if that entry is already present in the file.
+- Many functions exposed to the API have had their parameters re-written to use interfaces. This is a breaking change.
+- The `bed new block --emissive` argument now accepts values `[1-15]` instead of `[0.0-1.0]` to match the new `minecraft:light_emission` key that replaced the old `minecraft:block_light_emission` in block files.
+## Fixed
+- Fixed issue where worlds created with `bed new world` always had a seed of 0.
+- Fixed issue where temporary folders created with `bed new world` weren't properly cleaned up.
+---
 ## [1.3.0] - 3/7/2023
 Added world subcommands, bug fixes.
 ## Added
