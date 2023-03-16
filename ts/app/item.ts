@@ -153,7 +153,7 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
 
 function setBehaviorItemBasics(item: any, name: nameObject, stack: number) {
     item['minecraft:item']['description']['identifier'] = name.fullname;
-    item['minecraft:item']['components']['minecraft:max_stack_size'] = stack;
+    item['minecraft:item']['components']['minecraft:max_stack_size'] = Number(stack);
 }
 
 function setResourceItemBasics(item: any, name: nameObject) {
@@ -264,7 +264,7 @@ async function createComplexAttachable(name_str: string) {
         const state_list = Object.keys(animation_controller['animation_controllers']['controller.animation.player.custom_item.select']['states']);
         for (const state of state_list) {
             const transitions = state_list.
-            filter(val => val.includes(state)).
+            filter(val => val !== state).
             map(val => {
                 const variable = val.includes('no_item') ? '!v.has_custom_item' : `v.${val}`;
                 return {[val]: variable};
