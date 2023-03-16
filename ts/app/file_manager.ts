@@ -85,9 +85,10 @@ export async function readJSONFromPath(path: string, default_path: string='') {
  */
 export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false, log_exists: boolean=true) {
     makeDirectory(path);
+    const filename = Path.basename(path).split('.').shift();
 
     if (!fs.existsSync(path) || overwrite) {
-        fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent));
+        fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent).replace(/\$[nN]/g, filename!));
         console.log(`${chalk.green(`Wrote JSON to: ${path}`)}`);
     }else if (log_exists) {
         console.log(`${chalk.red(`File already existed at ${path}`)}`);
