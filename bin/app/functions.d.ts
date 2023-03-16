@@ -1,1 +1,7 @@
-export declare function createNewFunction(names: string[], commands: string, number: number, description: string | undefined, source: string | undefined, origin: string | undefined): Promise<void>;
+interface functionOptions {
+    description?: string;
+    source?: string;
+    origin?: string;
+}
+export declare function createNewFunction(names: string[], commands: string, number: number, options: functionOptions): Promise<void>;
+export {};

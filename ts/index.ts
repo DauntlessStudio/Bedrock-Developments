@@ -288,7 +288,7 @@ async function triggerCreateNewFunction(names: string[], options: OptionValues) 
   const description = options.description;
   const source = options.source;
   const origin = options.origin;
-  await Function.createNewFunction(names, commands, number, description, source, origin);
+  await Function.createNewFunction(names, commands, number, {description: description, source: source, origin: origin});
 }
 
 async function triggerEntityAddAnim(names: string[], options: OptionValues) {
