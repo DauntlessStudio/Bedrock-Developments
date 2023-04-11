@@ -6,6 +6,7 @@ import * as Item from './app/item';
 import * as Block from './app/block';
 import * as Animation from './app/animations';
 import * as Function from './app/functions';
+import * as Sound from './app/sounds';
 import * as Package from './app/package_manager';
 import * as World from './app/world';
 import axios from 'axios';
@@ -22,7 +23,7 @@ program
   .on('option:bpath', Global.setBehaviorPath)
   .option('-i, --indent <number>', 'set indent tabs level for JSON files', '1')
   .on('option:indent', Global.setIndentLevel)
-  .version(version, '-v, --version')
+  .version(version, '-V, --version')
   .action(printVersion)
 
 // #region New Commands
@@ -89,6 +90,15 @@ createNew.command('function')
   .option('-o, --origin <origin>', 'who is @s within this function, used as a comment')
   .addHelpText('before', 'special characters can be used to provide additional formatting. $(F)f inserts the filename into the command, $(I)i inserts the index of the batch generated command')
   .action(triggerCreateNewFunction)
+  .hook('postAction', printVersion);
+
+createNew.command('sound')
+  .description('creates a new sound definition')
+  .argument('<names...>', 'definition names as category.sound')
+  .addOption(new Option('-c, --category <category>', 'the sound category').choices(Object.keys(Sound.soundCategory)).default(Sound.soundCategory.neutral))
+  .option('-f, --filepath <filepath>', 'the filepath to use for this sound, if a directory is specified it will use all files in that directory')
+  .option('-v, --vanilla <vanilla definition>', 'the name of a vanilla sound definition, this will create a copy of the vanilla definition using the new name')
+  .action(triggerCreateNewSoundDefinition)
   .hook('postAction', printVersion);
 
 createNew.command('vanilla')
@@ -279,6 +289,14 @@ async function triggerCreateNewController(names:string[], options: OptionValues)
   const query = options.query;
   const transition = options.transition;
   await Animation.createNewController(names, entry, exit, anim, query, transition);
+}
+
+async function triggerCreateNewSoundDefinition(names: string[], options: OptionValues) {
+  await setPaths();
+  const category = options.category;
+  const vanilla = options.vanilla;
+  const filepath = options.filepath;
+  await Sound.createNewSoundDefinition(names, {category: category, vanilla: vanilla, filepath: filepath});
 }
 
 async function triggerCreateNewFunction(names: string[], options: OptionValues) {
