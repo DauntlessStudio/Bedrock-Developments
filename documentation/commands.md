@@ -9,6 +9,7 @@ Comprehensive list of all commands, with example uses.
         - [Create New Animation (new anim)](#create-new-animation)
         - [Create New Animation Controller (new ctrl)](#create-new-animation-controller)
         - [Create New Function (new function)](#create-new-function)
+        - [Create New Sound Definition (new sound)](#create-new-sound)
         - [Import Vanilla Entity (new vanilla)](#import-vanilla-entity)
     - [Modify Entities (entity)](#modify-entities)
         - [Add Animations To Entities (entity anim)](#add-animations-to-entities)
@@ -396,6 +397,65 @@ say My score is 9
 scoreboard players set @s Count 10
 say My score is 10
 ...
+```
+
+&nbsp;
+
+---
+## Create New Sound
+Creates new Bedrock sound definition entries.
+```
+Usage: bed new sound [options] <names...>
+
+Arguments:
+  names                               definition names as category.sound
+
+Options:
+  -c, --category <category>           the sound category (choices: "ambient", "block", "bottle", "bucket", "hostile", "music", "neutral", "player", "record", "ui", "weather", default: "neutral")
+  -f, --filepath <filepath>           the filepath to use for this sound, if a directory is specified it will use all files in that directory
+  -v, --vanilla <vanilla definition>  the name of a vanilla sound definition, this will create a copy of the vanilla definition using the new name
+  -h, --help                          display help for command
+```
+### Example(s)
+---
+```
+bed new sound --filepath sounds/custom_mob/hurt custom_mob.hurt
+```
+This creates a sound definition called `custom_mob.hurt` that references all of the sounds in `sounds/custom_mob/hurt`.
+
+---
+```
+bed new sound --vanilla ambient.soulsand_valley.mood custom.mood
+```
+Here we specify the vanilla sound definition of `ambient.soulsand_valley.mood` should be used as a base. The resulting definition is: 
+```json
+{
+	"custom.mood": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/ambient/nether/soulsand_valley/mood1",
+				"volume": 1,
+				"pitch": 1
+			},
+			{
+				"name": "sounds/ambient/nether/soulsand_valley/mood2",
+				"volume": 1,
+				"pitch": 1
+			},
+			{
+				"name": "sounds/ambient/nether/soulsand_valley/mood3",
+				"volume": 1,
+				"pitch": 1
+			},
+			{
+				"name": "sounds/ambient/nether/soulsand_valley/mood4",
+				"volume": 1,
+				"pitch": 1
+			}
+		]
+	}
+}
 ```
 
 &nbsp;

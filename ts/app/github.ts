@@ -1,5 +1,4 @@
 import { Octokit } from 'octokit';
-import * as axios from 'axios';
 
 export async function requestGet(path: string) {
     let octokit = new Octokit({
@@ -32,13 +31,19 @@ export async function requestURL(url: string) {
     return await octokit.request(url, {});
 }
 
-export async function requestVanilla(file: string, dir: string|undefined = undefined) {
+export async function requestVanilla(file: string, dir: string) {
+    let octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN
+    });
+
     try {
-        dir = dir ? `+path:${dir}`: '';
-        let response = await axios.default.get(`https://api.github.com/search/code?q=+repo:Mojang/bedrock-samples+filename:${file}${dir}`);
-        
-        return response.data.items;
+        await octokit.rest.users.getAuthenticated();
     } catch (error) {
-        console.log(error);
+        throw error;
     }
+    
+    return (await octokit.request(`GET /search/code`, {
+        q: encodeURI(`minecraft+repo:Mojang/bedrock-samples+path:${dir}+filename:${file}`),
+        per_page: 999
+    })).data.items;
 }

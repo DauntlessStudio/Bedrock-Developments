@@ -22,14 +22,7 @@ interface pathOptions {
     target_path: string,
 }
 
-/**
- * @remarks gets json files from a blob pattern
- * @param path the path to the source file
- * @param default_path the path to the default source file if path is invalid
- * @returns a list of files matching the glob
- */
-export async function readJSONFromGlob(path: string, default_path: string='') {
-    // path to glob
+export async function getFilesFromGlob(path: string) {
     path = path.replace(/\/|\\+/g, '/');
     const glob_files = new Promise<string[]>((resolve, reject) => {
         glob.glob(path, function (error, glob_files) {
@@ -39,7 +32,18 @@ export async function readJSONFromGlob(path: string, default_path: string='') {
             resolve(glob_files);
         });
     });
-    let files = await glob_files;
+
+    return await glob_files;
+}
+
+/**
+ * @remarks gets json files from a blob pattern
+ * @param path the path to the source file
+ * @param default_path the path to the default source file if path is invalid
+ * @returns a list of files matching the glob
+ */
+export async function readJSONFromGlob(path: string, default_path: string='') {
+    let files = await getFilesFromGlob(path);
 
     if (!files.length) {
         files = [default_path];

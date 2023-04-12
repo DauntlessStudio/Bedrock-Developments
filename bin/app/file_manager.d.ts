@@ -8,6 +8,7 @@ interface pathOptions {
     default_path?: string;
     target_path: string;
 }
+export declare function getFilesFromGlob(path: string): Promise<string[]>;
 /**
  * @remarks gets json files from a blob pattern
  * @param path the path to the source file

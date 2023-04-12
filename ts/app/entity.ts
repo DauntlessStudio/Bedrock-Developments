@@ -6,6 +6,7 @@ import * as JSONC from 'comment-json';
 import mergeDeep from './merge_deep';
 import { createNewAnimation, createNewClientAnimation, createNewController } from './animations';
 import {writeToItemTextureFromObjects } from './item';
+import path from 'path';
 
 export enum entityType {
     dummy='dummy',
@@ -117,26 +118,34 @@ export async function createVanillaEntity(names: string[], client: boolean, serv
     try {
         for (const name of names) {
             if (server) {
-                let files = await requestVanilla(name, 'behavior_pack/entities');
+                const files = await requestVanilla(path.basename(name), `behavior_pack/entities`);
                 for (const file of files) {
-                    let data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
-                    writeFileFromJSON(file.path.replace('behavior_pack/', Global.project_bp), JSONC.parse(data.data), false, false);
+                    const data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
+                    writeFileFromJSON(file.path.replace('behavior_pack/', Global.project_bp), JSONC.parse(data.data), false, true);
+                }
+
+                if (!files.length) {
+                    console.log(`${Global.chalk.red(`Couldn't Find Files Matching behavior_pack/${name}`)}`);
                 }
             }
 
             if (client) {
-                let files = await requestVanilla(name, 'resource_pack/entity');
+                const files = await requestVanilla(path.basename(name), `resource_pack/entity`);
                 for (const file of files) {
                     if (file.name.includes('v1.0')) {
                         continue;
                     }
-                    let data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
-                    writeFileFromJSON(file.path.replace('resource_pack/', Global.project_rp), JSONC.parse(data.data), false, false);
+                    const data = await requestURL(`https://raw.githubusercontent.com/Mojang/bedrock-samples/main/${file.path}`);
+                    writeFileFromJSON(file.path.replace('resource_pack/', Global.project_rp), JSONC.parse(data.data), false, true);
+                }
+
+                if (!files.length) {
+                    console.log(`${Global.chalk.red(`Couldn't Find Files Matching resource_pack/${name}`)}`);
                 }
             }
         }
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
