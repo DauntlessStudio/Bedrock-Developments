@@ -1,5 +1,15 @@
 # Changelog
 ---
+## [2.1.0] - 4/12/2023
+New Command, Bug Fixes.
+## Added
+- The `bed new sound` command has been added, allowing quick creation of sound definitions.
+## Changed
+- The `bed -v` argument has been changed to `bed -V` to prevent a bug that would cause the `-v` arguments in `bed new sound` and `bed entity property add` to display the version rather than perform the command.
+## Fixed
+- Fixed issue where `bed new vanilla` no longer worked after a GitHub API update.
+- Fixed issue where `bed new vanilla *.json` would only grab about 20 entities.
+---
 ## [2.0.0] - 3/7/2023
 Major refactoring, bug fixes, and improvements across the board.
 ## Added
