@@ -17,7 +17,7 @@ export enum entityType {
 
 interface fileOptions {
     file: string,
-    family?: string,
+    family?: string[],
 }
 
 interface newEntityOptions {
@@ -206,13 +206,14 @@ export async function entityAddGroup(group: string, file_options: fileOptions) {
     }
 
     const success = await modifyAndWriteGlob(`${Global.project_bp}entities/${file_options.file}`, (entity: any) => {
-        if (file_options.family && !isEntityFamilyType(entity.json, file_options.family)) {
+        if (file_options.family && !isEntityFamilyType(entity, file_options.family)) {
             console.log(`${Global.chalk.red(`${entity['minecraft:entity']['description']['identifier']} didn't include family type: ${file_options.family}`)}`);
             return false;
         }
 
         for (const key of Object.keys(group_json)) {
             entity['minecraft:entity']['component_groups'] ||= {};
+            entity['minecraft:entity']['events'] ||= {};
             const component_group = {...group_json[key]};
 
             // check if we should merge with source
@@ -251,7 +252,7 @@ export async function entityAddComponent(component: string, file_options: fileOp
     }
 
     const success = await modifyAndWriteGlob(`${Global.project_bp}entities/${file_options.file}`, (entity: any) => {
-        if (file_options.family && !isEntityFamilyType(entity.json, file_options.family)) {
+        if (file_options.family && !isEntityFamilyType(entity, file_options.family)) {
             console.log(`${Global.chalk.red(`${entity['minecraft:entity']['description']['identifier']} didn't include family type: ${file_options.family}`)}`);
             return false;
         }
@@ -286,7 +287,7 @@ export async function entityAddDamageSensor(sensor: string, file_options: fileOp
     }
 
     const success = await modifyAndWriteGlob(`${Global.project_bp}entities/${file_options.file}`, (entity: any) => {
-        if (file_options.family && !isEntityFamilyType(entity.json, file_options.family)) {
+        if (file_options.family && !isEntityFamilyType(entity, file_options.family)) {
             console.log(`${Global.chalk.red(`${entity['minecraft:entity']['description']['identifier']} didn't include family type: ${file_options.family}`)}`);
             return false;
         }
@@ -335,7 +336,7 @@ export async function entityAddProperty(names: string[], file_options: fileOptio
     values = property_object.values;
 
     const success = await modifyAndWriteGlob(`${Global.project_bp}entities/${file_options.file}`, (entity: any) => {
-        if (file_options.family && !isEntityFamilyType(entity.json, file_options.family)) {
+        if (file_options.family && !isEntityFamilyType(entity, file_options.family)) {
             console.log(`${Global.chalk.red(`${entity['minecraft:entity']['description']['identifier']} didn't include family type: ${file_options.family}`)}`);
             return false;
         }
@@ -372,7 +373,7 @@ export async function entityAddPropertyEvent(values: string[], file_options: fil
     const name = getNameObject(property);
 
     const success = await modifyAndWriteGlob(`${Global.project_bp}entities/${file_options.file}`, (entity: any) => {
-        if (file_options.family && !isEntityFamilyType(entity.json, file_options.family)) {
+        if (file_options.family && !isEntityFamilyType(entity, file_options.family)) {
             console.log(`${Global.chalk.red(`${entity['minecraft:entity']['description']['identifier']} didn't include family type: ${file_options.family}`)}`);
             return false;
         }
@@ -521,9 +522,9 @@ function createPropertyObject(property: string, values: string[] | undefined, cl
     return { object, values };
 }
 
-export function isEntityFamilyType(entity: any, family: string) {
+export function isEntityFamilyType(entity: any, family: string[]) {
     try {
-        if (entity['minecraft:entity']['components']['minecraft:type_family']['family'].includes(family)) {
+        if (family.every(family_type => entity['minecraft:entity']['components']['minecraft:type_family']['family'].includes(family_type))) {
             return true;
         }
         return false;

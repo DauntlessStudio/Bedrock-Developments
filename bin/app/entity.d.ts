@@ -6,7 +6,7 @@ export declare enum entityType {
 }
 interface fileOptions {
     file: string;
-    family?: string;
+    family?: string[];
 }
 interface newEntityOptions {
     client?: boolean;
@@ -80,5 +80,5 @@ export declare function entityAddProperty(names: string[], file_options: fileOpt
  * @param event the name of the event to create
  */
 export declare function entityAddPropertyEvent(values: string[], file_options: fileOptions, property: string, event: string | undefined): Promise<void>;
-export declare function isEntityFamilyType(entity: any, family: string): boolean;
+export declare function isEntityFamilyType(entity: any, family: string[]): boolean;
 export {};

@@ -520,7 +520,7 @@ Arguments:
   names                     animation names as "entity.anim"
 
 Options:
-  -t, --type <family type>  filter entities by family type
+  -t, --type <family type...>  filter entities by family type
   -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -s, --script              should these animations be added to script
   -c, --create [anim type]  create the animation as well (choices: "ctrl", "anim", preset: "ctrl")
@@ -556,7 +556,7 @@ Arguments:
   component                 the component as a json object {minecraft:is_baby:{}}
 
 Options:
-  -t, --type <family type>  filter entities by family type
+  -t, --type <family type...>  filter entities by family type
   -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -o, --overwrite           should the new component overwrite the old one rather than merge with it?
   -h, --help                display help for command
@@ -610,7 +610,7 @@ Arguments:
   group                     the component group as a json object {group_name:{minecraft:is_baby:{}}}
 
 Options:
-  -t, --type <family type>  filter entities by family type
+  -t, --type <family type...>  filter entities by family type
   -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -h, --help                display help for command
 ```
@@ -668,7 +668,7 @@ Arguments:
   sensor                    the damage sensor as a json object {cause: \"all\", deals_damage: false}
 
 Options:
-  -t, --type <family type>  filter entities by family type
+  -t, --type <family type...>  filter entities by family type
   -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
   -s, --start               adds the new sensor to the start of the array, rather than the end
   -h, --help                display help for command

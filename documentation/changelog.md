@@ -1,5 +1,13 @@
 # Changelog
 ---
+## [2.1.1] - 5/4/2023
+Bug Fixes, Argument Change.
+## Changed
+- The `bed entity --type` argument has been changed from accepting a single string for \<family type\> to instead accept an array of strings \<family type...\>. For an entity to be selected by this filter it must include **all** of the provided family types.
+## Fixed
+- Fixed issue where `bed entity --type` would not work for most entity commands.
+- Fixed issue where `bed entity group` would fail if used on an entity without an event property.
+---
 ## [2.1.0] - 4/12/2023
 New Command, Bug Fixes.
 ## Added
