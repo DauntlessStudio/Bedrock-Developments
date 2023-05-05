@@ -12,7 +12,7 @@ import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '2.1.1'
+const version = '2.2.1'
 
 program
   .name('bed')
@@ -128,6 +128,7 @@ entity.command('group')
   .argument('<group>', 'the component group as a json object {group_name:{minecraft:is_baby:{}}}')
   .option('-t, --type <family type...>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
+  .option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
   .action(triggerEntityAddGroup)
   .hook('postAction', printVersion);
 
@@ -322,7 +323,8 @@ async function triggerEntityAddGroup(group: string, options: OptionValues) {
   await setPaths();
   const family = options.type;
   const file = options.file;
-  await Entity.entityAddGroup(group, {family: family, file: file});
+  const overwrite = options.overwrite;
+  await Entity.entityAddGroup(group, {family: family, file: file}, overwrite);
 }
 
 async function triggerEntityAddComponent(component: string, options: OptionValues) {

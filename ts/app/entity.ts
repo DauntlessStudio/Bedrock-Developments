@@ -199,7 +199,7 @@ export async function entityAddAnim(names: string[], file_options: fileOptions, 
  * @param file_options the options for finding files
  * @returns void
  */
-export async function entityAddGroup(group: string, file_options: fileOptions) {
+export async function entityAddGroup(group: string, file_options: fileOptions, overwrite: boolean) {
     let group_json: any = parseConsoleJSONString(group);
     if (!group_json) {
         return;
@@ -214,9 +214,9 @@ export async function entityAddGroup(group: string, file_options: fileOptions) {
         for (const key of Object.keys(group_json)) {
             entity['minecraft:entity']['component_groups'] ||= {};
             entity['minecraft:entity']['events'] ||= {};
-            const component_group = {...group_json[key]};
+            let component_group = {...group_json[key]};
 
-            // check if we should merge with source
+            // check if we should merge each component in the group with source from entity/components
             for (const child of Object.keys(group_json[key])) {
                 const clean_child = child.replace('$', '');
                 if (child.startsWith('$')) {
@@ -225,6 +225,12 @@ export async function entityAddGroup(group: string, file_options: fileOptions) {
                     delete component_group[child];
                     component_group[clean_child] = child_component;
                 }
+            }
+
+            // check if the component group already exists and if we sould merge with it
+            if (!overwrite && entity['minecraft:entity']['component_groups'][key]) {
+                console.log(`Found ${key} to merge with`);
+                component_group = mergeDeep(entity['minecraft:entity']['component_groups'][key], component_group);
             }
 
             jsonJoin(entity['minecraft:entity']['component_groups'], {[key]: component_group})

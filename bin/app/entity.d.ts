@@ -44,7 +44,7 @@ export declare function entityAddAnim(names: string[], file_options: fileOptions
  * @param file_options the options for finding files
  * @returns void
  */
-export declare function entityAddGroup(group: string, file_options: fileOptions): Promise<void>;
+export declare function entityAddGroup(group: string, file_options: fileOptions, overwrite: boolean): Promise<void>;
 /**
  * @remarks adds/modifies components on an an entity
  * @param component the component to add/modify as a string that will be parsed to json
