@@ -129,6 +129,8 @@ entity.command('group')
   .option('-t, --type <family type...>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
   .option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
+  .option('--no-add', 'do not add an "add" event')
+  .option('--no-remove', 'do not add an "remove" event')
   .action(triggerEntityAddGroup)
   .hook('postAction', printVersion);
 
@@ -324,7 +326,9 @@ async function triggerEntityAddGroup(group: string, options: OptionValues) {
   const family = options.type;
   const file = options.file;
   const overwrite = options.overwrite;
-  await Entity.entityAddGroup(group, {family: family, file: file}, overwrite);
+  const add_event = options.add
+  const remove_event = options.remove
+  await Entity.entityAddGroup(group, {family: family, file: file}, {overwrite, add_event, remove_event});
 }
 
 async function triggerEntityAddComponent(component: string, options: OptionValues) {
