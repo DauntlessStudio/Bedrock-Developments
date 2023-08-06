@@ -27,6 +27,8 @@ Comprehensive list of all commands, with example uses.
         - [Export World (world export)](#export-world)
         - [Add Packs To World (world packs)](#add-packs-to-world)
         - [Create New World (world new)](#create-new-world)
+    - [Edit Sounds (sounds)](#edit-sounds)
+      - [Format Sounds (sounds format)](#format-sounds)
 
 ## General Usage
 CLI to assist Minecraft Bedrock Development. This is the root command, and all other commands are subcommands of this. At the root, you can specify certain paramaters that are globally used, like the paths to the Behavior Pack and Resource Pack, or the indent level for files.
@@ -607,12 +609,15 @@ Adds a component group to entities. This accepts a JSON object that will get add
 Usage: bed entity group [options] <group>
 
 Arguments:
-  group                     the component group as a json object {group_name:{minecraft:is_baby:{}}}
+  group                        the component group as a json object {group_name:{minecraft:is_baby:{}}}
 
 Options:
   -t, --type <family type...>  filter entities by family type
-  -f, --file [file]         the entity files that should be modified (preset: "**/*.json")
-  -h, --help                display help for command
+  -f, --file [file]            the entity files that should be modified (preset: "**/*.json")
+  -o, --overwrite              should the new component group overwrite the old one rather than merge with it
+  --no-add                     do not add an "add" event
+  --no-remove                  do not add an "remove" event
+  -h, --help                   display help for command
 ```
 ### Example(s)
 ---
@@ -639,7 +644,7 @@ Invalid JSON: {new_loot:{minecraft:loot:{table:loot_tables/custom.json}}}
 ```
 ___
 ```
-bed entity group {new_group:{$minecraft:type_family:{family:[\"test\"]}}} --file
+bed entity group {new_group:{minecraft:type_family:{family:[\"test\"]}}} --file
 ```
 The `$` decorator here tells the command to **merge** `minecraft:type_family` from the source file rather than overwrite it, resulting in:
 ```json
@@ -1169,3 +1174,29 @@ Imports a new superflat, creative world with gamerule presets to turn off things
 &nbsp;
 
 ---
+
+## Edit Sounds
+Tools to modify Bedrock sounds
+```
+Usage: bed sounds [options] [command]
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  format          formats the sound_definitions.json file
+  help [command]  display help for command
+```
+
+&nbsp;
+
+---
+
+## Format Sounds
+Formats the `RP/sounds/sound_definitions.json` file. Alphabetizing the sounds, onelining them, adding a volume and pitch property to sounds that don't have it, organizes the keys consistently, and ensures that at least one sound has `load_on_low_memory: true`.
+```
+Usage: bed sounds format [options]
+
+Options:
+  -h, --help  display help for command
+```
