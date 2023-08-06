@@ -239,6 +239,16 @@ world.command('new')
 
 // #endregion
 
+// #region Sounds Commands
+let sounds = program.command('sounds')
+  .description('modifies bedrock sounds');
+
+sounds.command('format')
+  .description('formats the sound_definitions.json file')
+  .action(triggerSoundsFormat)
+  .hook('postAction', printVersion);
+// #endregion
+
 program.parse();
 
 async function setPaths() {
@@ -429,6 +439,11 @@ async function triggerWorldsPacks(world: string, options: OptionValues) {
 
 async function triggerWorldsNew(name: string, options: OptionValues) {
   World.worldNew(name, {behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental, testworld: options.test, flatworld: options.flat, gamemode: options.mode});
+}
+
+async function triggerSoundsFormat(name: string, options: OptionValues) {
+  await setPaths();
+  await Sound.soundsFormat();
 }
 // #endregion
 

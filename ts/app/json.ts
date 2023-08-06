@@ -1,5 +1,4 @@
 import * as Global from './globals';
-import { integer } from './sounds';
 
 
 export function customStringify(object: any) {
@@ -30,9 +29,8 @@ export function customStringify(object: any) {
 			//Number
 			obj = (Math.round(obj*100000)/100000).toString()
 			out += obj + (obj % 1 != 0 ? '' : '.0');
-		} else if (obj instanceof integer) {
+		} else if (obj instanceof Global.integer) {
 			//Integer
-            console.log('Int')
 			obj = (Math.round(obj.int)).toString()
 			out += obj;
         } else if (obj instanceof Array) {
