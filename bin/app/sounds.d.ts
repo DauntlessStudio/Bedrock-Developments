@@ -16,5 +16,9 @@ interface soundDefinitionOptions {
     vanilla?: string;
     filepath?: string;
 }
+export declare class integer {
+    int: number;
+    constructor(int: number);
+}
 export declare function createNewSoundDefinition(names: string[], options: soundDefinitionOptions): Promise<void>;
 export {};

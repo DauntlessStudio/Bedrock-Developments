@@ -29,7 +29,7 @@ export declare function readJSONFromPath(path: string, default_path?: string): P
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean, log_exists?: boolean): void;
+export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean, log_exists?: boolean, customWrite?: boolean): void;
 /**
  * @remarks reads a json file, modifies it with the callback, and writes it to the target path
  * @param path_options the source and target paths
@@ -39,6 +39,7 @@ export declare function writeFileFromJSON(path: string, json: any, overwrite?: b
 export declare function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {
     overwrite?: boolean;
     log_exists?: boolean;
+    custom_write?: boolean;
 }): Promise<void>;
 /**
  * @remarks reads a json file, modifies it with the callback, and writes it to the target path

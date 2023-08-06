@@ -5,6 +5,7 @@ import * as Chalk from 'chalk';
 import * as JSONC from 'comment-json';
 import * as archiver from 'archiver';
 import Path from 'path';
+import { customStringify } from './json';
 
 const chalk = new Chalk.Instance();
 export class jsonFile {
@@ -87,12 +88,16 @@ export async function readJSONFromPath(path: string, default_path: string='') {
  * @param json the json object to write
  * @param overwrite should the target file be overwritten
  */
-export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false, log_exists: boolean=true) {
+export function writeFileFromJSON(path: string, json: any, overwrite: boolean=false, log_exists: boolean=true, customWrite: boolean=false) {
     makeDirectory(path);
     const filename = Path.basename(path).split('.').shift();
 
     if (!fs.existsSync(path) || overwrite) {
-        fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent).replace(/\$[nN]/g, filename!));
+        if (customWrite) {
+            fs.writeFileSync(path, customStringify(json).replace(/\$[nN]/g, filename!));
+        } else {
+            fs.writeFileSync(path, JSONC.stringify(json, null, Global.indent).replace(/\$[nN]/g, filename!));
+        }
         console.log(`${chalk.green(`Wrote JSON to: ${path}`)}`);
     }else if (log_exists) {
         console.log(`${chalk.red(`File already existed at ${path}`)}`);
@@ -105,10 +110,10 @@ export function writeFileFromJSON(path: string, json: any, overwrite: boolean=fa
  * @param callback a callback to modify the json before writing
  * @param write_options additional options for how the file should be written
  */
-export async function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {overwrite?: boolean, log_exists?: boolean}) {
+export async function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {overwrite?: boolean, log_exists?: boolean, custom_write?: boolean}) {
     const json_file = await readJSONFromPath(path_options.source_path, path_options.default_path)
     await callback(json_file.json);
-    writeFileFromJSON(path_options.target_path, json_file.json, write_options?.overwrite, write_options?.log_exists)
+    writeFileFromJSON(path_options.target_path, json_file.json, write_options?.overwrite, write_options?.log_exists, write_options?.custom_write)
 }
 
 /**
