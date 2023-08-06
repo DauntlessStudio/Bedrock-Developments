@@ -44,30 +44,29 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
     for (const name of names_list) {
         switch (type) {
             case itemType.armor_set:
-                await createArmorPiece(armorPiece.helmet, name);
-                await createArmorPiece(armorPiece.chestplate, name);
-                await createArmorPiece(armorPiece.leggings, name);
-                await createArmorPiece(armorPiece.boots, name);
+                await createArmorPiece(armorPiece.helmet, name, lang);
+                await createArmorPiece(armorPiece.chestplate, name, lang);
+                await createArmorPiece(armorPiece.leggings, name, lang);
+                await createArmorPiece(armorPiece.boots, name, lang);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
-                copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
                 return;
             case itemType.helmet: {
-                createArmorPiece(armorPiece.helmet, name);
+                createArmorPiece(armorPiece.helmet, name, lang);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
             case itemType.chestplate: {
-                createArmorPiece(armorPiece.chestplate, name);
+                createArmorPiece(armorPiece.chestplate, name, lang);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
             case itemType.leggings: {
-                createArmorPiece(armorPiece.leggings, name);
-                copyFile(`${Global.app_root}/src/attachables/armor/example_legs.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_legs.png`);
+                createArmorPiece(armorPiece.leggings, name, lang);
+                copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
             case itemType.boots: {
-                createArmorPiece(armorPiece.boots, name);
+                createArmorPiece(armorPiece.boots, name, lang);
                 copyFile(`${Global.app_root}/src/attachables/armor/example_main.png`, `${Global.project_rp}textures/models/armor/${name.shortname}_main.png`);
                 return;
             }
@@ -177,8 +176,8 @@ export async function writeToItemTextureFromObjects(objects: {name: string, path
     }, {overwrite: true});
 }
 
-async function createArmorPiece(piece: armorPiece, name: nameObject) {
-await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (item: any) => {
+async function createArmorPiece(piece: armorPiece, name: nameObject, lang: boolean) {
+    await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (item: any) => {
         setBehaviorItemBasics(item, name, 1);
         item['format_version'] = '1.16.100';
         item['minecraft:item']['description']['identifier'] = `${name.fullname}_${armor[piece].name}`;
@@ -199,10 +198,19 @@ await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.
     await modifyAndWriteFile({source_path: `${Global.app_root}/src/attachables/armor.json`, target_path: `${Global.project_rp}attachables/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (attachable: any) => {
         jsonJoin(attachable['minecraft:attachable']['description'], {
             ['identifier']: `${name.fullname}_${armor[piece].name}`,
-            ['textures']: {['default']: `textures/models/armor/${name.shortname}_main`},
-            ['geometry']: {['default']: `geometry.player.armor.${armor[piece].name}`},
+            ['textures']: {['default']: `textures/models/armor/${name.shortname}_main`, ['enchanted']: 'textures/misc/enchanted_item_glint'},
+            ['geometry']: {['default']: `geometry.player.${name.shortname}.armor.${armor[piece].name}`},
             ['scripts']: {['parent_setup']: `variable.${armor[piece].name}_layer_visible = 0.0;`},
         });
+    });
+
+    await modifyAndWriteFile({source_path: `${Global.app_root}/src/attachables/player_armor.geo.json`, target_path: `${Global.project_rp}models/entity/armor/${name.shortname}.geo.json`}, (armor: any) => {
+        for (const key of Object.keys(armor)) {
+            if (key.includes('geometry')) {
+                armor[key.replace(/\?/g, `${name.shortname}`)] = armor[key];
+                delete armor[key];
+            }
+        }
     });
 
     await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (item: any) => {
@@ -212,9 +220,11 @@ await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.
 
     copyFile(`${Global.app_root}/src/items/armor/example_${armor[piece].name}.png`, `${Global.project_rp}textures/items/${name.shortname}_${armor[piece].name}.png`);
 
-    writeToLang(`item.${name.fullname}_${armor[piece].name}.name=${name.displayname} ${armor[piece].display}`, 'item names');
-            
-    await writeToItemTextureFromObjects([{name: `name.shortname_${armor[piece].name}`, path: `textures/items/${name.pathname}${name.shortname}_${armor[piece].name}`}]);
+    if (lang) {
+        writeToLang(`item.${name.fullname}_${armor[piece].name}.name=${name.displayname} ${armor[piece].display}`, 'item names');
+    }
+    
+    await writeToItemTextureFromObjects([{name: `${name.shortname}_${armor[piece].name}`, path: `textures/items/${name.pathname}${name.shortname}_${armor[piece].name}`}]);
 }
 
 async function createComplexAttachable(name_str: string) {

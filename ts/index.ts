@@ -12,7 +12,7 @@ import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '2.1.1'
+const version = '2.2.1'
 
 program
   .name('bed')
@@ -128,6 +128,9 @@ entity.command('group')
   .argument('<group>', 'the component group as a json object {group_name:{minecraft:is_baby:{}}}')
   .option('-t, --type <family type...>', 'filter entities by family type')
   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
+  .option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
+  .option('--no-add', 'do not add an "add" event')
+  .option('--no-remove', 'do not add an "remove" event')
   .action(triggerEntityAddGroup)
   .hook('postAction', printVersion);
 
@@ -236,6 +239,16 @@ world.command('new')
 
 // #endregion
 
+// #region Sounds Commands
+let sounds = program.command('sounds')
+  .description('modifies bedrock sounds');
+
+sounds.command('format')
+  .description('formats the sound_definitions.json file')
+  .action(triggerSoundsFormat)
+  .hook('postAction', printVersion);
+// #endregion
+
 program.parse();
 
 async function setPaths() {
@@ -322,7 +335,10 @@ async function triggerEntityAddGroup(group: string, options: OptionValues) {
   await setPaths();
   const family = options.type;
   const file = options.file;
-  await Entity.entityAddGroup(group, {family: family, file: file});
+  const overwrite = options.overwrite;
+  const add_event = options.add
+  const remove_event = options.remove
+  await Entity.entityAddGroup(group, {family: family, file: file}, {overwrite, add_event, remove_event});
 }
 
 async function triggerEntityAddComponent(component: string, options: OptionValues) {
@@ -423,6 +439,11 @@ async function triggerWorldsPacks(world: string, options: OptionValues) {
 
 async function triggerWorldsNew(name: string, options: OptionValues) {
   World.worldNew(name, {behavior_pack: options.bpack, resource_pack: options.rpack, experimental: options.experimental, testworld: options.test, flatworld: options.flat, gamemode: options.mode});
+}
+
+async function triggerSoundsFormat(name: string, options: OptionValues) {
+  await setPaths();
+  await Sound.soundsFormat();
 }
 // #endregion
 

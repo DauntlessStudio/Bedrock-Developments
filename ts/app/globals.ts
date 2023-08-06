@@ -11,6 +11,13 @@ export var project_rp = '**/resource_packs/*rp/';
 export var project_bp = '**/behavior_packs/*bp/';
 export var indent = '\t';
 
+export class integer {
+    int: number;
+    constructor(int: number) {
+        this.int = int;
+    }
+};
+
 function setRootPath() {
     if (path.resolve(process.cwd()).includes('world_template')) {
       project_root = path.resolve(process.cwd().split('world_template').shift() + '/world_template');

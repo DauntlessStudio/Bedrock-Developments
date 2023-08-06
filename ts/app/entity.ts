@@ -27,6 +27,12 @@ interface newEntityOptions {
     type?: entityType,
 }
 
+interface entityGroupOptions {
+    overwrite?: boolean,
+    add_event?: boolean
+    remove_event?: boolean
+}
+
 /**
  * @remarks creates a new entity
  * @param names the entity names
@@ -199,7 +205,7 @@ export async function entityAddAnim(names: string[], file_options: fileOptions, 
  * @param file_options the options for finding files
  * @returns void
  */
-export async function entityAddGroup(group: string, file_options: fileOptions) {
+export async function entityAddGroup(group: string, file_options: fileOptions, group_options: entityGroupOptions = {add_event: true, remove_event: true}) {
     let group_json: any = parseConsoleJSONString(group);
     if (!group_json) {
         return;
@@ -214,9 +220,9 @@ export async function entityAddGroup(group: string, file_options: fileOptions) {
         for (const key of Object.keys(group_json)) {
             entity['minecraft:entity']['component_groups'] ||= {};
             entity['minecraft:entity']['events'] ||= {};
-            const component_group = {...group_json[key]};
+            let component_group = {...group_json[key]};
 
-            // check if we should merge with source
+            // check if we should merge each component in the group with source from entity/components
             for (const child of Object.keys(group_json[key])) {
                 const clean_child = child.replace('$', '');
                 if (child.startsWith('$')) {
@@ -227,8 +233,15 @@ export async function entityAddGroup(group: string, file_options: fileOptions) {
                 }
             }
 
+            // check if the component group already exists and if we sould merge with it
+            if (!group_options.overwrite && entity['minecraft:entity']['component_groups'][key]) {
+                console.log(`Found ${key} to merge with`);
+                component_group = mergeDeep(entity['minecraft:entity']['component_groups'][key], component_group);
+            }
+
             jsonJoin(entity['minecraft:entity']['component_groups'], {[key]: component_group})
-            jsonJoin(entity['minecraft:entity']['events'], {[`add_${key}`]: {add: {component_groups: [key]}}, [`remove_${key}`]: {remove: {component_groups: [key]}}});
+            if (group_options.add_event) jsonJoin(entity['minecraft:entity']['events'], {[`add_${key}`]: {add: {component_groups: [key]}}});
+            if (group_options.remove_event) jsonJoin(entity['minecraft:entity']['events'], {[`remove_${key}`]: {remove: {component_groups: [key]}}});
         }
         return true;
     }, {overwrite: true});

@@ -17,4 +17,5 @@ interface soundDefinitionOptions {
     filepath?: string;
 }
 export declare function createNewSoundDefinition(names: string[], options: soundDefinitionOptions): Promise<void>;
+export declare function soundsFormat(): Promise<void>;
 export {};

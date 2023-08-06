@@ -1,4 +1,16 @@
-# Changelog
+# Changelog---
+## [2.2.1] - 8/6/2023
+Bug Fixes, New Arguments, New Command
+## Changes
+- The `bed new sound` command now performs the same formatting process as the new command `bed sounds format` after adding new sounds.
+- The `bed new item --type [armor_set | helmet | chestplate | leggings | boots]` command now creates armor set resource assets in formats that are easier for artists to modify.
+## Added
+- The `bed entity group --overwrite` argument has been added, changing the behavior from **merging** the new group with an old group of that name to **replacing** an old group of that name with the new group.
+- The `bed entity group --no-add` argument has been added, using this argument prevents the `bed entity group` command from automatically generating an `add_group` event.
+- The `bed entity group --no-remove` argument has been added, using this argument prevents the `bed entity group` command from automatically generating a `remove_group` event.
+- The `bed sounds format` command has been added, allowing quick formatting of the `sound_definitions.json` file; alphabetizing the sounds, adding in default volume and pitch arguments, and enforcing that at least one sound in the list will have `load_on_low_memory: true`.
+## Fixed
+- Fixed issue where `bed new item --type [armor_set | helmet | chestplate | leggings | boots]` would generate with some undesired values.
 ---
 ## [2.1.1] - 5/4/2023
 Bug Fixes, Argument Change.
