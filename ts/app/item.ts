@@ -29,10 +29,10 @@ enum armorPiece {
 }
 
 const armor = {
-    helmet: {name: 'helmet', slot: 'head', display: 'Helmet'},
-    chestplate: {name: 'chestplate', slot: 'chest', display: 'Chestplate'},
-    leggings: {name: 'leggings', slot: 'legs', display: 'Leggings'},
-    boots: {name: 'boots', slot: 'feet', display: 'Boots'},
+    helmet: {name: 'helmet', slot: 'head', display: 'Helmet', enchant_slot: 'head'},
+    chestplate: {name: 'chestplate', slot: 'chest', display: 'Chestplate', enchant_slot: 'torso'},
+    leggings: {name: 'leggings', slot: 'legs', display: 'Leggings', enchant_slot: 'legs'},
+    boots: {name: 'boots', slot: 'feet', display: 'Boots', enchant_slot: 'feet'},
 }
 
 const item_bp_template = `${Global.app_root}/src/items/template_bp.json`;
@@ -191,7 +191,7 @@ async function createArmorPiece(piece: armorPiece, name: nameObject, lang: boole
             ['minecraft:display_name']: {value: `item.${name.fullname}_${armor[piece].name}.name`},
             ['minecraft:icon']: {texture: `${name.shortname}_${armor[piece].name}`},
             ['minecraft:wearable']: {dispensable: true, slot: `slot.armor.${armor[piece].slot}`},
-            ['minecraft:enchantable']: {value: 10, slot: `armor_${armor[piece].slot}`},
+            ['minecraft:enchantable']: {value: 10, slot: `armor_${armor[piece].enchant_slot}`},
         })
     });
 

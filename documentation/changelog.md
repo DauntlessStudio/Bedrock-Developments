@@ -1,4 +1,9 @@
-# Changelog---
+# Changelog
+## [2.2.2] - 8/23/2023
+Bug Fixes
+## Fixed
+- Fixed issue where `bed new item --type [armor_set | chestplate]` would generate with an incorrect enchantment slot for chestpieces.
+---
 ## [2.2.1] - 8/6/2023
 Bug Fixes, New Arguments, New Command
 ## Changes
