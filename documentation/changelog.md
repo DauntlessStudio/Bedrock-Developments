@@ -1,4 +1,11 @@
 # Changelog
+## [2.2.3] - 12/13/2023
+File Generation Update
+## Changed
+- Items now generate with format version 1.20.30.
+- BP item files now use the `minecraft:icon` and `minecraft:display_name` properties. The RP item file is no longer generated.
+- Armor Items are now generated with the 1.20.30 format verison and properties as opposed to the experimental **Holidy Creator** options.
+---
 ## [2.2.2] - 8/23/2023
 Bug Fixes
 ## Fixed

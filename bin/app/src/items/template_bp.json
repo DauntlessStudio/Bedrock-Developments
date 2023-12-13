@@ -1,11 +1,17 @@
 {
-    "format_version": "1.10.0",
+    "format_version": "1.20.30",
     "minecraft:item": {
         "description": {
             "identifier": "namespace:template_item"
         },
         "components": {
-            "minecraft:max_stack_size": 64
+            "minecraft:max_stack_size": 64,
+			"minecraft:display_name": {
+				"value": "item.namespace:template_item.name"
+			},
+			"minecraft:icon": {
+				"texture": "template_item"
+			}
         }
     }
 }
