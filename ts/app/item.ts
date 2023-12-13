@@ -36,7 +36,6 @@ const armor = {
 }
 
 const item_bp_template = `${Global.app_root}/src/items/template_bp.json`;
-const item_rp_template = `${Global.app_root}/src/items/template_rp.json`;
 
 export async function createNewItem(names: string[], lang: boolean, stack: number=64, type: itemType) {
     const names_list = getNamesObjects(names);
@@ -76,9 +75,6 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
                     item['minecraft:item']['components']['minecraft:use_duration'] = 30000;
                     item['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
                 });
-                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    setResourceItemBasics(item, name);
-                });
 
                 await createVanillaEntity(['player.json'], false);
                 await createNewEntity([`projectile/${name.fullname}_projectile`], true, {geo: true, texture: true, type: entityType.projectile, client: true});
@@ -96,9 +92,6 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
                     item['minecraft:item']['components']['minecraft:use_duration'] = 30000;
                     item['minecraft:item']['components']['minecraft:food'] = {nutrition: 0, saturation_modifier: 'supernatural', can_always_eat: true};
                 });
-                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    setResourceItemBasics(item, name);
-                });
 
                 await createVanillaEntity(['player.json'], false);
                 await createNewFunction([`player/${name.shortname}`], `say ${name.shortname}`, 1, {description: `Runs when ${name.shortname} is used`, source: `controller.player.${name.shortname}`, origin: `player`});
@@ -114,17 +107,11 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
                     item['minecraft:item']['components']['minecraft:use_duration'] = 20;
                     item['minecraft:item']['components']['minecraft:food'] = {nutrition: 5, saturation_modifier: 'supernatural', can_always_eat: true};
                 });
-                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    setResourceItemBasics(item, name);
-                });
                 break;
             }
             case itemType.attachable || itemType.weapon: {
                 await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
                     setBehaviorItemBasics(item, name, stack);
-                });
-                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    setResourceItemBasics(item, name);
                 });
                 createComplexAttachable(name.fullname);
                 break;
@@ -132,9 +119,6 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
             default: {
                 await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
                     setBehaviorItemBasics(item, name, stack);
-                });
-                await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}.json`}, (item: any) => {
-                    setResourceItemBasics(item, name);
                 });
                 break;
             }
@@ -153,6 +137,8 @@ export async function createNewItem(names: string[], lang: boolean, stack: numbe
 function setBehaviorItemBasics(item: any, name: nameObject, stack: number) {
     item['minecraft:item']['description']['identifier'] = name.fullname;
     item['minecraft:item']['components']['minecraft:max_stack_size'] = Number(stack);
+    item['minecraft:item']['components']['minecraft:display_name'] = {value: `item.${name.fullname}.name`};
+    item['minecraft:item']['components']['minecraft:icon'] = {texture: name.shortname};
 }
 
 function setResourceItemBasics(item: any, name: nameObject) {
@@ -179,18 +165,16 @@ export async function writeToItemTextureFromObjects(objects: {name: string, path
 async function createArmorPiece(piece: armorPiece, name: nameObject, lang: boolean) {
     await modifyAndWriteFile({source_path: item_bp_template, target_path: `${Global.project_bp}items/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (item: any) => {
         setBehaviorItemBasics(item, name, 1);
-        item['format_version'] = '1.16.100';
+        item['format_version'] = '1.20.30';
         item['minecraft:item']['description']['identifier'] = `${name.fullname}_${armor[piece].name}`;
-        item['minecraft:item']['description']['category'] = 'equipment';
+        item['minecraft:item']['description']['menu_category'] = {category: 'equipment', group: `itemGroup.name.${armor[piece].name}`};
         jsonJoin(item['minecraft:item']['components'], {
-            ['minecraft:armor']: {protection: 5},
             ['minecraft:max_stack_size']: 1,
-            ['minecraft:repairable']: {repair_items: [{items: ['minecraft:stick'], repair_amount: 'query.remaining_durability + 0.05 * query.max_durability'}]},
+            ['minecraft:repairable']: {repair_items: [{items: ['minecraft:stick', `${name.fullname}_${armor[piece].name}`], repair_amount: 'query.remaining_durability + 0.05 * query.max_durability'}]},
             ['minecraft:durability']: {max_durability: 200},
-            ['minecraft:creative_category']: {parent: `itemGroup.name.${armor[piece].name}`},
             ['minecraft:display_name']: {value: `item.${name.fullname}_${armor[piece].name}.name`},
             ['minecraft:icon']: {texture: `${name.shortname}_${armor[piece].name}`},
-            ['minecraft:wearable']: {dispensable: true, slot: `slot.armor.${armor[piece].slot}`},
+            ['minecraft:wearable']: {dispensable: true, slot: `slot.armor.${armor[piece].slot}`, protection: 5},
             ['minecraft:enchantable']: {value: 10, slot: `armor_${armor[piece].enchant_slot}`},
         })
     });
@@ -211,11 +195,6 @@ async function createArmorPiece(piece: armorPiece, name: nameObject, lang: boole
                 delete armor[key];
             }
         }
-    });
-
-    await modifyAndWriteFile({source_path: item_rp_template, target_path: `${Global.project_rp}items/${name.pathname}${name.shortname}_${armor[piece].name}.json`}, (item: any) => {
-        item['minecraft:item']['description']['identifier'] = `${name.fullname}_${armor[piece].name}`;
-        item['minecraft:item']['components']['minecraft:icon'] = `${name.shortname}_${armor[piece].name}`;
     });
 
     copyFile(`${Global.app_root}/src/items/armor/example_${armor[piece].name}.png`, `${Global.project_rp}textures/items/${name.shortname}_${armor[piece].name}.png`);
