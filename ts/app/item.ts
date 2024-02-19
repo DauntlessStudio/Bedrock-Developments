@@ -209,7 +209,7 @@ async function createArmorPiece(piece: armorPiece, name: nameObject, lang: boole
 async function createComplexAttachable(name_str: string) {
     const name = getNameObject(name_str);
 
-    await createVanillaEntity(['player.json'], true, false);
+    await createVanillaEntity(['player.entity.json'], true, false);
     await modifyAndWriteFile({source_path: `${Global.project_rp}entity/player.entity.json`, target_path: `${Global.project_rp}entity/player.entity.json`}, async (player: any) => {
         if (!JSONC.stringify(player).includes('has_custom_item')) {
             Object.assign(player, mergeDeep(player, attachable_player))
@@ -263,16 +263,12 @@ async function createComplexAttachable(name_str: string) {
         }
     }, {overwrite: true});
 
-    // modify player.anim.json
-    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/player.anim.json`, target_path: `${Global.project_rp}animations/player.anim.json`}, (animation: any) => {
+    // modify item.anim.json
+    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/${name.shortname}.anim.json`,  default_path: `${Global.app_root}/src/attachables/item.anim.json`, target_path: `${Global.project_rp}animations/${name.shortname}.anim.json`}, (animation: any) => {
         animation['animations'][`animation.player.${name.shortname}.idle.first_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -90, 0, 0 ] } } }');
         animation['animations'][`animation.player.${name.shortname}.idle.third_person`] = JSON.parse('{ "loop": true, "bones": { "rightArm": { "rotation": [ -30, 0, 0 ] } } }');
         animation['animations'][`animation.player.${name.shortname}.attack.first_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.5, "bones": { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] }, "position": { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } }');
         animation['animations'][`animation.player.${name.shortname}.attack.third_person`] = JSON.parse('{ "loop": "hold_on_last_frame", "animation_length": 0.3, "bones" : { "rightArm": { "rotation": { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } }');
-    }, {overwrite: true});
-
-    // modify item.anim.json
-    await modifyAndWriteFile({source_path: `${Global.project_rp}animations/item.anim.json`, default_path: `${Global.app_root}/src/attachables/item.anim.json`, target_path: `${Global.project_rp}animations/item.anim.json`}, (animation: any) => {
         animation['animations'][`animation.item.${name.shortname!}.idle.first_person`] = {};
         animation['animations'][`animation.item.${name.shortname!}.idle.third_person`] = {};
         animation['animations'][`animation.item.${name.shortname!}.attack.first_person`] = {};
