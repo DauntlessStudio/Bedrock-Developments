@@ -1,9 +1,5 @@
 {
     "format_version": "1.8.0",
     "animations": {
-        "animation.item.test_item.idle.first_person": {},
-        "animation.item.test_item.idle.third_person": {},
-        "animation.item.test_item.attack.first_person": {},
-        "animation.item.test_item.attack.third_person": {}
     }
 }
