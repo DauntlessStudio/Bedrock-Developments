@@ -1,4 +1,9 @@
 # Changelog
+## [2.2.5] - 3/6/2024
+Fixed Attachable Creation
+## Changed
+- Attachable items now create the entry `v.<name> = v.is_paperdoll ? 0 :(q.is_item_name_any('slot.weapon.mainhand', 0, '<name>');` instead of `v.<name> = (q.get_equipped_item_name == '<name>');`
+---
 ## [2.2.3] - 12/13/2023
 File Generation Update
 ## Changed
