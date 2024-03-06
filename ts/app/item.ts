@@ -297,7 +297,7 @@ function addItemToPreAnimation(player: any, name: nameObject) {
     const index = pre_anim.findIndex(element => element.includes('has_custom_item'));
 
     pre_anim[index] =  pre_anim[index].replace(';', ` || v.${name.shortname};`);
-    pre_anim.splice(index, 0, `v.${name.shortname} = (q.get_equipped_item_name == '${name.shortname}');`);
+    pre_anim.splice(index, 0, `v.${name.shortname} = v.is_paperdoll ? 0 : (q.is_item_name_any('slot.weapon.mainhand', 0, '${name.shortname}');`);
 
     player['minecraft:client_entity']['description']['scripts']['pre_animation'] = pre_anim;
 }

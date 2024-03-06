@@ -12,7 +12,7 @@ import * as World from './app/world';
 import axios from 'axios';
 
 let program = new Command();
-const version = '2.2.4'
+const version = '2.2.5'
 
 program
   .name('bed')
