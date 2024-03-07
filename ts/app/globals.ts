@@ -31,12 +31,12 @@ export async function setResourcePath(rp:string|undefined) {
     project_rp = project_rp.replace(/\/|\\+/g, '/');
 
     let glob_files = new Promise<string[]>((resolve, reject) => {
-        glob.glob(project_rp, function (error, glob_files) {
-            if (error) {
-                reject(error);
-            }
-            resolve(glob_files);
-        });
+        // glob.glob(project_rp, function (error, glob_files) {
+        //     if (error) {
+        //         reject(error);
+        //     }
+        //     resolve(glob_files);
+        // });
     });
     const rp_path = await (await glob_files).shift();
 
@@ -56,12 +56,12 @@ export async function setBehaviorPath(bp:string|undefined) {
 
 
     let glob_files = new Promise<string[]>((resolve, reject) => {
-        glob.glob(project_bp, function (error, glob_files) {
-            if (error) {
-                reject(error);
-            }
-            resolve(glob_files);
-        });
+        // glob.glob(project_bp, function (error, glob_files) {
+        //     if (error) {
+        //         reject(error);
+        //     }
+        //     resolve(glob_files);
+        // });
     });
     const bp_path = await (await glob_files).shift();
 

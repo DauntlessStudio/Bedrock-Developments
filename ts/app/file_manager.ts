@@ -26,12 +26,12 @@ interface pathOptions {
 export async function getFilesFromGlob(path: string) {
     path = path.replace(/\/|\\+/g, '/');
     const glob_files = new Promise<string[]>((resolve, reject) => {
-        glob.glob(path, function (error, glob_files) {
-            if (error) {
-                reject(error);
-            }
-            resolve(glob_files);
-        });
+        // glob.glob(path, function (error, glob_files) {
+        //     if (error) {
+        //         reject(error);
+        //     }
+        //     resolve(glob_files);
+        // });
     });
 
     return await glob_files;

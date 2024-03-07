@@ -1,3 +1,5 @@
+import { File } from "../new_file_manager";
+
 function non_serializable(target: any, key: string) {
     let currentValue = target[key];
   
@@ -27,5 +29,13 @@ export class MinecraftDataType {
 
     public static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T {
         return new create(filepath, JSON.parse(json));
+    }
+
+    public toFile(): File {
+        return {filePath: this.filePath, fileContents: this.serialize()};
+    }
+
+    public fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
+        return MinecraftDataType.deserialize(create, file.filePath, file.fileContents);
     }
 }

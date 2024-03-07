@@ -28,7 +28,7 @@
     "chalk": "^4.1.0",
     "commander": "^10.0.0",
     "comment-json": "^4.2.3",
-    "glob": "^8.1.0",
+    "glob": "^10.3.10",
     "octokit": "^2.0.13",
     "prismarine-nbt": "^2.2.1",
     "uuid": "^9.0.0"
