@@ -1,4 +1,5 @@
 import { File } from "../new_file_manager";
+import * as JSONC from 'comment-json';
 
 function non_serializable(target: any, key: string) {
     let currentValue = target[key];
@@ -24,11 +25,11 @@ export class MinecraftDataType {
     }
 
     public serialize(): string {
-        return JSON.stringify(this, null, '\t');
+        return JSONC.stringify(this, null, '\t');
     }
 
     public static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T {
-        return new create(filepath, JSON.parse(json));
+        return new create(filepath, JSONC.parse(json));
     }
 
     public toFile(): File {
