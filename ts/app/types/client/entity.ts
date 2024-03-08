@@ -9,15 +9,15 @@ export interface IClientEntity {
     };
 }
 
-type TexturePath = `textures/${string}`;
-type GeometryReference = `geometry.${string}`;
+export type ClientEntityTexturePath = `textures/${string}`;
+export type ClientEntityGeometryReference = `geometry.${string}`;
 
 export interface IClientEntityDescription {
     identifier: Identifier;
     min_engine_version?: FormatVersion;
     materials?: Record<string, string>;
-    textures?: Record<string, TexturePath>;
-    geometry?: Record<string, GeometryReference>;
+    textures?: Record<string, ClientEntityTexturePath>;
+    geometry?: Record<string, ClientEntityGeometryReference>;
     scripts?: IClientEntityScripts;
     animations?: Record<string, string>;
     animation_controllers?: Record<string, string>[];
@@ -106,7 +106,7 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
         });
     }
 
-    addGeometry(...geometry: {name: string, reference: GeometryReference}[]) {
+    addGeometry(...geometry: {name: string, reference: ClientEntityGeometryReference}[]) {
         this["minecraft:client_entity"].description.geometry = this["minecraft:client_entity"].description.geometry ?? {};
         geometry.forEach(geometry => {
             this["minecraft:client_entity"].description.geometry![geometry.name] = geometry.reference;

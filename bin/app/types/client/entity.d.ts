@@ -6,14 +6,14 @@ export interface IClientEntity {
         description: IClientEntityDescription;
     };
 }
-type TexturePath = `textures/${string}`;
-type GeometryReference = `geometry.${string}`;
+export type ClientEntityTexturePath = `textures/${string}`;
+export type ClientEntityGeometryReference = `geometry.${string}`;
 export interface IClientEntityDescription {
     identifier: Identifier;
     min_engine_version?: FormatVersion;
     materials?: Record<string, string>;
-    textures?: Record<string, TexturePath>;
-    geometry?: Record<string, GeometryReference>;
+    textures?: Record<string, ClientEntityTexturePath>;
+    geometry?: Record<string, ClientEntityGeometryReference>;
     scripts?: IClientEntityScripts;
     animations?: Record<string, string>;
     animation_controllers?: Record<string, string>[];
@@ -61,8 +61,7 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
     }[]): void;
     addGeometry(...geometry: {
         name: string;
-        reference: GeometryReference;
+        reference: ClientEntityGeometryReference;
     }[]): void;
     addRenderController(...render_controllers: MolangOption[]): void;
 }
-export {};
