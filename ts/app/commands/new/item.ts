@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { IServerItem, Identifier, ServerItem, ServerItemOptions } from "../../types";
+import { IServerItem, ServerItem } from "../../types";
 import { File, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
 import { LangFile } from "../../types/minecraft";
@@ -10,6 +10,17 @@ interface ItemCommandOptions {
     lang: boolean;
     stack: number;
 }
+
+enum ServerItemOptions {
+    basic='basic',
+    attachable='attachable',
+    food='food',
+    armor_set='armor_set',
+    helmet='helmet',
+    chestplate='chestplate',
+    leggings='leggings',
+    boots='boots'
+};
 
 export const program_new_item = program_new
 	.command("item")

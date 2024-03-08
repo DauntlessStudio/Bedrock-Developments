@@ -3,17 +3,6 @@ import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
 
-export enum ServerItemOptions {
-    basic='basic',
-    attachable='attachable',
-    food='food',
-    armor_set='armor_set',
-    helmet='helmet',
-    chestplate='chestplate',
-    leggings='leggings',
-    boots='boots'
-};
-
 export interface IServerItem {
     format_version: FormatVersion;
     ["minecraft:item"]: IServerItemItem;
