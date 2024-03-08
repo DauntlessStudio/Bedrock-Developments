@@ -1,3 +1,4 @@
+export * from './animation';
 export * from './animation_controller';
 export * from './entity';
 export * from './geometry';
