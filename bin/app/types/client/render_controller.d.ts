@@ -39,7 +39,7 @@ interface IRCColor {
 export declare class RenderController extends MinecraftDataType implements IRenderController {
     format_version: FormatVersion;
     render_controllers: Controllers;
-    get DirectoryPath(): string;
+    static get DirectoryPath(): string;
     constructor(filepath: string, template: IRenderController);
 }
 export {};

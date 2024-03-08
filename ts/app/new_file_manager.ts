@@ -5,7 +5,7 @@ import { chalk } from './utils';
 
 export const appPath = path.resolve(__dirname);
 
-export type File = {filePath: string, fileContents: string}
+export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge'};
 
 export class Directories {
     private static input_behavior_path = '**/behavior_packs/*bp/';
@@ -70,7 +70,7 @@ export function getFiles(globPattern: string): File[] {
     });
 }
 
-export function setFiles(files: File[], handleExistingFile: 'overwrite'|'abort'|'merge' = 'abort') {
+export function setFiles(files: File[]) {
     files.forEach(file => {
         if (!fs.existsSync(path.dirname(file.filePath))) {
             fs.mkdirSync(path.dirname(file.filePath), {recursive: true});
@@ -85,15 +85,15 @@ export function setFiles(files: File[], handleExistingFile: 'overwrite'|'abort'|
             }
 
             if (fs.existsSync(resolvedPath)) {
-                switch (handleExistingFile) {
-                    case 'abort':
-                        console.warn(`${chalk.yellow(`Won't overwrite file at ${resolvedPath}`)}`);
-                        return;
+                switch (file.handleExisting) {
                     case 'merge':
                         // TODO: Handle File Merge
                     case 'overwrite':
                         console.log(`${chalk.green(`Overwriting file at ${resolvedPath}`)}`);
                         fs.writeFileSync(resolvedPath, file.fileContents);
+                        return;
+                    default:
+                        console.warn(`${chalk.yellow(`Won't overwrite file at ${resolvedPath}`)}`);
                         return;
                 }
             }

@@ -58,6 +58,6 @@ export declare class Goemetry extends MinecraftDataType implements IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];
     [key: `geometry.${string}`]: IGeometryOld;
-    get DirectoryPath(): string;
+    static get DirectoryPath(): string;
     constructor(filepath: string, template: IGeometry);
 }

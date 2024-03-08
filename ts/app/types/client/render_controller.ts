@@ -44,7 +44,7 @@ export class RenderController extends MinecraftDataType implements IRenderContro
     format_version: FormatVersion;
     render_controllers: Controllers;
 
-    public get DirectoryPath(): string {
+    public static get DirectoryPath(): string {
         return Directories.OUTPUT_RESOURCE_PATH + 'render_controllers/';
     }
 

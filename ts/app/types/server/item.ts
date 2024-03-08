@@ -1,18 +1,30 @@
 import { Directories } from "../../new_file_manager";
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangOption, SlotOptions } from "../shared_types";
+import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
 
-interface IItem {
+export enum ServerItemOptions {
+    basic='basic',
+    attachable='attachable',
+    food='food',
+    armor_set='armor_set',
+    helmet='helmet',
+    chestplate='chestplate',
+    leggings='leggings',
+    boots='boots'
+};
+
+export interface IServerItem {
     format_version: FormatVersion;
-    ["minecraft:item"]: IItemItem;
+    ["minecraft:item"]: IServerItemItem;
 }
 
-interface IItemItem {
-    description: IItemDescription;
-    components: IItemComponents;
+export interface IServerItemItem {
+    description: IServerItemDescription;
+    components: IServerItemComponents;
 }
 
-interface IItemDescription {
+export interface IServerItemDescription {
     identifier: Identifier;
     category?: string;
     menu_category?: {
@@ -22,7 +34,7 @@ interface IItemDescription {
     }
 }
 
-interface IItemComponents {
+export interface IServerItemComponents {
     ["minecraft:icon"]?: {
         texture: string;
     };
@@ -58,28 +70,96 @@ interface IItemComponents {
 
     ["minecraft:repairable"]?: {
         on_repaired?: string;
-        repair_items?: string[];
+        repair_items?: {
+            items: Identifier[];
+            repair_amount: number|string;
+        }[];
     };
 
     ["minecraft:wearable"]?: {
         dispensable?: boolean;
         slot: SlotOptions;
-    }
+    };
+
+    ["minecraft:enchantable"]?: {
+        value: number;
+        slot: string;
+    };
 
     [key: string]: any;
 }
 
-export class Item extends MinecraftDataType implements IItem {
+export class ServerItem extends MinecraftDataType implements IServerItem {
     format_version: FormatVersion;
-    ["minecraft:item"]: IItemItem;
+    ["minecraft:item"]: IServerItemItem;
 
-    public get DirectoryPath(): string {
+    public static get DirectoryPath(): string {
         return Directories.OUTPUT_BEHAVIOR_PATH + 'items/';
     }
 
-    constructor(filepath: string, template: IItem) {
+    constructor(filepath: string, template: IServerItem) {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:item"] = template["minecraft:item"];
+    }
+
+    setDisplayData(name: NameData) {
+        this["minecraft:item"].description.identifier = name.fullname as Identifier;
+        this["minecraft:item"].components["minecraft:display_name"] = {
+            value: `item.${name.fullname}.name`
+        };
+        this["minecraft:item"].components["minecraft:icon"] = {
+            texture: name.shortname
+        };
+    }
+
+    setStackSize(stack: number) {
+        this["minecraft:item"].components["minecraft:max_stack_size"] = {
+            value: stack
+        };
+    }
+
+    setWearable(slot: SlotOptions) {
+        this["minecraft:item"].components["minecraft:wearable"] = {
+            slot: slot,
+            dispensable: true,
+        };
+        this["minecraft:item"].components["minecraft:repairable"] = {
+            repair_items: [
+                {
+                    items: [
+                        this["minecraft:item"].description.identifier
+                    ],
+                    repair_amount: "query.remaining_durability + 0.05 * query.max_durability",
+                }
+            ]
+        };
+        this["minecraft:item"].components["minecraft:enchantable"] = {
+            value: 10,
+            slot: enchantSlot(slot),
+        };
+    }
+
+    setFood() {
+        this["minecraft:item"].components["minecraft:food"] = {
+            can_always_eat: true,
+            nutrition: 10,
+            saturation_modifier: 10,
+        }
+    }
+}
+
+function enchantSlot(slot: SlotOptions): string {
+    switch (slot) {
+        case "slot.armor.feet":
+            return 'armor_feet';
+        case "slot.armor.legs":
+            return "armor_legs";
+        case "slot.armor.chest":
+            return "armor_torso";
+        case "slot.armor.head":
+            return "armor_head";
+        default:
+            return '';
     }
 }

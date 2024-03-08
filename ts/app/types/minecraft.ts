@@ -1,5 +1,6 @@
 import { File } from "../new_file_manager";
 import * as JSONC from 'comment-json';
+import { NameData } from "../utils";
 
 function non_serializable(target: any, key: string) {
     let currentValue = target[key];
@@ -16,12 +17,16 @@ export class MinecraftDataType {
     @non_serializable
     public filePath: string;
     
-    public get DirectoryPath() : string {
+    public static get DirectoryPath() : string {
         return '';
     }
 
     constructor(filePath: string, template: any) {
         this.filePath = filePath;
+    }
+
+    public static createFilePath(nameData: NameData): string {
+        return this.DirectoryPath + nameData.directory + nameData.shortname + ".json";
     }
 
     public serialize(): string {

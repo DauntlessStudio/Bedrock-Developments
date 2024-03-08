@@ -1,41 +1,113 @@
-import { OptionValues } from "commander";
+import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import {Identifier, server} from '../../types';
-import { Directories, setFiles } from "../../new_file_manager";
+import { IServerItem, Identifier, ServerItem, ServerItemOptions } from "../../types";
+import { File, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
 
-export const program_new_item = program_new.command('item')
-  .description('creates new bedrock items')
-  .argument('<names...>', 'item names as "namespace:item"')
-  .option('--no-lang', 'do not add lang file')
-  .option('-s, --stack <stack_size>', 'max stack size', '64')
-//   .addOption(new Option('-t, --type <item_type>', 'basic').choices(Object.keys(Item.itemType)))
-  .action(triggerCreateNewItem)
-  .hook('postAction', printVersion);
+interface ItemCommandOptions {
+    lang: boolean;
+    stack: number;
+}
+
+export const program_new_item = program_new
+	.command("item")
+	.description("creates new bedrock items")
+	.argument("<names...>", 'item names as "namespace:item"')
+	.option("--no-lang", "do not add lang file")
+	.option("-s, --stack <stack_size>", "max stack size", "64")
+	.addOption(
+		new Option("-t, --type <item_type>", "basic").choices(
+			Object.keys(ServerItemOptions)
+		)
+	)
+	.action(triggerCreateNewItem)
+	.hook("postAction", printVersion);
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
-	const lang: boolean = options.lang;
-	const stack: number = options.stack;
-	//   const type = options.type as Item.itemType;
-	//   await Item.createNewItem(names, lang, stack, type);
+    const commandOptions = {
+        lang: options.lang,
+        stack: Number(options.stack),
+    };
+	const type: ServerItemOptions = options.type ?? ServerItemOptions.basic;
 
-    names.forEach(name => {
-        const nameData = new NameData(name);
-        const file = new server.Item(Directories.OUTPUT_BEHAVIOR_PATH + 'items/' + nameData.directory + nameData.shortname + '.json', {
-            format_version: '1.20.50',
-            "minecraft:item": {
-                description: {
-                    identifier: name as Identifier,
-                },
-                components: {
-                    "minecraft:max_stack_size": {
-                        value: stack
-                    },
-                }
-            }
-        }).toFile();
+	names.forEach((name) => {
+		const nameData = new NameData(name);
+		const files: File[] = createFileTemplates[type](nameData, commandOptions);
 
-        setFiles([file]);
-    });
+		setFiles(files);
+	});
 }
+
+const baseItemTemplate: IServerItem = {
+    format_version: "1.20.50",
+    "minecraft:item": {
+        description: {
+            identifier: 'placeholder:placeholder'
+        },
+        components: {}
+    },
+}
+
+const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, options: ItemCommandOptions) => File[]> = {
+    basic: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(options.stack);
+
+        return [item.toFile()];
+    },
+    boots: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(1);
+        item.setWearable("slot.armor.feet");
+
+        return [item.toFile()];
+    },
+    leggings: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(1);
+        item.setWearable("slot.armor.legs");
+
+        return [item.toFile()];
+    },
+    chestplate: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(1);
+        item.setWearable("slot.armor.chest");
+
+        return [item.toFile()];
+    },
+    helmet: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(1);
+        item.setWearable("slot.armor.head");
+
+        return [item.toFile()];
+    },
+    armor_set: function (nameData: NameData, options: ItemCommandOptions) {
+        const files: File[] = [];
+        files.push(...createFileTemplates.boots(new NameData(nameData.original + "_boots"), options));
+        files.push(...createFileTemplates.leggings(new NameData(nameData.original + "_leggings"), options));
+        files.push(...createFileTemplates.chestplate(new NameData(nameData.original + "_chestplate"), options));
+        files.push(...createFileTemplates.helmet(new NameData(nameData.original + "_helmet"), options));
+
+        return files;
+    },
+    attachable: function (nameData: NameData, options: ItemCommandOptions) {
+        // TODO add attachable files
+        return createFileTemplates.basic(nameData, options);
+    },
+    food: function (nameData: NameData, options: ItemCommandOptions) {
+        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        item.setDisplayData(nameData);
+        item.setStackSize(options.stack);
+        item.setFood();
+
+        return [item.toFile()];
+    }
+ }

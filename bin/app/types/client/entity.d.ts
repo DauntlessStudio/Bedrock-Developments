@@ -50,7 +50,7 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
     ['minecraft:client_entity']: {
         description: IClientEntityDescription;
     };
-    get DirectoryPath(): string;
+    static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientEntity);
     upgradeFormatVersion(): void;
     addInitializeVariable(...variable: string[]): void;

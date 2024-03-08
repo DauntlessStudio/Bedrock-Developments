@@ -19,6 +19,7 @@ export class nameObject {
 }
 
 export class NameData {
+    original: string;
     fullname: string;
     namespace: string;
     shortname: string;
@@ -26,6 +27,7 @@ export class NameData {
     directory: string;
 
     constructor(name: string) {
+        this.original = name;
         this.directory = path.dirname(name) + '/';
         this.fullname = path.basename(name);
         this.namespace = this.fullname.split(/\.|:/).shift() ?? '';

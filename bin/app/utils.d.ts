@@ -8,6 +8,7 @@ export declare class nameObject {
     constructor(fullname: string, namespace: string, shortname: string, displayname: string, pathname: string);
 }
 export declare class NameData {
+    original: string;
     fullname: string;
     namespace: string;
     shortname: string;

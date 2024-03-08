@@ -58,7 +58,7 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
         description: IClientEntityDescription;
     };
 
-    public get DirectoryPath(): string {
+    public static get DirectoryPath(): string {
         return Directories.OUTPUT_RESOURCE_PATH + 'entity/';
     }
     

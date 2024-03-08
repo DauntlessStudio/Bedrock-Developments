@@ -1,14 +1,25 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
-interface IItem {
+export declare enum ServerItemOptions {
+    basic = "basic",
+    attachable = "attachable",
+    food = "food",
+    armor_set = "armor_set",
+    helmet = "helmet",
+    chestplate = "chestplate",
+    leggings = "leggings",
+    boots = "boots"
+}
+export interface IServerItem {
     format_version: FormatVersion;
-    ["minecraft:item"]: IItemItem;
+    ["minecraft:item"]: IServerItemItem;
 }
-interface IItemItem {
-    description: IItemDescription;
-    components: IItemComponents;
+export interface IServerItemItem {
+    description: IServerItemDescription;
+    components: IServerItemComponents;
 }
-interface IItemDescription {
+export interface IServerItemDescription {
     identifier: Identifier;
     category?: string;
     menu_category?: {
@@ -17,7 +28,7 @@ interface IItemDescription {
         is_hidden_in_commands?: boolean;
     };
 }
-interface IItemComponents {
+export interface IServerItemComponents {
     ["minecraft:icon"]?: {
         texture: string;
     };
@@ -46,18 +57,28 @@ interface IItemComponents {
     };
     ["minecraft:repairable"]?: {
         on_repaired?: string;
-        repair_items?: string[];
+        repair_items?: {
+            items: Identifier[];
+            repair_amount: number | string;
+        }[];
     };
     ["minecraft:wearable"]?: {
         dispensable?: boolean;
         slot: SlotOptions;
     };
+    ["minecraft:enchantable"]?: {
+        value: number;
+        slot: string;
+    };
     [key: string]: any;
 }
-export declare class Item extends MinecraftDataType implements IItem {
+export declare class ServerItem extends MinecraftDataType implements IServerItem {
     format_version: FormatVersion;
-    ["minecraft:item"]: IItemItem;
-    get DirectoryPath(): string;
-    constructor(filepath: string, template: IItem);
+    ["minecraft:item"]: IServerItemItem;
+    static get DirectoryPath(): string;
+    constructor(filepath: string, template: IServerItem);
+    setDisplayData(name: NameData): void;
+    setStackSize(stack: number): void;
+    setWearable(slot: SlotOptions): void;
+    setFood(): void;
 }
-export {};

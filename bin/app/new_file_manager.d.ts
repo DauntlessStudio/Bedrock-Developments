@@ -2,6 +2,7 @@ export declare const appPath: string;
 export type File = {
     filePath: string;
     fileContents: string;
+    handleExisting?: 'overwrite' | 'merge';
 };
 export declare class Directories {
     private static input_behavior_path;
@@ -18,4 +19,4 @@ export declare class Directories {
     static set OUTPUT_RESOURCE_PATH(v: string);
 }
 export declare function getFiles(globPattern: string): File[];
-export declare function setFiles(files: File[], handleExistingFile?: 'overwrite' | 'abort' | 'merge'): void;
+export declare function setFiles(files: File[]): void;
