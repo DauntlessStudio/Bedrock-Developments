@@ -8,7 +8,7 @@ export interface IServerAnimation {
     };
 }
 export interface IServerAnimationAnim {
-    aninimation_length: number;
+    animation_length: number;
     anim_time_update?: string;
     loop?: boolean;
     timeline?: {

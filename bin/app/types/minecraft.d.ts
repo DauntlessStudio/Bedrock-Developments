@@ -8,7 +8,7 @@ export declare class MinecraftDataType {
     serialize(): string;
     static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T;
     toFile(): File;
-    fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
+    static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
 }
 export declare class LangFile {
     files: File[];

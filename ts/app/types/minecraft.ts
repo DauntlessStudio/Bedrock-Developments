@@ -42,7 +42,7 @@ export class MinecraftDataType {
         return {filePath: this.filePath, fileContents: this.serialize()};
     }
 
-    public fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
+    public static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
         return MinecraftDataType.deserialize(create, file.filePath, file.fileContents);
     }
 }
