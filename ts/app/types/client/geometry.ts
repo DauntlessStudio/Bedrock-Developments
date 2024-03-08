@@ -63,7 +63,7 @@ export class Goemetry extends MinecraftDataType implements IGeometry {
     [key: `geometry.${string}`]: IGeometryOld;
 
     public static get DirectoryPath(): string {
-        return Directories.OUTPUT_RESOURCE_PATH + 'models/';
+        return Directories.RESOURCE_PATH + 'models/';
     }
     
     constructor(filepath: string, template: IGeometry) {

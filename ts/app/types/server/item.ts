@@ -94,7 +94,7 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
     ["minecraft:item"]: IServerItemItem;
 
     public static get DirectoryPath(): string {
-        return Directories.OUTPUT_BEHAVIOR_PATH + 'items/';
+        return Directories.BEHAVIOR_PATH + 'items/';
     }
 
     constructor(filepath: string, template: IServerItem) {

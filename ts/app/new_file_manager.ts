@@ -8,56 +8,30 @@ export const appPath = path.resolve(__dirname);
 export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'};
 
 export class Directories {
-    private static input_behavior_path = '**/behavior_packs/*bp/';
-    private static input_resource_path = '**/resource_packs/*rp/';
-    private static output_behavior_path = '**/behavior_packs/*bp/';
-    private static output_resource_path = '**/resource_packs/*rp/';
+    private static behavior_path = '**/behavior_packs/*bp/';
+    private static resource_path = '**/resource_packs/*rp/';
     
-    public static get INPUT_BEHAVIOR_PATH() : string {
-        return this.input_behavior_path;
+    public static get BEHAVIOR_PATH() : string {
+        return globSync(this.behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
     }
     
-    public static get INPUT_RESOURCE_PATH() : string {
-        return this.input_resource_path;
+    public static get RESOURCE_PATH() : string {
+        return globSync(this.resource_path)[0].replace(/\/|\\+/g, '/') + '/';
     }
     
-    public static get OUTPUT_BEHAVIOR_PATH() : string {
-        return globSync(this.output_behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
-    }
-    
-    public static get OUTPUT_RESOURCE_PATH() : string {
-        return globSync(this.output_resource_path)[0].replace(/\/|\\+/g, '/') + '/';
-    }
-    
-    public static set INPUT_BEHAVIOR_PATH(v: string) {
+    public static set BEHAVIOR_PATH(v: string) {
         if (globSync(v).every(path => fs.existsSync(path))) {
-            this.input_behavior_path = v;
+            this.behavior_path = v;
         } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to input_behavior_path`)}`);
+            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to behavior path`)}`);
         }
     }
     
-    public static set INPUT_RESOURCE_PATH(v: string) {
+    public static set RESOURCE_PATH(v: string) {
         if (globSync(v).every(path => fs.existsSync(path))) {
-            this.input_resource_path = v;
+            this.resource_path = v;
         } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to input_resource_path`)}`);
-        }
-    }
-    
-    public static set OUTPUT_BEHAVIOR_PATH(v: string) {
-        if (globSync(v).every(path => fs.existsSync(path))) {
-            this.output_behavior_path = v;
-        } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to output_behavior_path`)}`);
-        }
-    }
-    
-    public static set OUTPUT_RESOURCE_PATH(v: string) {
-        if (globSync(v).every(path => fs.existsSync(path))) {
-            this.output_resource_path = v;
-        } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to output_resource_path`)}`);
+            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to resource path`)}`);
         }
     }
 }

@@ -51,9 +51,9 @@ export class LangFile {
     files: File[];
 
     constructor(filepattern: string) {
-        this.files = getFiles(Directories.OUTPUT_RESOURCE_PATH + 'texts/' + filepattern);
+        this.files = getFiles(Directories.RESOURCE_PATH + 'texts/' + filepattern);
         if (!this.files.length) {
-            this.files = [{filePath: Directories.OUTPUT_RESOURCE_PATH + 'texts/' + 'en_US.lang', fileContents: `## RESOURCE PACK MANIFEST `.padEnd(120, '=')}];
+            this.files = [{filePath: Directories.RESOURCE_PATH + 'texts/' + 'en_US.lang', fileContents: `## RESOURCE PACK MANIFEST `.padEnd(120, '=')}];
         }
 
         this.files.forEach(file => file.handleExisting = 'overwrite_silent');

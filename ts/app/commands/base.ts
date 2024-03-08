@@ -19,13 +19,11 @@ program
 .action(printVersion);
 
 function setResourcePath(rp: string) {
-    Directories.INPUT_BEHAVIOR_PATH = rp;
-    Directories.OUTPUT_BEHAVIOR_PATH = rp;
+  Directories.BEHAVIOR_PATH = rp;
 }
 
 function setBehaviorPath(bp: string) {
-    Directories.INPUT_BEHAVIOR_PATH = bp;
-    Directories.OUTPUT_BEHAVIOR_PATH = bp;
+  Directories.BEHAVIOR_PATH = bp;
 }
 
 export async function printVersion() {
