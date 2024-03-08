@@ -1,7 +1,6 @@
 import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
+import { FormatVersion } from "../shared_types";
 
 export type IServerACName = `controller.animation.${string}`;
 
