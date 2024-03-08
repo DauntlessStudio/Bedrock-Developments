@@ -56,7 +56,7 @@ export class ClientAnimation extends MinecraftDataType implements IClientAnimati
     }
 
     public static get DirectoryPath(): string {
-        return Directories.BEHAVIOR_PATH + 'animations/';
+        return Directories.RESOURCE_PATH + 'animations/';
     }
     
     constructor(filepath: string, template: IClientAnimation) {
