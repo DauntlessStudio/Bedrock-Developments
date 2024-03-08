@@ -2,23 +2,23 @@ import { Directories } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray } from "../shared_types";
 
-interface IRenderController {
+interface IClientRenderController {
     format_version: FormatVersion;
     render_controllers: Controllers;
 }
 
-type Controllers = Record<string, IRCController>;
+type Controllers = Record<string, IClientRCController>;
 type Reference = `Array.${string}[${string}]`|`Geometry.${string}`|`Material.${string}`|`Texture.${string}`|`array.${string}[${string}]`|`geometry.${string}`|`material.${string}`|`texture.${string}`;
 
-interface IRCController {
-    arrays?: IRCArrays;
+interface IClientRCController {
+    arrays?: IClientRCArrays;
     geometry: Reference;
     materials: Record<string, Reference>[];
     textures: Reference[];
-    color?: IRCColor;
-    on_fire_color?: IRCColor;
-    overlay_color?: IRCColor;
-    is_hurt_color?: IRCColor;
+    color?: IClientRCColor;
+    on_fire_color?: IClientRCColor;
+    overlay_color?: IClientRCColor;
+    is_hurt_color?: IClientRCColor;
     light_color_mutliplier?: number|string;
     filter_lighting?: boolean;
     ignore_lighting?: boolean;
@@ -27,20 +27,20 @@ interface IRCController {
     uv_anim?: {offset: MolangDoubleArray, scale: MolangDoubleArray};
 }
 
-interface IRCArrays {
+interface IClientRCArrays {
     materials?: Record<`Array.${string}`, `Material.${string}`[]>;
     textures?: Record<`Array.${string}`, `Texture.${string}`[]>;
     geometries?: Record<`Array.${string}`, `Geometry.${string}`[]>;
 }
 
-interface IRCColor {
+interface IClientRCColor {
     a?: number|string;
     r: number|string;
     g: number|string;
     b: number|string;
 }
 
-export class RenderController extends MinecraftDataType implements IRenderController {
+export class ClientRenderController extends MinecraftDataType implements IClientRenderController {
     format_version: FormatVersion;
     render_controllers: Controllers;
 
@@ -48,7 +48,7 @@ export class RenderController extends MinecraftDataType implements IRenderContro
         return Directories.RESOURCE_PATH + 'render_controllers/';
     }
 
-    constructor(filepath: string, template: IRenderController) {
+    constructor(filepath: string, template: IClientRenderController) {
         super(filepath, template);
         this.format_version = template.format_version;
         this.render_controllers = template.render_controllers;

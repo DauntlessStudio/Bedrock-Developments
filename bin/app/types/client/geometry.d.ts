@@ -1,12 +1,12 @@
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
 export type GeometryName = `geometry.${string}`;
-export interface IGeometry {
+export interface IClientGeometry {
     format_version: FormatVersion;
-    "minecraft:geometry"?: IGeometryNew[];
-    [key: GeometryName]: IGeometryOld;
+    "minecraft:geometry"?: IClientGeometryNew[];
+    [key: GeometryName]: IClientGeometryOld;
 }
-export interface IGeometryNew {
+export interface IClientGeometryNew {
     description: {
         identifier: GeometryName;
         texture_width: number;
@@ -15,18 +15,18 @@ export interface IGeometryNew {
         visible_bounds_height: number;
         visible_bounds_offset: MolangTripleArray;
     };
-    bones: IGeometryBone[];
+    bones: IClientGeometryBone[];
     cape?: string;
 }
-export interface IGeometryOld {
+export interface IClientGeometryOld {
     texturewidth: number;
     textureheight: number;
     visible_bounds_width: number;
     visible_bounds_height: number;
     visible_bounds_offset: MolangTripleArray;
-    bones: IGeometryBone[];
+    bones: IClientGeometryBone[];
 }
-export interface IGeometryBone {
+export interface IClientGeometryBone {
     name?: string;
     pivot?: MolangTripleArray;
     locators?: Record<string, {
@@ -42,23 +42,23 @@ export interface IGeometryBone {
     rotation?: MolangTripleArray;
     size?: MolangTripleArray;
     uv?: MolangDoubleArray | {
-        up: IGeometryPerFaceUV;
-        down: IGeometryPerFaceUV;
-        east: IGeometryPerFaceUV;
-        west: IGeometryPerFaceUV;
-        north: IGeometryPerFaceUV;
-        south: IGeometryPerFaceUV;
+        up: IClientGeometryPerFaceUV;
+        down: IClientGeometryPerFaceUV;
+        east: IClientGeometryPerFaceUV;
+        west: IClientGeometryPerFaceUV;
+        north: IClientGeometryPerFaceUV;
+        south: IClientGeometryPerFaceUV;
     };
 }
-export interface IGeometryPerFaceUV {
+export interface IClientGeometryPerFaceUV {
     material_instance?: string;
     uv: MolangDoubleArray;
     uv_size: MolangDoubleArray;
 }
-export declare class Goemetry extends MinecraftDataType implements IGeometry {
+export declare class ClientGeometry extends MinecraftDataType implements IClientGeometry {
     format_version: FormatVersion;
-    "minecraft:geometry"?: IGeometryNew[];
-    [key: GeometryName]: IGeometryOld;
+    "minecraft:geometry"?: IClientGeometryNew[];
+    [key: GeometryName]: IClientGeometryOld;
     static get DirectoryPath(): string;
-    constructor(filepath: string, template: IGeometry);
+    constructor(filepath: string, template: IClientGeometry);
 }
