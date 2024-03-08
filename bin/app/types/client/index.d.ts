@@ -7,3 +7,4 @@ export * from './item';
 export * from './render_controller';
 export * from './sound_definitions';
 export * from './item_texture';
+export * from './terrain_texture';
