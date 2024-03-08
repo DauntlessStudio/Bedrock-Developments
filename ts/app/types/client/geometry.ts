@@ -2,15 +2,17 @@ import { Directories } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
 
+export type GeometryName = `geometry.${string}`;
+
 export interface IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];
-    [key: `geometry.${string}`]: IGeometryOld;
+    [key: GeometryName]: IGeometryOld;
 }
 
 export interface IGeometryNew {
     description: {
-        identifier: `geometry.${string}`;
+        identifier: GeometryName;
         texture_width: number;
         texture_height: number;
         visible_bounds_width: number;
@@ -60,7 +62,7 @@ export interface IGeometryPerFaceUV {
 export class Goemetry extends MinecraftDataType implements IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];
-    [key: `geometry.${string}`]: IGeometryOld;
+    [key: GeometryName]: IGeometryOld;
 
     public static get DirectoryPath(): string {
         return Directories.RESOURCE_PATH + 'models/';
@@ -74,7 +76,7 @@ export class Goemetry extends MinecraftDataType implements IGeometry {
         } else {
             Object.getOwnPropertyNames(template).forEach(prop => {
                 if (prop.startsWith('geometry.')) {
-                    this[prop as `geometry.${string}`] = template[prop as `geometry.${string}`];
+                    this[prop as GeometryName] = template[prop as GeometryName];
                 }
             });
         }

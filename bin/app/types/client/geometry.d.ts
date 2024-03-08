@@ -1,13 +1,14 @@
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
+export type GeometryName = `geometry.${string}`;
 export interface IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];
-    [key: `geometry.${string}`]: IGeometryOld;
+    [key: GeometryName]: IGeometryOld;
 }
 export interface IGeometryNew {
     description: {
-        identifier: `geometry.${string}`;
+        identifier: GeometryName;
         texture_width: number;
         texture_height: number;
         visible_bounds_width: number;
@@ -57,7 +58,7 @@ export interface IGeometryPerFaceUV {
 export declare class Goemetry extends MinecraftDataType implements IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];
-    [key: `geometry.${string}`]: IGeometryOld;
+    [key: GeometryName]: IGeometryOld;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IGeometry);
 }
