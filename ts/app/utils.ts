@@ -1,3 +1,8 @@
+import {Instance} from 'chalk';
+import * as path from 'path';
+
+export const chalk = new Instance();
+
 export class nameObject {
     fullname: string;
     namespace: string;
@@ -10,6 +15,32 @@ export class nameObject {
         this.shortname = shortname;
         this.displayname = displayname;
         this.pathname = pathname
+    }
+}
+
+export class NameData {
+    fullname: string;
+    namespace: string;
+    shortname: string;
+    display: string;
+    directory: string;
+
+    constructor(name: string) {
+        this.directory = path.dirname(name) + '/';
+        this.fullname = path.basename(name);
+        this.namespace = this.fullname.split(/\.|:/).shift() ?? '';
+        this.shortname = this.fullname.split(/\.|:/).pop() ?? '';
+
+        const words = this.splitWords(this.shortname);
+        for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+        }
+        this.display = words.join(' ');
+    }
+
+    splitWords(name: string): string[] {
+        name.replace(/_/g, ' ');
+        return name.split(' ');
     }
 }
 

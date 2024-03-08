@@ -1,10 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {Instance} from 'chalk';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
+import { chalk } from './utils';
 
 export const appPath = path.resolve(__dirname);
-const chalk = new Instance();
 
 export type File = {filePath: string, fileContents: string}
 
@@ -23,11 +22,11 @@ export class Directories {
     }
     
     public static get OUTPUT_BEHAVIOR_PATH() : string {
-        return this.output_behavior_path;
+        return globSync(this.output_behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
     }
     
     public static get OUTPUT_RESOURCE_PATH() : string {
-        return this.output_resource_path;
+        return globSync(this.output_resource_path)[0].replace(/\/|\\+/g, '/') + '/';
     }
     
     public static set INPUT_BEHAVIOR_PATH(v: string) {
@@ -64,15 +63,20 @@ export class Directories {
 }
 
 export function getFiles(globPattern: string): File[] {
-    globPattern = globPattern.replace(/\/|\\+/g, '/');;
+    globPattern = globPattern.replace(/\/|\\+/g, '/');
 
     return globSync(globPattern).map(file => {
         return {filePath: file, fileContents: String(fs.readFileSync(file))}
     });
 }
 
-export function setFiles(files: File[], overwrite: boolean = false) {
+export function setFiles(files: File[], handleExistingFile: 'overwrite'|'abort'|'merge' = 'abort') {
     files.forEach(file => {
+        if (!fs.existsSync(path.dirname(file.filePath))) {
+            fs.mkdirSync(path.dirname(file.filePath), {recursive: true});
+            console.log(`${chalk.green(`Creating directory at ${path.dirname(file.filePath)}`)}`);
+        }
+        
         globSync(path.dirname(file.filePath)).forEach(directory => {
             const resolvedPath = path.join(directory, path.basename(file.filePath));
             if (!fs.existsSync(path.dirname(resolvedPath))) {
@@ -81,13 +85,16 @@ export function setFiles(files: File[], overwrite: boolean = false) {
             }
 
             if (fs.existsSync(resolvedPath)) {
-                if (overwrite) {
-                    console.log(`${chalk.green(`Overwriting file at ${resolvedPath}`)}`);
-                    fs.writeFileSync(resolvedPath, file.fileContents);
-                    return;
-                } else {
-                    console.warn(`${chalk.yellow(`Won't overwrite file at ${resolvedPath}`)}`);
-                    return;
+                switch (handleExistingFile) {
+                    case 'abort':
+                        console.warn(`${chalk.yellow(`Won't overwrite file at ${resolvedPath}`)}`);
+                        return;
+                    case 'merge':
+                        // TODO: Handle File Merge
+                    case 'overwrite':
+                        console.log(`${chalk.green(`Overwriting file at ${resolvedPath}`)}`);
+                        fs.writeFileSync(resolvedPath, file.fileContents);
+                        return;
                 }
             }
 

@@ -1,18 +1,5 @@
 #! /usr/bin/env node
-import {Argument, Command, Option, OptionValues} from 'commander';
-import * as Global from './app/globals';
-import * as Entity from './app/entity';
-import * as Item from './app/item';
-import * as Block from './app/block';
-import * as Animation from './app/animations';
-import * as Function from './app/functions';
-import * as Sound from './app/sounds';
-import * as Package from './app/package_manager';
-import * as World from './app/world';
-import axios from 'axios';
-import { Directories, getFiles, setFiles } from './app/new_file_manager';
-
-setFiles([{filePath: Directories.OUTPUT_BEHAVIOR_PATH + '/items/test.json', fileContents: '{"test": true}'}], true)
+import { runProgram } from './app/commands';
 
 // let program = new Command();
 // const version = '2.2.5'
@@ -252,7 +239,7 @@ setFiles([{filePath: Directories.OUTPUT_BEHAVIOR_PATH + '/items/test.json', file
 //   .hook('postAction', printVersion);
 // // #endregion
 
-// program.parse();
+runProgram();
 
 // async function setPaths() {
 //   if (!Global.set_paths) {

@@ -18,4 +18,4 @@ export declare class Directories {
     static set OUTPUT_RESOURCE_PATH(v: string);
 }
 export declare function getFiles(globPattern: string): File[];
-export declare function setFiles(files: File[], overwrite?: boolean): void;
+export declare function setFiles(files: File[], handleExistingFile?: 'overwrite' | 'abort' | 'merge'): void;

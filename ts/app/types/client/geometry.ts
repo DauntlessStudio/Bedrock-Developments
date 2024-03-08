@@ -1,6 +1,6 @@
-import { Directories } from "../new_file_manager";
-import { MinecraftDataType } from "./minecraft";
-import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "./shared_types";
+import { Directories } from "../../new_file_manager";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
 
 export interface IGeometry {
     format_version: FormatVersion;

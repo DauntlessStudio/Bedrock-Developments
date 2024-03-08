@@ -1,6 +1,6 @@
-import { Directories } from "../new_file_manager";
-import { MinecraftDataType } from "./minecraft";
-import { FormatVersion, Identifier, MolangOption } from "./shared_types";
+import { Directories } from "../../new_file_manager";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 
 export interface IClientEntity {
     format_version: FormatVersion;

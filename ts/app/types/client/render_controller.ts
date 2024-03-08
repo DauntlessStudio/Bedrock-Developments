@@ -1,6 +1,6 @@
-import { Directories } from "../new_file_manager";
-import { MinecraftDataType } from "./minecraft";
-import { FormatVersion, MolangDoubleArray } from "./shared_types";
+import { Directories } from "../../new_file_manager";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, MolangDoubleArray } from "../shared_types";
 
 interface IRenderController {
     format_version: FormatVersion;

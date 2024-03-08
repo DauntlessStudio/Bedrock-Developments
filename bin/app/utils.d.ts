@@ -1,3 +1,4 @@
+export declare const chalk: import("chalk").Chalk;
 export declare class nameObject {
     fullname: string;
     namespace: string;
@@ -5,6 +6,15 @@ export declare class nameObject {
     displayname: string;
     pathname: string;
     constructor(fullname: string, namespace: string, shortname: string, displayname: string, pathname: string);
+}
+export declare class NameData {
+    fullname: string;
+    namespace: string;
+    shortname: string;
+    display: string;
+    directory: string;
+    constructor(name: string);
+    splitWords(name: string): string[];
 }
 /**
  * @remarks breaks a name input into usable parts
