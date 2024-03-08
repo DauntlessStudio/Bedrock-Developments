@@ -28,20 +28,25 @@ export class NameData {
 
     constructor(name: string) {
         this.original = name;
-        this.directory = path.dirname(name) + '/';
         this.fullname = path.basename(name);
         this.namespace = this.fullname.split(/\.|:/).shift() ?? '';
         this.shortname = this.fullname.split(/\.|:/).pop() ?? '';
+        
+        this.directory = path.dirname(name) + '/';
+        if (this.directory === './') {
+            this.directory = '';
+        }
 
         const words = this.splitWords(this.shortname);
         for (let i = 0; i < words.length; i++) {
             words[i] = words[i][0].toUpperCase() + words[i].substring(1);
         }
+
         this.display = words.join(' ');
     }
 
     splitWords(name: string): string[] {
-        name.replace(/_/g, ' ');
+        name = name.replace(/_/g, ' ');
         return name.split(' ');
     }
 }

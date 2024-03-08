@@ -5,7 +5,7 @@ import { chalk } from './utils';
 
 export const appPath = path.resolve(__dirname);
 
-export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge'};
+export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'};
 
 export class Directories {
     private static input_behavior_path = '**/behavior_packs/*bp/';
@@ -76,30 +76,25 @@ export function setFiles(files: File[]) {
             fs.mkdirSync(path.dirname(file.filePath), {recursive: true});
             console.log(`${chalk.green(`Creating directory at ${path.dirname(file.filePath)}`)}`);
         }
-        
-        globSync(path.dirname(file.filePath)).forEach(directory => {
-            const resolvedPath = path.join(directory, path.basename(file.filePath));
-            if (!fs.existsSync(path.dirname(resolvedPath))) {
-                fs.mkdirSync(path.dirname(resolvedPath), {recursive: true});
-                console.log(`${chalk.green(`Creating directory at ${path.dirname(resolvedPath)}`)}`);
-            }
 
-            if (fs.existsSync(resolvedPath)) {
-                switch (file.handleExisting) {
-                    case 'merge':
-                        // TODO: Handle File Merge
-                    case 'overwrite':
-                        console.log(`${chalk.green(`Overwriting file at ${resolvedPath}`)}`);
-                        fs.writeFileSync(resolvedPath, file.fileContents);
-                        return;
-                    default:
-                        console.warn(`${chalk.yellow(`Won't overwrite file at ${resolvedPath}`)}`);
-                        return;
-                }
+        if (fs.existsSync(file.filePath)) {
+            switch (file.handleExisting) {
+                case 'merge':
+                    // TODO: Handle File Merge
+                case 'overwrite':
+                    console.log(`${chalk.green(`Overwriting file at ${file.filePath}`)}`);
+                    fs.writeFileSync(file.filePath, file.fileContents);
+                    return;
+                case 'overwrite_silent':
+                    fs.writeFileSync(file.filePath, file.fileContents);
+                    return;
+                default:
+                    console.warn(`${chalk.yellow(`Won't overwrite file at ${file.filePath}`)}`);
+                    return;
             }
+        }
 
-            console.log(`${chalk.green(`Writing file at ${resolvedPath}`)}`);
-            fs.writeFileSync(resolvedPath, file.fileContents);
-        });
+        console.log(`${chalk.green(`Writing file at ${file.filePath}`)}`);
+        fs.writeFileSync(file.filePath, file.fileContents);
     });
 }

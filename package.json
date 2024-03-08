@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npx tsc -w",
     "prepare": "node update_version.js && npx tsc",
-    "clear": "rm ./behavior_packs/** -rf && rm ./resource_packs/** -rf"
+    "clear": "rm ./behavior_packs/test_bp/** -rf && rm ./resource_packs/test_rp/** -rf"
   },
   "bin": {
     "bed": "./bin/index.js"

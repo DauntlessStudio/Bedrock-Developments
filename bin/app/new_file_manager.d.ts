@@ -2,7 +2,7 @@ export declare const appPath: string;
 export type File = {
     filePath: string;
     fileContents: string;
-    handleExisting?: 'overwrite' | 'merge';
+    handleExisting?: 'overwrite' | 'merge' | 'overwrite_silent';
 };
 export declare class Directories {
     private static input_behavior_path;

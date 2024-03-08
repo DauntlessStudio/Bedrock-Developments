@@ -10,3 +10,8 @@ export declare class MinecraftDataType {
     toFile(): File;
     fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
 }
+export declare class LangFile {
+    files: File[];
+    constructor(filepattern: string);
+    addToCategory(categoryName: string, ...entries: string[]): void;
+}

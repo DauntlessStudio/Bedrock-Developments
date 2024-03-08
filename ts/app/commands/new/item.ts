@@ -4,6 +4,7 @@ import { program_new } from "./new";
 import { IServerItem, Identifier, ServerItem, ServerItemOptions } from "../../types";
 import { File, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
+import { LangFile } from "../../types/minecraft";
 
 interface ItemCommandOptions {
     lang: boolean;
@@ -55,7 +56,15 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     },
     boots: function (nameData: NameData, options: ItemCommandOptions) {
         const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
@@ -63,7 +72,15 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(1);
         item.setWearable("slot.armor.feet");
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     },
     leggings: function (nameData: NameData, options: ItemCommandOptions) {
         const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
@@ -71,7 +88,15 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(1);
         item.setWearable("slot.armor.legs");
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     },
     chestplate: function (nameData: NameData, options: ItemCommandOptions) {
         const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
@@ -79,7 +104,15 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(1);
         item.setWearable("slot.armor.chest");
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     },
     helmet: function (nameData: NameData, options: ItemCommandOptions) {
         const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
@@ -87,14 +120,37 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(1);
         item.setWearable("slot.armor.head");
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     },
     armor_set: function (nameData: NameData, options: ItemCommandOptions) {
         const files: File[] = [];
+
+        const originalLang = options.lang;
+        options.lang = false;
+
         files.push(...createFileTemplates.boots(new NameData(nameData.original + "_boots"), options));
         files.push(...createFileTemplates.leggings(new NameData(nameData.original + "_leggings"), options));
         files.push(...createFileTemplates.chestplate(new NameData(nameData.original + "_chestplate"), options));
         files.push(...createFileTemplates.helmet(new NameData(nameData.original + "_helmet"), options));
+
+        if (originalLang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', 
+                `item.${nameData.fullname}"_boots.name=${nameData.display} Boots`,
+                `item.${nameData.fullname}"_leggings.name=${nameData.display} Leggings`,
+                `item.${nameData.fullname}"_chestplate.name=${nameData.display} Chestplate`,
+                `item.${nameData.fullname}"_helmet.name=${nameData.display} Helmet`,
+            );
+            files.push(...lang.files);
+        }
 
         return files;
     },
@@ -108,6 +164,14 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(options.stack);
         item.setFood();
 
-        return [item.toFile()];
+        const files: File[] = [item.toFile()];
+
+        if (options.lang) {
+            const lang = new LangFile('*.lang');
+            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            files.push(...lang.files);
+        }
+
+        return files;
     }
  }
