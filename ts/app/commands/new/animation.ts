@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion, } from "../base";
 import { program_new } from "./new";
 import { setFiles, File } from "../../new_file_manager";
-import { ServerAnimation, ServerAnimationName } from "../../types";
+import { ServerAnimation } from "../../types";
 import { NameData } from "../../utils";
 
 program_new.command('anim')
@@ -24,7 +24,7 @@ function triggerCreateNewAnimation(names: string[], options: OptionValues) {
     const files: File[] = [];
 
     const animation = ServerAnimation.createFromTemplate(nameData);
-    animation.animations[`animation.${nameData.shortname}` as ServerAnimationName] = {
+    animation.animations[`animation.${nameData.shortname}`] = {
         animation_length,
         loop,
         timeline: {
