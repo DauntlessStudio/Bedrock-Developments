@@ -9,7 +9,7 @@ export interface IServerLootTable {
 export interface IServerLootTablePool {
     rolls: number;
     entries: IServerLootTableEntry[];
-    conditions: IServerLootTableCondition[];
+    conditions?: IServerLootTableCondition[];
 }
 
 export interface IServerLootTableEntry {

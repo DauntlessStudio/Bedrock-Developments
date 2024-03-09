@@ -52,7 +52,7 @@ export interface IServerBlockComponents {
     ["minecraft:friction"]?: number;
     ["minecraft:geometry"]?: GeometryName | {
         identifier: GeometryName;
-        bone_visibility: {
+        bone_visibility?: {
             [key: string]: boolean | string;
         };
     };
@@ -105,4 +105,5 @@ export declare class ServerBlock extends MinecraftDataType implements IServerBlo
     setExplosionResistance(resistance: number | boolean): void;
     setFriction(friction?: number): void;
     setLightEmission(emission: number): void;
+    setLootTable(table?: string): void;
 }

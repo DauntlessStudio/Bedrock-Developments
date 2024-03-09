@@ -17,7 +17,7 @@ export const program_new_entity = program_new.command('entity')
 .action(triggerCreateNewEntity)
 .hook('postAction', printVersion);
 
-async function triggerCreateNewEntity(names: string[], options: OptionValues) {
+function triggerCreateNewEntity(names: string[], options: OptionValues) {
   const type = options.type;
   const lang: boolean = options.lang;
   const geo: boolean = options.geo;
@@ -148,7 +148,7 @@ async function triggerCreateNewEntity(names: string[], options: OptionValues) {
     }
 
     if (client && texture) {
-      copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + '/entity/' + nameData.shortname + '/default.png');
+      copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + 'entity/' + nameData.shortname + '/default.png');
     }
 
     if (lang) {
