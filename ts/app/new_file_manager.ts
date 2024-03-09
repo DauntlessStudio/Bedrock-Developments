@@ -3,13 +3,16 @@ import * as path from 'path';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
 import { chalk } from './utils';
 
-export const appPath = path.resolve(__dirname);
-
 export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'};
 
 export class Directories {
     private static behavior_path = '**/behavior_packs/*bp/';
     private static resource_path = '**/resource_packs/*rp/';
+    private static source_path = path.join(path.resolve(__dirname), 'src');
+
+    public static get SOURCE_PATH() : string {
+        return this.source_path;
+    }
     
     public static get BEHAVIOR_PATH() : string {
         return globSync(this.behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
@@ -71,4 +74,14 @@ export function setFiles(files: File[]) {
         console.log(`${chalk.green(`Writing file at ${file.filePath}`)}`);
         fs.writeFileSync(file.filePath, file.fileContents);
     });
+}
+
+export function copySourceFile(sourceFile: string, targetPath: string) {
+    if (!fs.existsSync(path.dirname(targetPath))) {
+        fs.mkdirSync(path.dirname(targetPath), {recursive: true});
+        console.log(`${chalk.green(`Creating directory at ${path.dirname(targetPath)}`)}`);
+    }
+
+    console.log(`${chalk.green(`Writing file at ${targetPath}`)}`);
+    fs.copyFileSync(path.join(Directories.SOURCE_PATH, sourceFile), targetPath);
 }

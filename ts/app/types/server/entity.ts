@@ -94,7 +94,14 @@ export interface IServerEntityComponents {
             damage_multiplier?: number;
             cause?: DamageType;
             on_damage_sound_event?: string;
-        }
+        }|{
+            on_damage?: IServerEntityTrigger,
+            deals_damage?: boolean;
+            damage_modifier?: number;
+            damage_multiplier?: number;
+            cause?: DamageType;
+            on_damage_sound_event?: string;
+        }[];
     };
     ["minecraft:despawn"]?: {
         despawn_from_change?: boolean;
@@ -118,6 +125,9 @@ export interface IServerEntityComponents {
             cause: DamageType;
             damage_per_tick: number;
         }[];
+    };
+    ["minecraft:instant_despawn"]?: {
+        remove_child_entities?: boolean;
     };
     ["minecraft:interact"]?: {
         interactions: {

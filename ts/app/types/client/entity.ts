@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 
@@ -66,6 +67,10 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:client_entity"] = template["minecraft:client_entity"];
+    }
+    
+    public static createFilePath(nameData: NameData): string {
+        return this.DirectoryPath + nameData.directory + nameData.shortname + ".entity.json";
     }
 
     upgradeFormatVersion() {

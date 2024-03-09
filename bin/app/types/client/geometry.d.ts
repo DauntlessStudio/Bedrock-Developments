@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
 export type GeometryName = `geometry.${string}`;
@@ -49,11 +50,22 @@ export interface IClientGeometryBone {
         north: IClientGeometryPerFaceUV;
         south: IClientGeometryPerFaceUV;
     };
+    cubes?: IClientGeometryCube[];
 }
 export interface IClientGeometryPerFaceUV {
     material_instance?: string;
     uv: MolangDoubleArray;
     uv_size: MolangDoubleArray;
+}
+export interface IClientGeometryCube {
+    origin?: MolangTripleArray;
+    size?: MolangTripleArray;
+    uv?: MolangDoubleArray;
+    inflate?: number;
+    mirror?: boolean;
+    pivot?: MolangTripleArray;
+    reset?: boolean;
+    rotation?: MolangTripleArray;
 }
 export declare class ClientGeometry extends MinecraftDataType implements IClientGeometry {
     format_version: FormatVersion;
@@ -61,4 +73,5 @@ export declare class ClientGeometry extends MinecraftDataType implements IClient
     [key: GeometryName]: IClientGeometryOld;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientGeometry);
+    static createFilePath(nameData: NameData): string;
 }

@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
 
@@ -51,12 +52,24 @@ export interface IClientGeometryBone {
         north: IClientGeometryPerFaceUV;
         south: IClientGeometryPerFaceUV;
     }
+    cubes?: IClientGeometryCube[];
 }
 
 export interface IClientGeometryPerFaceUV {
     material_instance?: string;
     uv: MolangDoubleArray;
     uv_size: MolangDoubleArray;
+}
+
+export interface IClientGeometryCube {
+    origin?: MolangTripleArray;
+    size?: MolangTripleArray;
+    uv?: MolangDoubleArray;
+    inflate?: number;
+    mirror?: boolean;
+    pivot?: MolangTripleArray;
+    reset?: boolean;
+    rotation?: MolangTripleArray;
 }
 
 export class ClientGeometry extends MinecraftDataType implements IClientGeometry {
@@ -80,5 +93,9 @@ export class ClientGeometry extends MinecraftDataType implements IClientGeometry
                 }
             });
         }
+    }
+    
+    public static createFilePath(nameData: NameData): string {
+        return this.DirectoryPath + nameData.directory + nameData.shortname + ".geometry.json";
     }
 }

@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 export interface IClientEntity {
@@ -52,6 +53,7 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientEntity);
+    static createFilePath(nameData: NameData): string;
     upgradeFormatVersion(): void;
     addInitializeVariable(...variable: string[]): void;
     addPreAnimationVariable(...variable: string[]): void;
