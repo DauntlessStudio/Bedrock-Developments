@@ -1,9 +1,10 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 export interface IClientTerrainTexture {
     num_mip_levels: number;
     padding: number;
     resource_pack_name: 'vanilla';
-    texture_name: 'atlas.items';
+    texture_name: `atlas.${string}`;
     texture_data: {
         [key: string]: {
             textures: string;
@@ -22,5 +23,6 @@ export declare class ClientTerrainTexture extends MinecraftDataType implements I
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientTerrainTexture);
+    static createFromTemplate(nameData: NameData): ClientTerrainTexture;
     addTexture(name: string, textures: string): void;
 }

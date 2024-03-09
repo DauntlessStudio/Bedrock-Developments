@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 
@@ -39,6 +40,24 @@ export class ServerAnimationController extends MinecraftDataType implements ISer
         super(filepath, template);
         this.format_version = template.format_version;
         this.animation_controllers = template.animation_controllers;
+    }
+
+    public static createFromTemplate(nameData: NameData): ServerAnimationController {
+        return new ServerAnimationController(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            animation_controllers: {
+                [`controller.animation.${nameData.shortname}` as ServerACName]: {
+                    initial_state: 'default',
+                    states: {
+                        'default': {
+                            on_entry: [
+                                `/say ${nameData.shortname}`
+                            ]
+                        }
+                    }
+                }
+            }
+        });
     }
 
     addAnimationController(key: ServerACName, controller: IServerAC) {

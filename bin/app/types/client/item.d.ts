@@ -22,5 +22,6 @@ export declare class ClientItem extends MinecraftDataType implements IClientItem
     ["minecraft:item"]: IClientItemItem;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientItem);
+    static createFromTemplate(nameData: NameData): ClientItem;
     setDisplayData(name: NameData): void;
 }

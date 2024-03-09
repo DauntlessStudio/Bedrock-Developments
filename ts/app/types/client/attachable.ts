@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity";
@@ -30,6 +31,37 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:attachable"] = template["minecraft:attachable"];
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientAttachable {
+        return new ClientAttachable(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:attachable": {
+                description: {
+                    identifier: nameData.fullname as Identifier,
+                    materials: {
+                        default: "entity_alphatest",
+                        enchanted: "entity_alphatest_glint",
+                    },
+                    textures: {
+                        default: `textures/attachables/${nameData.shortname}`,
+                        enchanted: "textures/misc/enchanted_item_glint",
+                    },
+                    geometry: {
+                        default: `geometry.player.${nameData.shortname}`,
+                    },
+                    scripts: {
+                        pre_animation: [
+                            "v.is_first_person = c.is_first_person;",
+                            "v.attack_time = c.owning_entity->v.attack_time;",
+                        ]
+                    },
+                    render_controllers: [
+                        "controller.render.item_default"
+                    ]
+                }
+            }
+        });
     }
 
     addInitializeVariable(...variable: string[]) {

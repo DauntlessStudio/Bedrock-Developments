@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 
@@ -41,6 +42,17 @@ export class ClientSoundDefinitions extends MinecraftDataType implements IClient
         super(filepath, template);
         this.format_version = template.format_version;
         this.sound_definitions = template.sound_definitions;
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientSoundDefinitions {
+        return new ClientSoundDefinitions(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            sound_definitions: {}
+        });
+    }
+
+    addSound(name: string, sound: IClientSoundDefinition) {
+        this.sound_definitions[name] = sound;
     }
 
     convertSoundsToObjects() {

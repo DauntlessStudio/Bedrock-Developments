@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangTripleArray } from "../shared_types";
 import { IClientACParticleEffects, IClientACSoundEffects } from "./animation_controller";
@@ -50,4 +51,5 @@ export declare class ClientAnimation extends MinecraftDataType implements IClien
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientAnimation);
+    static createFromTemplate(nameData: NameData): ClientAnimation;
 }

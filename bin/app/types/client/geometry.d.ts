@@ -73,5 +73,6 @@ export declare class ClientGeometry extends MinecraftDataType implements IClient
     [key: GeometryName]: IClientGeometryOld;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientGeometry);
+    static createFromTemplate(nameData: NameData): ClientGeometry;
     static createFilePath(nameData: NameData): string;
 }

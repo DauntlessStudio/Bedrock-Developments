@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 export type ClientACName = `controller.animation.${string}`;
@@ -48,5 +49,6 @@ export declare class ClientAnimationController extends MinecraftDataType impleme
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientAnimationController);
+    static createFromTemplate(nameData: NameData): ClientAnimationController;
     addAnimationController(key: ClientACName, controller: IClientAC): void;
 }

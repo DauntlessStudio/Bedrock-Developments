@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 export type ServerAnimationName = `animation.${string}`;
@@ -22,4 +23,5 @@ export declare class ServerAnimation extends MinecraftDataType implements IServe
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerAnimation);
+    static createFromTemplate(nameData: NameData): ServerAnimation;
 }

@@ -1,5 +1,5 @@
 import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { NameData, currentFormatVersion } from "../../utils";
 import { GeometryName } from "../client";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
@@ -115,6 +115,18 @@ export class ServerBlock extends MinecraftDataType implements IServerBlock {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:block"] = template["minecraft:block"];
+    }
+
+    public static createFromTemplate(nameData: NameData): ServerBlock {
+        return new ServerBlock(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:block": {
+                description: {
+                    identifier: nameData.fullname as Identifier,
+                },
+                components: {}
+            }
+        });
     }
 
     setDisplayData(name: NameData) {

@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 export interface IClientSoundDefinitions {
@@ -29,5 +30,7 @@ export declare class ClientSoundDefinitions extends MinecraftDataType implements
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientSoundDefinitions);
+    static createFromTemplate(nameData: NameData): ClientSoundDefinitions;
+    addSound(name: string, sound: IClientSoundDefinition): void;
     convertSoundsToObjects(): void;
 }

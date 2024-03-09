@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 export interface IServerLootTable {
@@ -25,4 +26,5 @@ export declare class ServerLootTable extends MinecraftDataType implements IServe
     pools: IServerLootTablePool[];
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerLootTable);
+    static createFromTemplate(nameData: NameData): MinecraftDataType;
 }

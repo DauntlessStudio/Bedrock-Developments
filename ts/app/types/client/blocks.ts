@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 
@@ -42,7 +43,7 @@ export class ClientBlocks extends MinecraftDataType implements IClientBlocks {
     [key: Identifier]: IClientBlocksEntry;
 
     public static get DirectoryPath(): string {
-        return Directories.RESOURCE_PATH + '/';
+        return Directories.RESOURCE_PATH;
     }
 
     constructor(filepath: string, template: IClientBlocks) {
@@ -50,6 +51,10 @@ export class ClientBlocks extends MinecraftDataType implements IClientBlocks {
         Object.getOwnPropertyNames(template).forEach(prop => {
             this[prop as Identifier] = template[prop as Identifier];
         });
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientBlocks {
+        return new ClientBlocks(this.createFilePath(nameData), {});
     }
 
     addBlock(name: Identifier, block: IClientBlocksEntry) {

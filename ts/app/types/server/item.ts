@@ -1,5 +1,5 @@
 import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
 
@@ -90,6 +90,18 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:item"] = template["minecraft:item"];
+    }
+
+    public static createFromTemplate(nameData: NameData): MinecraftDataType {
+        return new MinecraftDataType(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:item": {
+                description: {
+                    identifier: 'placeholder:placeholder'
+                },
+                components: {}
+            },
+        });
     }
 
     setDisplayData(name: NameData) {

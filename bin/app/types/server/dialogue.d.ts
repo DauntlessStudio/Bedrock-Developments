@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, RawMessage } from "../shared_types";
 export interface IServerDialogue {
@@ -24,6 +25,7 @@ export declare class ServerDialogue extends MinecraftDataType implements IServer
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerDialogue);
+    static createFromTemplate(nameData: NameData): ServerDialogue;
     addScene(scene: IServerDialogueScene): void;
     addButtonToAllScenes(button: {
         name: RawMessage;

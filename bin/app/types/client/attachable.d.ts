@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity";
@@ -19,6 +20,7 @@ export declare class ClientAttachable extends MinecraftDataType implements IClie
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientAttachable);
+    static createFromTemplate(nameData: NameData): ClientAttachable;
     addInitializeVariable(...variable: string[]): void;
     addParentVariables(): void;
     addPreAnimationVariable(...variable: string[]): void;

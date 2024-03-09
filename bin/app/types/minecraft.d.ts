@@ -5,6 +5,7 @@ export declare class MinecraftDataType {
     static get DirectoryPath(): string;
     constructor(filePath: string, template: any);
     static createFilePath(nameData: NameData): string;
+    static createFromTemplate(nameData: NameData): MinecraftDataType;
     serialize(): string;
     static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T;
     toFile(): File;

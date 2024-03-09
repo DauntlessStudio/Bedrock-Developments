@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 
@@ -38,5 +39,31 @@ export class ServerLootTable extends MinecraftDataType implements IServerLootTab
     constructor(filepath: string, template: IServerLootTable) {
         super(filepath, template);
         this.pools = template.pools;
+    }
+
+    public static createFromTemplate(nameData: NameData): MinecraftDataType {
+        return new MinecraftDataType(this.createFilePath(nameData), {
+            pools: [
+                {
+                    rolls: 1,
+                    entries: [
+                        {
+                            type: "item",
+                            name: nameData.fullname as Identifier,
+                            weight: 1,
+                            functions: [
+                                {
+                                    function: "set_count",
+                                    "count": {
+                                        "min": 1,
+                                        "max": 1,
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        });
     }
 }

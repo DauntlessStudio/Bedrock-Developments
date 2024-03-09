@@ -1,13 +1,15 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray } from "../shared_types";
 
 interface IClientRenderController {
     format_version: FormatVersion;
-    render_controllers: Controllers;
+    render_controllers: {
+        [key: string]: IClientRCController;
+    };
 }
 
-type Controllers = Record<string, IClientRCController>;
 type Reference = `Array.${string}[${string}]`|`Geometry.${string}`|`Material.${string}`|`Texture.${string}`|`array.${string}[${string}]`|`geometry.${string}`|`material.${string}`|`texture.${string}`;
 
 interface IClientRCController {
@@ -42,7 +44,9 @@ interface IClientRCColor {
 
 export class ClientRenderController extends MinecraftDataType implements IClientRenderController {
     format_version: FormatVersion;
-    render_controllers: Controllers;
+    render_controllers: {
+        [key: string]: IClientRCController;
+    };
 
     public static get DirectoryPath(): string {
         return Directories.RESOURCE_PATH + 'render_controllers/';
@@ -52,5 +56,18 @@ export class ClientRenderController extends MinecraftDataType implements IClient
         super(filepath, template);
         this.format_version = template.format_version;
         this.render_controllers = template.render_controllers;
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientRenderController {
+        return new ClientRenderController(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            render_controllers: {
+                [`controller.render.${nameData.shortname}`]: {
+                    geometry: "geometry.default",
+                    materials: [ { "*": "Material.default" } ],
+                    textures: [ "texture.default" ],
+                }
+            }
+        });
     }
 }

@@ -1,5 +1,5 @@
 import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier } from "../shared_types";
 
@@ -35,6 +35,20 @@ export class ClientItem extends MinecraftDataType implements IClientItem {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:item"] = template["minecraft:item"];
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientItem {
+        return new ClientItem(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:item": {
+                description: {
+                    identifier: nameData.fullname as Identifier,
+                },
+                components: {
+                    "minecraft:icon": nameData.shortname,
+                }
+            }
+        });
     }
 
     setDisplayData(name: NameData) {

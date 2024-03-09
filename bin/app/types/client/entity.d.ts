@@ -19,7 +19,7 @@ export interface IClientEntityDescription {
     animations?: Record<string, string>;
     animation_controllers?: Record<string, string>[];
     render_controllers?: MolangOption[];
-    spawn_egg: IClientEntitySpawnEgg;
+    spawn_egg?: IClientEntitySpawnEgg;
     enable_attachables?: boolean;
     held_item_ignores_lightning?: boolean;
     hide_armor?: boolean;
@@ -53,6 +53,7 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientEntity);
+    static createFromTemplate(nameData: NameData): ClientEntity;
     static createFilePath(nameData: NameData): string;
     upgradeFormatVersion(): void;
     addInitializeVariable(...variable: string[]): void;

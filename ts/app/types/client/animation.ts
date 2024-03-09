@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangTripleArray } from "../shared_types";
 import { IClientACParticleEffects, IClientACSoundEffects } from "./animation_controller";
@@ -63,5 +64,17 @@ export class ClientAnimation extends MinecraftDataType implements IClientAnimati
         super(filepath, template);
         this.format_version = template.format_version;
         this.animations = template.animations;
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientAnimation {
+        return new ClientAnimation(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            animations: {
+                [`animation.${nameData.shortname}` as ClientAnimationName]: {
+                    animation_length: 1,
+                    timeline: {}
+                }
+            }
+        });
     }
 }

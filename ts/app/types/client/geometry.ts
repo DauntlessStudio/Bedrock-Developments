@@ -94,6 +94,37 @@ export class ClientGeometry extends MinecraftDataType implements IClientGeometry
             });
         }
     }
+
+    public static createFromTemplate(nameData: NameData): ClientGeometry {
+        return new ClientGeometry(this.createFilePath(nameData), {
+            format_version: "1.20.50",
+            "minecraft:geometry": [
+              {
+                description: {
+                  identifier: `geometry.${nameData.shortname}`,
+                  texture_width: 64,
+                  texture_height: 64,
+                  visible_bounds_width: 2,
+                  visible_bounds_height: 3,
+                  visible_bounds_offset: [0, 0.5, 0]
+                },
+                bones: [
+                  {
+                    name: "body",
+                    pivot: [0, 0, 0],
+                    cubes: [
+                      {
+                        origin: [-8, 0, -8],
+                        size: [16, 16, 16],
+                        uv: [0, 0],
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+        });
+    }
     
     public static createFilePath(nameData: NameData): string {
         return this.DirectoryPath + nameData.directory + nameData.shortname + ".geometry.json";

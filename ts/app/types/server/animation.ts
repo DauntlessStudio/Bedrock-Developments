@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 
@@ -34,5 +35,19 @@ export class ServerAnimation extends MinecraftDataType implements IServerAnimati
         super(filepath, template);
         this.format_version = template.format_version;
         this.animations = template.animations;
+    }
+
+    public static createFromTemplate(nameData: NameData): ServerAnimation {
+        return new ServerAnimation(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            animations: {
+                [`animation.${nameData.shortname}` as ServerAnimationName]: {
+                    animation_length: 1,
+                    timeline: {
+                        ["0.0"]: [`/say ${nameData.shortname}`]
+                    }
+                }
+            }
+        });
     }
 }

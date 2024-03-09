@@ -101,6 +101,7 @@ export declare class ServerBlock extends MinecraftDataType implements IServerBlo
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerBlock);
+    static createFromTemplate(nameData: NameData): ServerBlock;
     setDisplayData(name: NameData): void;
     setExplosionResistance(resistance: number | boolean): void;
     setFriction(friction?: number): void;

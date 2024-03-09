@@ -1,3 +1,4 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 export interface IClientItemTexture {
     resource_pack_name: 'vanilla';
@@ -18,5 +19,6 @@ export declare class ClientItemTexture extends MinecraftDataType implements ICli
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientItemTexture);
+    static createFromTemplate(nameData: NameData): ClientItemTexture;
     addTexture(name: string, textures: string): void;
 }

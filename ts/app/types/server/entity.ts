@@ -1,5 +1,5 @@
 import { Directories, getFiles } from "../../new_file_manager";
-import { NameData, chalk } from "../../utils";
+import { NameData, chalk, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
 import { IServerAnimation, IServerAnimationAnim, ServerAnimation, ServerAnimationName } from "./animation";
@@ -265,6 +265,67 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:entity"] = template["minecraft:entity"];
+    }
+
+    public static createFromTemplate(nameData: NameData): ServerEntity {
+        return new ServerEntity(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:entity": {
+              description: {
+                identifier: nameData.fullname as Identifier,
+                is_spawnable: false,
+                is_summonable: true,
+                is_experimental: false,
+              },
+              component_groups: {
+                "instant_despawn": {
+                  "minecraft:instant_despawn": {}
+                }
+              },
+              components: {
+                "minecraft:type_family": {
+                  family: [
+                    nameData.namespace,
+                    nameData.shortname,
+                  ]
+                },
+                "minecraft:collision_box": {
+                  height: 0,
+                  width: 0,
+                },
+                "minecraft:physics": {
+                  has_collision: false,
+                  has_gravity: false,
+                },
+                "minecraft:damage_sensor": {
+                  triggers: [
+                    {
+                      on_damage: {
+                        filters: {
+                          test: "has_damage",
+                          value: "void",
+                        },
+                        event: "despawn"
+                      }
+                    },
+                    {
+                      cause: "all",
+                      deals_damage: false,
+                    }
+                  ]
+                }
+              },
+              events: {
+                "despawn": {
+                  add: {
+                    component_groups: [
+                      "instant_despawn"
+                    ]
+                  }
+                }
+              }
+            }
+        });
     }
 
     setComponents(components: IServerItemComponents, handleExisting: 'overwrite'|'merge'|'ignore'='overwrite') {

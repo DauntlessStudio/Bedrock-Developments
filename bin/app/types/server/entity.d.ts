@@ -239,6 +239,7 @@ export declare class ServerEntity extends MinecraftDataType implements IServerEn
     get Identifier(): Identifier;
     get NameData(): NameData;
     constructor(filepath: string, template: IServerEntity);
+    static createFromTemplate(nameData: NameData): ServerEntity;
     setComponents(components: IServerItemComponents, handleExisting?: 'overwrite' | 'merge' | 'ignore'): void;
     setComponentGroups(groups: IServerEntityComponentGroups, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityComponentGroupOptions): void;
     setEvents(events: IServerEntityEvents, handleExisting?: 'overwrite' | 'merge' | 'ignore'): void;

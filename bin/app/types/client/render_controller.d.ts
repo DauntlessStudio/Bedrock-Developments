@@ -1,10 +1,12 @@
+import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray } from "../shared_types";
 interface IClientRenderController {
     format_version: FormatVersion;
-    render_controllers: Controllers;
+    render_controllers: {
+        [key: string]: IClientRCController;
+    };
 }
-type Controllers = Record<string, IClientRCController>;
 type Reference = `Array.${string}[${string}]` | `Geometry.${string}` | `Material.${string}` | `Texture.${string}` | `array.${string}[${string}]` | `geometry.${string}` | `material.${string}` | `texture.${string}`;
 interface IClientRCController {
     arrays?: IClientRCArrays;
@@ -38,8 +40,11 @@ interface IClientRCColor {
 }
 export declare class ClientRenderController extends MinecraftDataType implements IClientRenderController {
     format_version: FormatVersion;
-    render_controllers: Controllers;
+    render_controllers: {
+        [key: string]: IClientRCController;
+    };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientRenderController);
+    static createFromTemplate(nameData: NameData): ClientRenderController;
 }
 export {};

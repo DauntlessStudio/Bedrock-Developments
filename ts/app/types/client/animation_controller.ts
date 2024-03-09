@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 
@@ -62,6 +63,20 @@ export class ClientAnimationController extends MinecraftDataType implements ICli
         super(filepath, template);
         this.format_version = template.format_version;
         this.animation_controllers = template.animation_controllers;
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientAnimationController {
+        return new ClientAnimationController(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            animation_controllers: {
+                [`controller.animation.${nameData.shortname}` as ClientACName]: {
+                    initial_state: 'default',
+                    states: {
+                        'default': {}
+                    }
+                }
+            }
+        });
     }
 
     addAnimationController(key: ClientACName, controller: IClientAC) {

@@ -1,5 +1,5 @@
 import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 
@@ -23,7 +23,7 @@ export interface IClientEntityDescription {
     animations?: Record<string, string>;
     animation_controllers?: Record<string, string>[];
     render_controllers?: MolangOption[];
-    spawn_egg: IClientEntitySpawnEgg;
+    spawn_egg?: IClientEntitySpawnEgg;
     enable_attachables?: boolean;
     held_item_ignores_lightning?: boolean;
     hide_armor?: boolean;
@@ -68,6 +68,30 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
         this.format_version = template.format_version;
         this["minecraft:client_entity"] = template["minecraft:client_entity"];
     }
+
+    public static createFromTemplate(nameData: NameData): ClientEntity {
+        return new ClientEntity(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:client_entity": {
+              description: {
+                identifier: nameData.fullname as Identifier,
+                materials: {
+                  default: "entity_alphatest",
+                },
+                geometry: {
+                  default: `geometry.${nameData.shortname}`,
+                },
+                textures: {
+                  default: `textures/entity/${nameData.shortname}/default`,
+                },
+                render_controllers: [
+                  "controller.render.default",
+                ],
+                spawn_egg: {}
+              }
+            }
+        });
+    }
     
     public static createFilePath(nameData: NameData): string {
         return this.DirectoryPath + nameData.directory + nameData.shortname + ".entity.json";
@@ -76,7 +100,7 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
     upgradeFormatVersion() {
         if (this.format_version !== '1.8.0') return;
 
-        this.format_version = '1.12.0';
+        this.format_version = currentFormatVersion;
 
         if (this["minecraft:client_entity"].description.animation_controllers) {
             this["minecraft:client_entity"].description.animations = this["minecraft:client_entity"].description.animations ?? {};

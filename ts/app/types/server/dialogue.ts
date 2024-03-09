@@ -1,4 +1,5 @@
 import { Directories } from "../../new_file_manager";
+import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, RawMessage } from "../shared_types";
 
@@ -35,6 +36,15 @@ export class ServerDialogue extends MinecraftDataType implements IServerDialogue
         super(filepath, template);
         this.format_version = template.format_version;
         this["minecraft:npc_dialogue"] = template["minecraft:npc_dialogue"];
+    }
+
+    public static createFromTemplate(nameData: NameData): ServerDialogue {
+        return new ServerDialogue(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:npc_dialogue": {
+                scenes: []
+            }
+        });
     }
 
     addScene(scene: IServerDialogueScene) {

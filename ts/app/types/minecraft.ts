@@ -30,6 +30,10 @@ export class MinecraftDataType {
         return this.DirectoryPath + nameData.directory + nameData.shortname + ".json";
     }
 
+    public static createFromTemplate(nameData: NameData): MinecraftDataType {
+        return new MinecraftDataType(this.createFilePath(nameData), {});
+    }
+
     public serialize(): string {
         return JSONC.stringify(this, null, '\t');
     }

@@ -3,7 +3,7 @@ import { printVersion } from "../base";
 import { program_new } from "./new";
 import { NameData } from "../../utils";
 import { Directories, File, copySourceFile, setFiles } from "../../new_file_manager";
-import { ClientGeometry, Identifier, ServerBlock, ServerLootTable } from "../../types";
+import { ClientGeometry, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types";
 import { LangFile } from "../../types/minecraft";
 
 export const program_new_block = program_new.command('block')
@@ -16,7 +16,7 @@ export const program_new_block = program_new.command('block')
   .action(triggerCreateNewBlock)
   .hook('postAction', printVersion);
 
-function triggerCreateNewBlock(names: string[], options: OptionValues) {
+function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO: Add template file creators to types files, add textures to item/terrain texture
   const lang: boolean = options.lang;
   const emissive: number|undefined = options.emissive;
   const table: boolean = options.table;
