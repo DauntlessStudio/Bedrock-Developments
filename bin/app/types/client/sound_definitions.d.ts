@@ -1,4 +1,4 @@
-import { NameData } from "../../utils";
+import { File } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 export interface IClientSoundDefinitions {
@@ -30,7 +30,10 @@ export declare class ClientSoundDefinitions extends MinecraftDataType implements
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientSoundDefinitions);
-    static createFromTemplate(nameData: NameData): ClientSoundDefinitions;
+    static createFilePath(): string;
+    static createFromTemplate(): ClientSoundDefinitions;
+    static fileWithAddedSound(name: string, sound: IClientSoundDefinition): File;
+    toFile(): File;
     addSound(name: string, sound: IClientSoundDefinition): void;
     convertSoundsToObjects(): void;
 }

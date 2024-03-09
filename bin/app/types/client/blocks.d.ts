@@ -1,4 +1,4 @@
-import { NameData } from "../../utils";
+import { File } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 export interface IClientBlocks {
@@ -39,6 +39,9 @@ export declare class ClientBlocks extends MinecraftDataType implements IClientBl
     [key: Identifier]: IClientBlocksEntry;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientBlocks);
-    static createFromTemplate(nameData: NameData): ClientBlocks;
+    static createFilePath(): string;
+    static createFromTemplate(): ClientBlocks;
+    static fileWithAddedBlock(name: Identifier, block: IClientBlocksEntry): File;
+    toFile(): File;
     addBlock(name: Identifier, block: IClientBlocksEntry): void;
 }

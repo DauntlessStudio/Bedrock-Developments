@@ -1,5 +1,4 @@
-import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { Directories, File } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 
@@ -53,8 +52,22 @@ export class ClientBlocks extends MinecraftDataType implements IClientBlocks {
         });
     }
 
-    public static createFromTemplate(nameData: NameData): ClientBlocks {
-        return new ClientBlocks(this.createFilePath(nameData), {});
+    public static createFilePath(): string {
+        return this.DirectoryPath + "blocks.json";
+    }
+
+    public static createFromTemplate(): ClientBlocks {
+        return new ClientBlocks(this.createFilePath(), {});
+    }
+
+    public static fileWithAddedBlock(name: Identifier, block: IClientBlocksEntry): File {
+        const blocks = ClientBlocks.fromPathOrTemplate(ClientBlocks, ClientBlocks.createFilePath());
+        blocks.addBlock(name, block);
+        return blocks.toFile();
+    }
+
+    public toFile(): File {
+        return {filePath: this.filePath, fileContents: this.serialize(), handleExisting: 'overwrite'};
     }
 
     addBlock(name: Identifier, block: IClientBlocksEntry) {

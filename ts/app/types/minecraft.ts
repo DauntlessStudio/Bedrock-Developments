@@ -49,6 +49,17 @@ export class MinecraftDataType {
     public static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
         return MinecraftDataType.deserialize(create, file.filePath, file.fileContents);
     }
+
+    public static fromPathOrTemplate<T>(create: new (filePath: string, template: any) => T, path: string): T {
+        if (path) {
+            const file = getFiles(path).shift();
+            if (file) {
+                return this.fromFile(create, file)
+            }
+        }
+
+        return this.createFromTemplate(new NameData(path)) as T;
+    }
 }
 
 export class LangFile {
@@ -61,6 +72,12 @@ export class LangFile {
         }
 
         this.files.forEach(file => file.handleExisting = 'overwrite_silent');
+    }
+
+    public static addToAllLangs(categoryName: string, ...entries: string[]) {
+        const langs = new LangFile('*.lang');
+        langs.addToCategory(categoryName, ...entries);
+        return langs;
     }
 
     addToCategory(categoryName: string, ...entries: string[]) {

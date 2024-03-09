@@ -67,7 +67,7 @@ export declare class ServerItem extends MinecraftDataType implements IServerItem
     ["minecraft:item"]: IServerItemItem;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerItem);
-    static createFromTemplate(nameData: NameData): MinecraftDataType;
+    static createFromTemplate(nameData: NameData): ServerItem;
     setDisplayData(name: NameData): void;
     setStackSize(stack: number): void;
     setWearable(slot: SlotOptions): void;

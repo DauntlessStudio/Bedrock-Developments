@@ -1,4 +1,4 @@
-import { NameData } from "../../utils";
+import { File } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 export interface IClientTerrainTexture {
     num_mip_levels: number;
@@ -23,6 +23,9 @@ export declare class ClientTerrainTexture extends MinecraftDataType implements I
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientTerrainTexture);
-    static createFromTemplate(nameData: NameData): ClientTerrainTexture;
+    static createFilePath(): string;
+    static createFromTemplate(): ClientTerrainTexture;
+    static fileWithAddedTexture(name: string, textures: string): File;
+    toFile(): File;
     addTexture(name: string, textures: string): void;
 }

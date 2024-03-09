@@ -92,8 +92,8 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
         this["minecraft:item"] = template["minecraft:item"];
     }
 
-    public static createFromTemplate(nameData: NameData): MinecraftDataType {
-        return new MinecraftDataType(this.createFilePath(nameData), {
+    public static createFromTemplate(nameData: NameData): ServerItem {
+        return new ServerItem(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
             "minecraft:item": {
                 description: {

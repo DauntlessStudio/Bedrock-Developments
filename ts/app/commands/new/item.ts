@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { IServerItem, ServerItem } from "../../types";
+import { ClientItemTexture, IServerItem, ServerItem } from "../../types";
 import { Directories, File, copySourceFile, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
 import { LangFile } from "../../types/minecraft";
@@ -46,40 +46,29 @@ async function triggerCreateNewItem(names: string[], options: OptionValues) {
 	names.forEach((name) => {
 		const nameData = new NameData(name);
 		const files: File[] = createFileTemplates[type](nameData, commandOptions);
-        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + '/items/' + nameData.shortname + '.png');
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + 'items/' + nameData.shortname + '.png');
 
+        files.push(ClientItemTexture.fileWithAddedTexture(nameData.shortname, 'textures/' + nameData.directory + 'items/' + nameData.shortname));
 		setFiles(files);
 	});
 }
 
-const baseItemTemplate: IServerItem = {
-    format_version: "1.20.50",
-    "minecraft:item": {
-        description: {
-            identifier: 'placeholder:placeholder'
-        },
-        components: {}
-    },
-}
-
 const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, options: ItemCommandOptions) => File[]> = {
     basic: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
 
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;
     },
     boots: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
         item.setWearable("slot.armor.feet");
@@ -87,15 +76,13 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;
     },
     leggings: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
         item.setWearable("slot.armor.legs");
@@ -103,15 +90,13 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;
     },
     chestplate: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
         item.setWearable("slot.armor.chest");
@@ -119,15 +104,13 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;
     },
     helmet: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
         item.setWearable("slot.armor.head");
@@ -135,9 +118,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;
@@ -171,7 +152,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         return createFileTemplates.basic(nameData, options);
     },
     food: function (nameData: NameData, options: ItemCommandOptions) {
-        const item = new ServerItem(ServerItem.createFilePath(nameData), baseItemTemplate);
+        const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
         item.setFood();
@@ -179,9 +160,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            const lang = new LangFile('*.lang');
-            lang.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            files.push(...lang.files);
+            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
         return files;

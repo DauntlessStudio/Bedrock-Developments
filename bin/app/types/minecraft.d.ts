@@ -10,9 +10,11 @@ export declare class MinecraftDataType {
     static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T;
     toFile(): File;
     static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
+    static fromPathOrTemplate<T>(create: new (filePath: string, template: any) => T, path: string): T;
 }
 export declare class LangFile {
     files: File[];
     constructor(filepattern: string);
+    static addToAllLangs(categoryName: string, ...entries: string[]): LangFile;
     addToCategory(categoryName: string, ...entries: string[]): void;
 }

@@ -1,5 +1,4 @@
-import { Directories } from "../../new_file_manager";
-import { NameData } from "../../utils";
+import { Directories, File } from "../../new_file_manager";
 import { MinecraftDataType } from "../minecraft";
 
 export interface IClientItemTexture {
@@ -22,7 +21,7 @@ export class ClientItemTexture extends MinecraftDataType implements IClientItemT
     };
 
     public static get DirectoryPath(): string {
-        return Directories.RESOURCE_PATH + 'sounds/';
+        return Directories.RESOURCE_PATH;
     }
 
     constructor(filepath: string, template: IClientItemTexture) {
@@ -32,12 +31,26 @@ export class ClientItemTexture extends MinecraftDataType implements IClientItemT
         this.texture_data = template.texture_data;
     }
 
-    public static createFromTemplate(nameData: NameData): ClientItemTexture {
-        return new ClientItemTexture(this.createFilePath(nameData), {
+    public static createFilePath(): string {
+        return this.DirectoryPath +  "textures/item_texture.json";
+    }
+
+    public static createFromTemplate(): ClientItemTexture {
+        return new ClientItemTexture(this.createFilePath(), {
             resource_pack_name: 'vanilla',
             texture_name: 'atlas.items',
             texture_data: {},
         });
+    }
+
+    public static fileWithAddedTexture(name: string, textures: string): File {
+        const items = ClientItemTexture.fromPathOrTemplate(ClientItemTexture, ClientItemTexture.createFilePath());
+        items.addTexture(name, textures);
+        return items.toFile();
+    }
+
+    public toFile(): File {
+        return {filePath: this.filePath, fileContents: this.serialize(), handleExisting: 'overwrite'};
     }
 
     addTexture(name: string, textures: string) {
