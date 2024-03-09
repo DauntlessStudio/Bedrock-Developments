@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
 import { IServerItem, ServerItem } from "../../types";
-import { File, setFiles } from "../../new_file_manager";
+import { Directories, File, copySourceFile, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
 import { LangFile } from "../../types/minecraft";
 
@@ -46,6 +46,7 @@ async function triggerCreateNewItem(names: string[], options: OptionValues) {
 	names.forEach((name) => {
 		const nameData = new NameData(name);
 		const files: File[] = createFileTemplates[type](nameData, commandOptions);
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + '/items/' + nameData.shortname + '.png');
 
 		setFiles(files);
 	});
