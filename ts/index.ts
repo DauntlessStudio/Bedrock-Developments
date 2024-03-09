@@ -1,55 +1,7 @@
 #! /usr/bin/env node
 import { runProgram } from './app/commands';
 
-// let program = new Command();
-// const version = '2.2.5'
-
-// program
-//   .name('bed')
-//   .description('CLI to assist Minecraft Bedrock development')
-//   .option('--rpath <rp>', 'Path to Resource Pack')
-//   .on('option:rpath', Global.setResourcePath)
-//   .option('--bpath <bp>', 'Path to Behavior Pack')
-//   .on('option:bpath', Global.setBehaviorPath)
-//   .option('-i, --indent <number>', 'set indent tabs level for JSON files', '1')
-//   .on('option:indent', Global.setIndentLevel)
-//   .version(version, '-V, --version')
-//   .action(printVersion)
-
 // // #region New Commands
-// let createNew = program.command('new')
-//   .description('creates new bedrock files');
-
-// createNew.command('entity')
-//   .description('creates new bedrock entities')
-//   .argument('<names...>', 'entity names as "namespace:entity"')
-//   .option('--no-lang', 'do not add lang file')
-//   .addOption(new Option('-t, --type <type>', 'set entity type',).choices(Object.keys(Entity.entityType)).default(Entity.entityType.dummy))
-//   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
-//   .option('--no-geo', 'do not add geo file')
-//   .option('--no-texture', 'do not add texture file')
-//   .action(triggerCreateNewEntity)
-//   .hook('postAction', printVersion);
-
-// createNew.command('item')
-//   .description('creates new bedrock items')
-//   .argument('<names...>', 'item names as "namespace:item"')
-//   .option('--no-lang', 'do not add lang file')
-//   .option('-s, --stack <stack_size>', 'max stack size', '64')
-//   .addOption(new Option('-t, --type <item_type>', 'basic').choices(Object.keys(Item.itemType)))
-//   .action(triggerCreateNewItem)
-//   .hook('postAction', printVersion);
-
-// createNew.command('block')
-//   .description('creates new bedrock blocks')
-//   .argument('<names...>', 'block names as "namespace:block"')
-//   .option('--no-lang', 'do not add lang file')
-//   .option('-e, --emissive <emission>', 'block emmission level [1-15]')
-//   .option('-t, --table', 'create a loot table')
-//   .option('-g, --geo', 'create a custom geo')
-//   .action(triggerCreateNewBlock)
-//   .hook('postAction', printVersion);
-
 // createNew.command('anim')
 //   .description('creates new bedrock behavior animations')
 //   .argument('<names...>', 'animation names names as "entity.anim"')
@@ -241,40 +193,7 @@ import { runProgram } from './app/commands';
 
 runProgram();
 
-// async function setPaths() {
-//   if (!Global.set_paths) {
-//     await Global.setResourcePath(undefined);
-//     await Global.setBehaviorPath(undefined);
-//   }
-// }
-
 // // #region Triggers
-// async function triggerCreateNewEntity(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const type = options.type;
-//   const lang = options.lang;
-//   const geo = options.geo;
-//   const texture = options.texture;
-//   const client = options.client;
-//   await Entity.createNewEntity(names, lang, {client: client, type: type, geo: geo, texture: texture});
-// }
-
-// async function triggerCreateNewItem(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const lang = options.lang;
-//   const stack = options.stack;
-//   const type = options.type as Item.itemType;
-//   await Item.createNewItem(names, lang, stack, type);
-// }
-
-// async function triggerCreateNewBlock(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const lang = options.lang;
-//   const emissive = options.emissive;
-//   const table = options.table;
-//   const geo = options.geo;
-//   await Block.createNewBlock(names, lang, {emissive: emissive, table: table, geo: geo});
-// }
 
 // async function triggerCreateNewAnimation(names: string[], options: OptionValues) {
 //   await setPaths();

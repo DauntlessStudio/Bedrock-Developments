@@ -43,9 +43,7 @@ export class ServerAnimation extends MinecraftDataType implements IServerAnimati
             animations: {
                 [`animation.${nameData.shortname}` as ServerAnimationName]: {
                     animation_length: 1,
-                    timeline: {
-                        ["0.0"]: [`/say ${nameData.shortname}`]
-                    }
+                    timeline: {}
                 }
             }
         });
