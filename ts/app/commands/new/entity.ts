@@ -6,7 +6,7 @@ import { NameData } from "../../utils";
 import { ClientEntity, ClientGeometry, ServerEntity } from "../../types";
 import { LangFile } from "../../types/minecraft";
 
-export const program_new_entity = program_new.command('entity')
+program_new.command('entity')
 .description('creates new bedrock entities')
 .argument('<names...>', 'entity names as "namespace:entity"')
 .option('--no-lang', 'do not add lang file')

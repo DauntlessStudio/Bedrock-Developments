@@ -6,7 +6,7 @@ import { Directories, File, copySourceFile, setFiles } from "../../new_file_mana
 import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types";
 import { LangFile } from "../../types/minecraft";
 
-export const program_new_block = program_new.command('block')
+program_new.command('block')
   .description('creates new bedrock blocks')
   .argument('<names...>', 'block names as "namespace:block"')
   .option('--no-lang', 'do not add lang file')

@@ -22,7 +22,7 @@ export interface IServerAC {
 export interface IServerACState {
     on_entry?: string[];
     animations?: string[];
-    transitions?: {[key:string]: string};
+    transitions?: {[key:string]: string}[];
     on_exit?: string[];
 }
 
@@ -49,11 +49,7 @@ export class ServerAnimationController extends MinecraftDataType implements ISer
                 [`controller.animation.${nameData.shortname}` as ServerACName]: {
                     initial_state: 'default',
                     states: {
-                        'default': {
-                            on_entry: [
-                                `/say ${nameData.shortname}`
-                            ]
-                        }
+                        'default': {}
                     }
                 }
             }
@@ -62,5 +58,16 @@ export class ServerAnimationController extends MinecraftDataType implements ISer
 
     addAnimationController(key: ServerACName, controller: IServerAC) {
         this.animation_controllers[key] = controller;
+    }
+
+    addState(key: ServerACName, stateName: string, state: IServerACState) {
+        if (!Object.getOwnPropertyNames(this.animation_controllers).includes(key)) {
+            this.addAnimationController(key, {
+                initial_state: stateName,
+                states: {}
+            });
+        }
+
+        this.animation_controllers[key].states[stateName] = state;
     }
 }

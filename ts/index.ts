@@ -2,26 +2,6 @@
 import { runProgram } from './app/commands';
 
 // // #region New Commands
-// createNew.command('anim')
-//   .description('creates new bedrock behavior animations')
-//   .argument('<names...>', 'animation names names as "entity.anim"')
-//   .option('-l, --loop', 'should the animation loop')
-//   .addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
-//   .addOption(new Option('-t, --time <time>', 'the animation length').default(1.0).argParser(parseFloat))
-//   .action(triggerCreateNewAnimation)
-//   .hook('postAction', printVersion);
-
-// createNew.command('ctrl')
-//   .description('creates new bedrock behavior animation controllers')
-//   .argument('<names...>', 'controller names as "entity.anim"')
-//   .addOption(new Option('-e, --entry [on entry commands...]', 'the commands to play on entry').default(['/say anim_name']))
-//   .addOption(new Option('-x, --exit [on exit commands...]', 'the commands to play on exit').preset(['/say anim_name']))
-//   .option('-a, --anim <animations...>', 'the animations to play')
-//   .option('-q, --query [query]', 'the query to transition from default', 'true')
-//   .addOption(new Option('-t, --transition [transition]', 'the query to transition back to default').preset('true'))
-//   .action(triggerCreateNewController)
-//   .hook('postAction', printVersion);
-
 // createNew.command('function')
 //   .description('creates new bedrock functions')
 //   .argument('<names...>', 'function names as "foo/bar"')
@@ -194,25 +174,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-
-// async function triggerCreateNewAnimation(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const loop = options.loop;
-//   const commands = options.commands;
-//   const time = options.time;
-//   await Animation.createNewAnimation(names, loop, commands, time);
-// }
-
-// async function triggerCreateNewController(names:string[], options: OptionValues) {
-//   await setPaths();
-//   const entry = options.entry;
-//   const exit = options.exit;
-//   const anim = options.anim;
-//   const query = options.query;
-//   const transition = options.transition;
-//   await Animation.createNewController(names, entry, exit, anim, query, transition);
-// }
-
 // async function triggerCreateNewSoundDefinition(names: string[], options: OptionValues) {
 //   await setPaths();
 //   const category = options.category;

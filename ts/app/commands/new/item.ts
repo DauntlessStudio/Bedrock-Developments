@@ -22,8 +22,7 @@ enum ServerItemOptions {
     boots='boots'
 };
 
-export const program_new_item = program_new
-	.command("item")
+program_new.command("item")
 	.description("creates new bedrock items")
 	.argument("<names...>", 'item names as "namespace:item"')
 	.option("--no-lang", "do not add lang file")

@@ -19,7 +19,7 @@ export interface IServerACState {
     animations?: string[];
     transitions?: {
         [key: string]: string;
-    };
+    }[];
     on_exit?: string[];
 }
 export declare class ServerAnimationController extends MinecraftDataType implements IServerAnimationController {
@@ -31,4 +31,5 @@ export declare class ServerAnimationController extends MinecraftDataType impleme
     constructor(filepath: string, template: IServerAnimationController);
     static createFromTemplate(nameData: NameData): ServerAnimationController;
     addAnimationController(key: ServerACName, controller: IServerAC): void;
+    addState(key: ServerACName, stateName: string, state: IServerACState): void;
 }
