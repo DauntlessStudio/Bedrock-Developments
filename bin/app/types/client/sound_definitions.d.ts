@@ -35,6 +35,7 @@ export declare class ClientSoundDefinitions extends MinecraftDataType implements
     static createFromTemplate(): ClientSoundDefinitions;
     static fileWithAddedSound(name: string, sound: IClientSoundDefinition): File;
     toFile(): File;
+    protected replacer(key: string, value: any): any;
     addSound(name: string, sound: IClientSoundDefinition): void;
     convertSoundsToObjects(): void;
 }

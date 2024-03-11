@@ -35,7 +35,16 @@ export class MinecraftDataType {
     }
 
     public serialize(): string {
-        return JSONC.stringify(this, null, '\t');
+        let outputString = JSONC.stringify(this, this.replacer, '\t');
+        // if (outputString.includes('"REMOVE')) {
+            outputString = outputString.replace(/\\/g, '').replace(/REMOVE"/g, '').replace(/"REMOVE/g, '');
+        // }
+
+        return outputString;
+    }
+
+    protected replacer(key: string, value: any) {
+        return value;
     }
 
     public static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T {

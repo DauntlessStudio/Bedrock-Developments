@@ -67,6 +67,34 @@ export class ClientSoundDefinitions extends MinecraftDataType implements IClient
         return {filePath: this.filePath, fileContents: this.serialize(), handleExisting: 'overwrite'};
     }
 
+    protected replacer(key: string, value: any) {
+        if (key === "sounds") {
+            const writeArr: string[] = [];
+            (value as (string|IClientSoundDefinitionSound)[]).forEach(sound => {
+                if (typeof(sound) === 'string') {
+                    writeArr.push(sound);
+                } else {
+                    writeArr.push(`REMOVE${JSON.stringify(sound, (key: string, value: any) => {
+                        switch (key) {
+                            case "volume":
+                            case "pitch":
+                                if ((value as number) % 1 === 0) {
+                                    return `REMOVE${value}.0REMOVE`;
+                                }
+                        
+                            default:
+                                return value;
+                        }
+                    })}REMOVE`.replace(/:/g, ': ').replace(/,/g, ', '));
+                }
+            });
+
+            return writeArr;
+        }
+
+        return value;
+    }
+
     addSound(name: string, sound: IClientSoundDefinition) {
         this.sound_definitions[name] = sound;
     }

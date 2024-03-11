@@ -8,6 +8,7 @@ export declare class MinecraftDataType {
     static createFilePath(nameData: NameData): string;
     static createFromTemplate(nameData: NameData): MinecraftDataType;
     serialize(): string;
+    protected replacer(key: string, value: any): any;
     static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T;
     toFile(): File;
     static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
