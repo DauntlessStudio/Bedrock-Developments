@@ -120,14 +120,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerEntityAddComponent(component: string, options: OptionValues) {
-//   await setPaths();
-//   const family = options.type;
-//   const file = options.file;
-//   const overwrite = options.overwrite;
-//   await Entity.entityAddComponent(component, {family: family, file: file}, overwrite);
-// }
-
 // async function triggerEntityAddProperty(names: string[], options: OptionValues) {
 //   await setPaths();
 //   const type = options.type;

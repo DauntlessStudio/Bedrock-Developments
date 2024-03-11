@@ -337,7 +337,6 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                         return;
                     case 'merge':
                         //TODO: handle merge
-                        break;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing component ${key} on ${this.Identifier}`));
                         this["minecraft:entity"].components[key] = components[key];
