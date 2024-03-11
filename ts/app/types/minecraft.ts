@@ -105,3 +105,31 @@ export class LangFile {
         });
     }
 }
+
+export class MCFunction {
+    files: File[];
+
+    constructor(filepattern: string) {
+        this.files = getFiles(Directories.BEHAVIOR_PATH + 'functions/' + filepattern);
+        if (!this.files.length) {
+            this.files = [{filePath: Directories.BEHAVIOR_PATH + 'functions/' + filepattern, fileContents: ""}];
+        }
+
+        this.files.forEach(file => file.handleExisting = 'overwrite');
+    }
+
+    addCommand(commands: string[], options?: {description: string, source?: string, selector?: string}) {
+        this.files.forEach(file => {
+            file.fileContents = "";
+            if (options) {
+                file.fileContents += `## ${options.description ?? "Missing Description"}\n`;
+                file.fileContents += `## Runs from "${options.source ?? "Missing Source"}"\n`;
+                file.fileContents += `## @s = ${options.selector ?? "Missing Selector"}\n`;
+            }
+
+            for (const command of commands) {
+                file.fileContents += "\n" + command;
+            }
+        });
+    }
+}

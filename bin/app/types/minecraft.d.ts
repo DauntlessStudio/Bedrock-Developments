@@ -18,3 +18,12 @@ export declare class LangFile {
     static addToAllLangs(categoryName: string, ...entries: string[]): LangFile;
     addToCategory(categoryName: string, ...entries: string[]): void;
 }
+export declare class MCFunction {
+    files: File[];
+    constructor(filepattern: string);
+    addCommand(commands: string[], options?: {
+        description: string;
+        source?: string;
+        selector?: string;
+    }): void;
+}

@@ -2,18 +2,6 @@
 import { runProgram } from './app/commands';
 
 // // #region New Commands
-// createNew.command('function')
-//   .description('creates new bedrock functions')
-//   .argument('<names...>', 'function names as "foo/bar"')
-//   .option('-c, --commands <commands>', 'the function commands, seperated by ";"')
-//   .option('-n, --number <number>', 'the number of times commands should be created in the files', '1')
-//   .option('-d, --description <description>', 'the description of the function, used as a comment')
-//   .option('-s, --source <source>', 'where is this function called from, used as a comment')
-//   .option('-o, --origin <origin>', 'who is @s within this function, used as a comment')
-//   .addHelpText('before', 'special characters can be used to provide additional formatting. $(F)f inserts the filename into the command, $(I)i inserts the index of the batch generated command')
-//   .action(triggerCreateNewFunction)
-//   .hook('postAction', printVersion);
-
 // createNew.command('sound')
 //   .description('creates a new sound definition')
 //   .argument('<names...>', 'definition names as category.sound')
@@ -180,16 +168,6 @@ runProgram();
 //   const vanilla = options.vanilla;
 //   const filepath = options.filepath;
 //   await Sound.createNewSoundDefinition(names, {category: category, vanilla: vanilla, filepath: filepath});
-// }
-
-// async function triggerCreateNewFunction(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const commands = options.commands;
-//   const number = options.number;
-//   const description = options.description;
-//   const source = options.source;
-//   const origin = options.origin;
-//   await Function.createNewFunction(names, commands, number, {description: description, source: source, origin: origin});
 // }
 
 // async function triggerEntityAddAnim(names: string[], options: OptionValues) {
