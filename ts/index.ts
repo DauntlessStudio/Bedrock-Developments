@@ -1,19 +1,7 @@
 #! /usr/bin/env node
 import { runProgram } from './app/commands';
 
-// // #region New Commands
-// createNew.command('vanilla')
-//   .description('imports a vanilla bedrock entity')
-//   .argument('<names...>', 'entity files as "player.json"')
-//   .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
-//   .action(triggerCreateVanillaEntity)
-//   .hook('postAction', printVersion);
-// // #endregion
-
 // // #region Entity Commands
-// let entity = program.command('entity')
-//   .description('modifies bedrock entities');
-
 // entity.command('anim')
 //   .description('adds an animation or animation controller reference to entities')
 //   .argument('<names...>', 'animation names as "entity.anim"')
@@ -153,15 +141,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerEntityAddAnim(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const family = options.type;
-//   const file = options.file;
-//   const script = options.script;
-//   const create = options.create;
-//   await Entity.entityAddAnim(names, {family: family, file: file}, script, create);
-// }
-
 // async function triggerEntityAddGroup(group: string, options: OptionValues) {
 //   await setPaths();
 //   const family = options.type;

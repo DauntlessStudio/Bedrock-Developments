@@ -1,6 +1,6 @@
 import { File } from "../new_file_manager";
 import { NameData } from "../utils";
-export declare function non_serializable(target: any, key: string): void;
+export declare function non_serializable(target: any, key: string | symbol): void;
 export declare class MinecraftDataType {
     filePath: string;
     static get DirectoryPath(): string;
@@ -10,7 +10,7 @@ export declare class MinecraftDataType {
     serialize(): string;
     protected replacer(key: string, value: any): any;
     static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T;
-    toFile(): File;
+    toFile(handleExisting?: 'overwrite' | 'merge' | 'overwrite_silent'): File;
     static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T;
     static fromPathOrTemplate<T>(create: new (filePath: string, template: any) => T, path: string): T;
 }

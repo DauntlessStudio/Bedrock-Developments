@@ -1,4 +1,4 @@
-import { Directories, getFiles } from "../../new_file_manager";
+import { Directories, getFiles, setFiles } from "../../new_file_manager";
 import { NameData, chalk, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
@@ -493,26 +493,25 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
 
     setAnimations(animations: {[key: string]: ServerAnimationName|ServerACName}, handleExisting: 'overwrite'|'merge'|'ignore'='overwrite', options?: IServerAnimationOptions) {
         this["minecraft:entity"].description.animations = this["minecraft:entity"].description.animations ?? {};
-
         Object.keys(animations).forEach(key => {
             const entityAnimations = this["minecraft:entity"].description.animations![key];
             if (entityAnimations) {
                 switch (handleExisting) {
                     case 'ignore': 
                         console.warn(chalk.yellow(`${this.Identifier} already has animation reference ${key}`));
-                        return;
+                        break;
                     case 'merge':
                         //TODO: handle merge
                         break;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing animation reference ${key} on ${this.Identifier}`));
                         this["minecraft:entity"].description.animations![key] = animations[key];
-                        return;
+                        break;
                 }
+            } else {
+                console.log(chalk.green(`Added animation reference ${key} to ${this.Identifier}`));
+                this["minecraft:entity"].description.animations![key] = animations[key];
             }
-
-            console.log(chalk.green(`Added animation reference ${key} to ${this.Identifier}`));
-            this["minecraft:entity"].description.animations![key] = animations[key];
 
             if (options?.createScriptEntry) {
                 this.setAnimateScripts(key);
@@ -539,10 +538,29 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
             }
         });
     }
+
+    hasFamilyTypes(...family: string[]): boolean {
+        if (!family.length) return true;
+
+        return family.every(fType => {
+            if (this["minecraft:entity"].components["minecraft:type_family"]?.family.includes(fType)) {
+                return true;
+            }
+            if (this["minecraft:entity"].component_groups) {
+                for (const key of Object.keys(this["minecraft:entity"].component_groups)) {
+                    if (this["minecraft:entity"].component_groups[key]["minecraft:type_family"]?.family.includes(fType)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        });
+    }
 }
 
 function createAnimationFileEntry(name: string, nameData: NameData, key: string) {
-    const files = getFiles(Directories.BEHAVIOR_PATH + `animations/${nameData.shortname}.json`);
+    const files = getFiles(Directories.BEHAVIOR_PATH + `animations/${nameData.directory}${nameData.shortname}.json`);
     const anim: IServerAnimationAnim = {
         animation_length: 1,
         timeline: {
@@ -553,20 +571,25 @@ function createAnimationFileEntry(name: string, nameData: NameData, key: string)
     if (files.length) {
         files.forEach(file => {
             const animation = MinecraftDataType.fromFile(ServerAnimation, file);
-            animation.animations[name as ServerAnimationName] = anim
+            animation.animations[name as ServerAnimationName] = anim;
+            file.handleExisting = 'overwrite';
         })
     } else {
-        new ServerAnimation(Directories.BEHAVIOR_PATH + `animations/${nameData.shortname}.json`, {
+        const animation = new ServerAnimation(Directories.BEHAVIOR_PATH + `animations/${nameData.directory}${nameData.shortname}.json`, {
             format_version: "1.20.50",
             animations: {
                 [name as ServerAnimationName]: anim
             }
-        })
+        });
+
+        files.push(animation.toFile())
     }
+
+    setFiles(files);
 }
 
 function createAnimationControllerFileEntry(name: ServerACName, nameData: NameData, key: string) {
-    const files = getFiles(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.shortname}.json`);
+    const files = getFiles(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.directory}${nameData.shortname}.json`);
     const controller: IServerAC = {
         initial_state: "default",
         states: {
@@ -582,13 +605,18 @@ function createAnimationControllerFileEntry(name: ServerACName, nameData: NameDa
         files.forEach(file => {
             const ac = MinecraftDataType.fromFile(ServerAnimationController, file);
             ac.addAnimationController(name, controller);
+            file.handleExisting = 'overwrite';
         })
     } else {
-        new ServerAnimationController(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.shortname}.json`, {
+        const anim = new ServerAnimationController(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.directory}${nameData.shortname}.json`, {
             format_version: "1.20.50",
             animation_controllers: {
                 [name]: controller
             }
         });
+
+        files.push(anim.toFile())
     }
+
+    setFiles(files);
 }

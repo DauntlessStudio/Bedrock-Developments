@@ -250,4 +250,5 @@ export declare class ServerEntity extends MinecraftDataType implements IServerEn
     setAnimateScripts(...animations: (string | {
         [key: string]: string;
     })[]): void;
+    hasFamilyTypes(...family: string[]): boolean;
 }

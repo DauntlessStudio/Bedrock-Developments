@@ -3,14 +3,15 @@ import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import path from "path";
 
-export function non_serializable(target: any, key: string) {
-    let currentValue = target[key];
-  
-    Object.defineProperty(target, key, {
-      set: (newValue: string) => {
-        currentValue = newValue;
+export function non_serializable(target: any, key: string|symbol) {
+    const privatePropKey = Symbol();
+    Reflect.defineProperty(target, key, {
+      get(this: any) {
+        return this[privatePropKey]
       },
-      get: () => currentValue,
+      set(this: any, newValue: string) {
+        this[privatePropKey] = newValue;
+      },
     });
 }
 
@@ -56,8 +57,8 @@ export class MinecraftDataType {
         }
     }
 
-    public toFile(): File {
-        return {filePath: this.filePath, fileContents: this.serialize()};
+    public toFile(handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'): File {
+        return {filePath: this.filePath, fileContents: this.serialize(), handleExisting};
     }
 
     public static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
