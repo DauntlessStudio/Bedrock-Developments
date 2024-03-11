@@ -30,6 +30,6 @@ export declare class ServerAnimationController extends MinecraftDataType impleme
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerAnimationController);
     static createFromTemplate(nameData: NameData): ServerAnimationController;
-    addAnimationController(key: ServerACName, controller: IServerAC): void;
+    addAnimationController(key: ServerACName, controller?: IServerAC): void;
     addState(key: ServerACName, stateName: string, state: IServerACState): void;
 }

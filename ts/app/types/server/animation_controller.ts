@@ -45,19 +45,17 @@ export class ServerAnimationController extends MinecraftDataType implements ISer
     public static createFromTemplate(nameData: NameData): ServerAnimationController {
         return new ServerAnimationController(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
-            animation_controllers: {
-                [`controller.animation.${nameData.shortname}` as ServerACName]: {
-                    initial_state: 'default',
-                    states: {
-                        'default': {}
-                    }
-                }
-            }
+            animation_controllers: {}
         });
     }
 
-    addAnimationController(key: ServerACName, controller: IServerAC) {
-        this.animation_controllers[key] = controller;
+    addAnimationController(key: ServerACName, controller?: IServerAC) {
+        this.animation_controllers[key] = controller ?? {
+            initial_state: "default",
+            states: {
+                default: {}
+            }
+        };
     }
 
     addState(key: ServerACName, stateName: string, state: IServerACState) {

@@ -48,4 +48,10 @@ export class ServerAnimation extends MinecraftDataType implements IServerAnimati
             }
         });
     }
+
+    addAnimation(key: ServerAnimationName, animation?: IServerAnimationAnim) {
+        this.animations[key] = animation ?? {
+            animation_length: 1
+        };
+    }
 }

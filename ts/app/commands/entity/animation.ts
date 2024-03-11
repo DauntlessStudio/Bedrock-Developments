@@ -3,7 +3,7 @@ import { printVersion } from "../base";
 import { program_entity } from "./entity";
 import { Directories, File, copySourceFile, getFiles, setFiles } from "../../new_file_manager";
 import { NameData } from "../../utils";
-import { ServerEntity } from "../../types";
+import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types";
 
 program_entity.command('anim')
   .description('adds an animation or animation controller reference to entities')
@@ -21,6 +21,7 @@ function triggerEntityAddAnim(names: string[], options: OptionValues) {
   const script: boolean = options.script;
   const create: 'ctrl'|'anim' = options.create ?? 'ctrl';
 
+  const files: File[] = [];
   const entities = getFiles(ServerEntity.DirectoryPath + file).map(file => ServerEntity.fromFile(ServerEntity, file)).filter(entity => entity.hasFamilyTypes(...family));
 
   names.forEach((name) => {
@@ -29,10 +30,16 @@ function triggerEntityAddAnim(names: string[], options: OptionValues) {
     entities.forEach(entity => {
         switch (create) {
             case 'ctrl':
-                entity.setAnimations({[`ctrl.${nameData.shortname}`]: `controller.animation.${nameData.shortname}`}, 'overwrite', {createScriptEntry: script, createFileEntry: script});
+                entity.setAnimations({[`ctrl.${nameData.shortname}`]: `controller.animation.${nameData.fullname}`}, 'overwrite', {createScriptEntry: script});
+                const ac = ServerAnimationController.fromPathOrTemplate(ServerAnimationController, ServerAnimationController.DirectoryPath + nameData.directory + nameData.shortname);
+                ac.addAnimationController(`controller.animation.${nameData.fullname}`);
+                files.push(ac.toFile("overwrite"));
                 break;
             case 'anim':
-                entity.setAnimations({[`${nameData.shortname}`]: `animation.${nameData.shortname}`}, 'overwrite', {createScriptEntry: script, createFileEntry: script});
+                entity.setAnimations({[`${nameData.shortname}`]: `animation.${nameData.fullname}`}, 'overwrite', {createScriptEntry: script});
+                const anim = ServerAnimation.fromPathOrTemplate(ServerAnimation, ServerAnimation.DirectoryPath + nameData.directory + nameData.shortname);
+                anim.addAnimation(`animation.${nameData.fullname}`);
+                files.push(anim.toFile("overwrite"));
                 break;
             default:
                 break;
@@ -40,5 +47,6 @@ function triggerEntityAddAnim(names: string[], options: OptionValues) {
     });
   });
 
-  setFiles(entities.map(entity => entity.toFile('overwrite')));
+  files.push(...entities.map(entity => entity.toFile('overwrite')))
+  setFiles(files);
 }

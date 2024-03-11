@@ -237,7 +237,6 @@ export interface IServerEntityPropertiesOptions {
 
 export interface IServerAnimationOptions {
     createScriptEntry: boolean;
-    createFileEntry: boolean;
 }
 
 export class ServerEntity extends MinecraftDataType implements IServerEntity {
@@ -516,15 +515,6 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
             if (options?.createScriptEntry) {
                 this.setAnimateScripts(key);
             }
-
-            if (options?.createFileEntry) {
-                const name = animations[key];
-                if (name.startsWith('animation.')) {
-                    createAnimationFileEntry(name as ServerAnimationName, this.NameData, key);
-                } else {
-                    createAnimationControllerFileEntry(name as ServerACName, this.NameData, key);
-                }
-            }
         });
     }
 
@@ -557,66 +547,4 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
             return false;
         });
     }
-}
-
-function createAnimationFileEntry(name: string, nameData: NameData, key: string) {
-    const files = getFiles(Directories.BEHAVIOR_PATH + `animations/${nameData.directory}${nameData.shortname}.json`);
-    const anim: IServerAnimationAnim = {
-        animation_length: 1,
-        timeline: {
-            ["0.0"]: [`/say ${key}`]
-        }
-    };
-
-    if (files.length) {
-        files.forEach(file => {
-            const animation = MinecraftDataType.fromFile(ServerAnimation, file);
-            animation.animations[name as ServerAnimationName] = anim;
-            file.handleExisting = 'overwrite';
-        })
-    } else {
-        const animation = new ServerAnimation(Directories.BEHAVIOR_PATH + `animations/${nameData.directory}${nameData.shortname}.json`, {
-            format_version: "1.20.50",
-            animations: {
-                [name as ServerAnimationName]: anim
-            }
-        });
-
-        files.push(animation.toFile())
-    }
-
-    setFiles(files);
-}
-
-function createAnimationControllerFileEntry(name: ServerACName, nameData: NameData, key: string) {
-    const files = getFiles(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.directory}${nameData.shortname}.json`);
-    const controller: IServerAC = {
-        initial_state: "default",
-        states: {
-            ["default"]: {
-                on_entry: [
-                    `/say ${key}`
-                ]
-            }
-        }
-    };
-
-    if (files.length) {
-        files.forEach(file => {
-            const ac = MinecraftDataType.fromFile(ServerAnimationController, file);
-            ac.addAnimationController(name, controller);
-            file.handleExisting = 'overwrite';
-        })
-    } else {
-        const anim = new ServerAnimationController(Directories.BEHAVIOR_PATH + `animation_controllers/${nameData.directory}${nameData.shortname}.json`, {
-            format_version: "1.20.50",
-            animation_controllers: {
-                [name]: controller
-            }
-        });
-
-        files.push(anim.toFile())
-    }
-
-    setFiles(files);
 }

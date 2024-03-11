@@ -24,4 +24,5 @@ export declare class ServerAnimation extends MinecraftDataType implements IServe
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerAnimation);
     static createFromTemplate(nameData: NameData): ServerAnimation;
+    addAnimation(key: ServerAnimationName, animation?: IServerAnimationAnim): void;
 }

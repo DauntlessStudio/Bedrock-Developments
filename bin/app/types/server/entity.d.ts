@@ -225,7 +225,6 @@ export interface IServerEntityPropertiesOptions {
 }
 export interface IServerAnimationOptions {
     createScriptEntry: boolean;
-    createFileEntry: boolean;
 }
 export declare class ServerEntity extends MinecraftDataType implements IServerEntity {
     format_version: FormatVersion;
