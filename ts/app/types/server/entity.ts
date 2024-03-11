@@ -87,21 +87,7 @@ export interface IServerEntityComponents {
         }[];
     };
     ["minecraft:damage_sensor"]?: {
-        triggers: {
-            on_damage?: IServerEntityTrigger,
-            deals_damage?: boolean;
-            damage_modifier?: number;
-            damage_multiplier?: number;
-            cause?: DamageType;
-            on_damage_sound_event?: string;
-        }|{
-            on_damage?: IServerEntityTrigger,
-            deals_damage?: boolean;
-            damage_modifier?: number;
-            damage_multiplier?: number;
-            cause?: DamageType;
-            on_damage_sound_event?: string;
-        }[];
+        triggers: IServerEntityDamageSensor|IServerEntityDamageSensor[];
     };
     ["minecraft:despawn"]?: {
         despawn_from_change?: boolean;
@@ -193,6 +179,15 @@ export interface IServerEntityFilters { // TODO: Add filter categories
     value?: string|number|boolean;
 }
 
+export interface IServerEntityDamageSensor {
+    on_damage?: IServerEntityTrigger,
+    deals_damage?: boolean;
+    damage_modifier?: number;
+    damage_multiplier?: number;
+    cause?: DamageType;
+    on_damage_sound_event?: string;
+}
+
 export interface IServerEntityTrigger {
     filters?: IServerEntityFilters;
     event?: string;
@@ -235,8 +230,12 @@ export interface IServerEntityPropertiesOptions {
     createEvents: boolean;
 }
 
-export interface IServerAnimationOptions {
+export interface IServerEntityAnimationOptions {
     createScriptEntry: boolean;
+}
+
+export interface IServerEntityDamageSensorOptions {
+    prepend: boolean;
 }
 
 export class ServerEntity extends MinecraftDataType implements IServerEntity {
@@ -489,7 +488,21 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
         });
     }
 
-    setAnimations(animations: {[key: string]: ServerAnimationName|ServerACName}, handleExisting: 'overwrite'|'merge'|'ignore'='overwrite', options?: IServerAnimationOptions) {
+    setDamageSensor(sensor: IServerEntityDamageSensor, options?: IServerEntityDamageSensorOptions) {
+        this["minecraft:entity"].components["minecraft:damage_sensor"] = this["minecraft:entity"].components["minecraft:damage_sensor"] ?? {triggers: []};
+        if (!Array.isArray(this["minecraft:entity"].components["minecraft:damage_sensor"].triggers)) {
+            const ogTrigger = this["minecraft:entity"].components["minecraft:damage_sensor"].triggers;
+            this["minecraft:entity"].components["minecraft:damage_sensor"].triggers = [ogTrigger];
+        }
+
+        if (options?.prepend) {
+            this["minecraft:entity"].components["minecraft:damage_sensor"].triggers.splice(0, 0, sensor);
+        } else {
+            this["minecraft:entity"].components["minecraft:damage_sensor"].triggers.push(sensor);
+        }
+    }
+
+    setAnimations(animations: {[key: string]: ServerAnimationName|ServerACName}, handleExisting: 'overwrite'|'merge'|'ignore'='overwrite', options?: IServerEntityAnimationOptions) {
         this["minecraft:entity"].description.animations = this["minecraft:entity"].description.animations ?? {};
         Object.keys(animations).forEach(key => {
             const entityAnimations = this["minecraft:entity"].description.animations![key];

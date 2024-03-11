@@ -82,21 +82,7 @@ export interface IServerEntityComponents {
         }[];
     };
     ["minecraft:damage_sensor"]?: {
-        triggers: {
-            on_damage?: IServerEntityTrigger;
-            deals_damage?: boolean;
-            damage_modifier?: number;
-            damage_multiplier?: number;
-            cause?: DamageType;
-            on_damage_sound_event?: string;
-        } | {
-            on_damage?: IServerEntityTrigger;
-            deals_damage?: boolean;
-            damage_modifier?: number;
-            damage_multiplier?: number;
-            cause?: DamageType;
-            on_damage_sound_event?: string;
-        }[];
+        triggers: IServerEntityDamageSensor | IServerEntityDamageSensor[];
     };
     ["minecraft:despawn"]?: {
         despawn_from_change?: boolean;
@@ -186,6 +172,14 @@ export interface IServerEntityFilters {
     domain?: string;
     value?: string | number | boolean;
 }
+export interface IServerEntityDamageSensor {
+    on_damage?: IServerEntityTrigger;
+    deals_damage?: boolean;
+    damage_modifier?: number;
+    damage_multiplier?: number;
+    cause?: DamageType;
+    on_damage_sound_event?: string;
+}
 export interface IServerEntityTrigger {
     filters?: IServerEntityFilters;
     event?: string;
@@ -223,8 +217,11 @@ export interface IServerEntityComponentGroupOptions {
 export interface IServerEntityPropertiesOptions {
     createEvents: boolean;
 }
-export interface IServerAnimationOptions {
+export interface IServerEntityAnimationOptions {
     createScriptEntry: boolean;
+}
+export interface IServerEntityDamageSensorOptions {
+    prepend: boolean;
 }
 export declare class ServerEntity extends MinecraftDataType implements IServerEntity {
     format_version: FormatVersion;
@@ -243,9 +240,10 @@ export declare class ServerEntity extends MinecraftDataType implements IServerEn
     setComponentGroups(groups: IServerEntityComponentGroups, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityComponentGroupOptions): void;
     setEvents(events: IServerEntityEvents, handleExisting?: 'overwrite' | 'merge' | 'ignore'): void;
     setProperties(properties: IServerEntityProperties, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityPropertiesOptions): void;
+    setDamageSensor(sensor: IServerEntityDamageSensor, options?: IServerEntityDamageSensorOptions): void;
     setAnimations(animations: {
         [key: string]: ServerAnimationName | ServerACName;
-    }, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerAnimationOptions): void;
+    }, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityAnimationOptions): void;
     setAnimateScripts(...animations: (string | {
         [key: string]: string;
     })[]): void;
