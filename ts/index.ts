@@ -2,15 +2,6 @@
 import { runProgram } from './app/commands';
 
 // // #region New Commands
-// createNew.command('sound')
-//   .description('creates a new sound definition')
-//   .argument('<names...>', 'definition names as category.sound')
-//   .addOption(new Option('-c, --category <category>', 'the sound category').choices(Object.keys(Sound.soundCategory)).default(Sound.soundCategory.neutral))
-//   .option('-f, --filepath <filepath>', 'the filepath to use for this sound, if a directory is specified it will use all files in that directory')
-//   .option('-v, --vanilla <vanilla definition>', 'the name of a vanilla sound definition, this will create a copy of the vanilla definition using the new name')
-//   .action(triggerCreateNewSoundDefinition)
-//   .hook('postAction', printVersion);
-
 // createNew.command('vanilla')
 //   .description('imports a vanilla bedrock entity')
 //   .argument('<names...>', 'entity files as "player.json"')
@@ -162,14 +153,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerCreateNewSoundDefinition(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const category = options.category;
-//   const vanilla = options.vanilla;
-//   const filepath = options.filepath;
-//   await Sound.createNewSoundDefinition(names, {category: category, vanilla: vanilla, filepath: filepath});
-// }
-
 // async function triggerEntityAddAnim(names: string[], options: OptionValues) {
 //   await setPaths();
 //   const family = options.type;

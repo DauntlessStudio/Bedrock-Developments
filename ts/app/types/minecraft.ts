@@ -3,7 +3,7 @@ import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import path from "path";
 
-function non_serializable(target: any, key: string) {
+export function non_serializable(target: any, key: string) {
     let currentValue = target[key];
   
     Object.defineProperty(target, key, {

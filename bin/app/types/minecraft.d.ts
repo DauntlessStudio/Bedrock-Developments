@@ -1,5 +1,6 @@
 import { File } from "../new_file_manager";
 import { NameData } from "../utils";
+export declare function non_serializable(target: any, key: string): void;
 export declare class MinecraftDataType {
     filePath: string;
     static get DirectoryPath(): string;

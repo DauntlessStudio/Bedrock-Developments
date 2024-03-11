@@ -3,6 +3,8 @@ import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
 
+export type ClientSoundCategory = 'ambient'|'block'|'bottle'|'bucket'|'hostile'|'music'|'neutral'|'player'|'record'|'ui'|'weather';
+
 export interface IClientSoundDefinitions {
     format_version: FormatVersion;
     sound_definitions: {
@@ -11,7 +13,7 @@ export interface IClientSoundDefinitions {
 }
 
 export interface IClientSoundDefinition {
-    category?: 'ambient'|'block'|'bottle'|'bucket'|'hostile'|'music'|'neutral'|'player'|'record'|'ui'|'weather';
+    category?: ClientSoundCategory;
     sounds: (string|IClientSoundDefinitionSound)[];
     __use_legacy_max_distance?: boolean;
     min_distance?: number;
