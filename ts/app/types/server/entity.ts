@@ -425,13 +425,13 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                 switch (handleExisting) {
                     case 'ignore': 
                         console.warn(chalk.yellow(`${this.Identifier} already has property ${idKey}`));
-                        return;
+                        break;
                     case 'merge':
                         //TODO: handle merge
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing property ${idKey} on ${this.Identifier}`));
                         this["minecraft:entity"].description.properties![idKey] = properties[idKey];
-                        return;
+                        break;
                 }
             } else {
                 console.log(chalk.green(`Added property ${idKey} to ${this.Identifier}`));
@@ -471,7 +471,6 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                     case "int": 
                         let start = properties[idKey].range?.[0];
                         let end = properties[idKey].range?.[1];
-
                         if (start !== undefined && end !== undefined) {
                             const number_events: IServerEntityEvents = {};
                             for (let index = start; index <= end; index++) {
@@ -481,6 +480,7 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                                     }
                                 }
                             }
+                            this.setEvents(number_events);
                         }
                         break;
                 }

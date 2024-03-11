@@ -1,34 +1,6 @@
 #! /usr/bin/env node
 import { runProgram } from './app/commands';
 
-// // #region Entity Commands
-// let property = entity.command('property')
-//   .description('adds property or property events to entities');
-
-// property.command('add')
-//   .description('adds a property to entities')
-//   .argument('<names...>', 'property names as "namespace:property"')
-//   .option('-t, --type <family type...>', 'filter entities by family type')
-//   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-//   .addOption(new Option('-p, --property <property type>', 'the type of property').choices(['bool', 'enum', 'float', 'int']).default('bool'))
-//   .option('-v, --values <values...>', 'the values, either a list of enum values or a min-max')
-//   .option('-d, --default <default>', 'the default value')
-//   .option('-c, --client', 'should use client_sync')
-//   .option('-e, --event', 'automatically generate events for the values')
-//   .action(triggerEntityAddProperty)
-//   .hook('postAction', printVersion);
-
-// property.command('event')
-//   .description('adds a property event to entities')
-//   .argument('<values...>', 'the values to set the property to')
-//   .option('-t, --type <family type...>', 'filter entities by family type')
-//   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-//   .addOption(new Option('-p, --property <property name>', 'the name of the property to set').makeOptionMandatory(true))
-//   .option('-e, --event <event name>', 'a custom event name, otherwise defaults to "set_property_to_value')
-//   .action(triggerEntityAddPropertyEvent)
-//   .hook('postAction', printVersion);
-// // #endregion
-
 // // #region Package Commands
 // let pkg = program.command('pkg')
 //   .description('package manager for bedrock files');
@@ -102,27 +74,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerEntityAddProperty(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const type = options.type;
-//   const file = options.file;
-//   const property = options.property;
-//   const values = options.values;
-//   const default_value = options.default;
-//   const client = options.client;
-//   const event = options.event;
-//   await Entity.entityAddProperty(names, {family: type, file: file}, property, values, default_value, client, event);
-// }
-
-// async function triggerEntityAddPropertyEvent(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const type = options.type;
-//   const file = options.file;
-//   const property = options.property;
-//   const event = options.event;
-//   await Entity.entityAddPropertyEvent(names, {family: type, file: file}, property, event);
-// }
-
 // async function triggerEntityAddDamageSensor(sensor: string, options: OptionValues) {
 //   await setPaths();
 //   const type = options.type;
