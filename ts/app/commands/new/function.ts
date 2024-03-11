@@ -1,10 +1,8 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { Directories, File, copySourceFile, setFiles } from "../../new_file_manager";
-import { NameData } from "../../utils";
-import { ClientEntity, ClientGeometry, ServerEntity } from "../../types";
-import { LangFile, MCFunction } from "../../types/minecraft";
+import { setFiles } from "../../new_file_manager";
+import {  MCFunction } from "../../types/minecraft";
 
 program_new.command('function')
   .description('creates new bedrock functions')
