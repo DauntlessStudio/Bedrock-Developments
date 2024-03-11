@@ -36,9 +36,9 @@ export class MinecraftDataType {
 
     public serialize(): string {
         let outputString = JSONC.stringify(this, this.replacer, '\t');
-        // if (outputString.includes('"REMOVE')) {
+        if (outputString.includes('"REMOVE')) {
             outputString = outputString.replace(/\\/g, '').replace(/REMOVE"/g, '').replace(/"REMOVE/g, '');
-        // }
+        }
 
         return outputString;
     }
@@ -48,7 +48,12 @@ export class MinecraftDataType {
     }
 
     public static deserialize<T>(create: new (filePath: string, template: any) => T, filepath: string, json: string): T {
-        return new create(filepath, JSONC.parse(json));
+        try {
+            return new create(filepath, JSONC.parse(json));
+        } catch (error) {
+            console.error(`${chalk.red(`Failed to parse ${filepath}\n${error}\nCreating from template instead.`)}`);
+            return this.createFromTemplate(new NameData(filepath)) as T;
+        }
     }
 
     public toFile(): File {
@@ -56,7 +61,7 @@ export class MinecraftDataType {
     }
 
     public static fromFile<T>(create: new (filePath: string, template: any) => T, file: File): T {
-        return MinecraftDataType.deserialize(create, file.filePath, file.fileContents);
+        return this.deserialize(create, file.filePath, file.fileContents);
     }
 
     public static fromPathOrTemplate<T>(create: new (filePath: string, template: any) => T, path: string): T {
