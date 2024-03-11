@@ -2,27 +2,6 @@
 import { runProgram } from './app/commands';
 
 // // #region Entity Commands
-// entity.command('anim')
-//   .description('adds an animation or animation controller reference to entities')
-//   .argument('<names...>', 'animation names as "entity.anim"')
-//   .option('-t, --type <family type...>', 'filter entities by family type')
-//   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-//   .option('-s, --script', 'should these animations be added to script')
-//   .addOption(new Option('-c, --create [anim type]', 'create the animation as well').choices(['ctrl', 'anim']).preset('ctrl'))
-//   .action(triggerEntityAddAnim)
-//   .hook('postAction', printVersion);
-
-// entity.command('group')
-//   .description('adds a component group to entities')
-//   .argument('<group>', 'the component group as a json object {group_name:{minecraft:is_baby:{}}}')
-//   .option('-t, --type <family type...>', 'filter entities by family type')
-//   .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-//   .option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
-//   .option('--no-add', 'do not add an "add" event')
-//   .option('--no-remove', 'do not add an "remove" event')
-//   .action(triggerEntityAddGroup)
-//   .hook('postAction', printVersion);
-
 // entity.command('component')
 //   .description('adds a component to entities')
 //   .argument('<component>', 'the component as a json object {minecraft:is_baby:{}}')
@@ -141,16 +120,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerEntityAddGroup(group: string, options: OptionValues) {
-//   await setPaths();
-//   const family = options.type;
-//   const file = options.file;
-//   const overwrite = options.overwrite;
-//   const add_event = options.add
-//   const remove_event = options.remove
-//   await Entity.entityAddGroup(group, {family: family, file: file}, {overwrite, add_event, remove_event});
-// }
-
 // async function triggerEntityAddComponent(component: string, options: OptionValues) {
 //   await setPaths();
 //   const family = options.type;

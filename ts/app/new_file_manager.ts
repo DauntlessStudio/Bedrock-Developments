@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
 import { chalk } from './utils';
+import { exec } from "child_process";
 
 export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'};
 
@@ -84,4 +85,17 @@ export function copySourceFile(sourceFile: string, targetPath: string) {
 
     console.log(`${chalk.green(`Writing file at ${targetPath}`)}`);
     fs.copyFileSync(path.join(Directories.SOURCE_PATH, sourceFile), targetPath);
+}
+
+export function getStringFromTemporaryFile(): Promise<string> {
+    const filename = 'temp-' + Date.now() + '.txt';
+    fs.writeFileSync(filename, '');
+
+    return new Promise<string>(resolve => {
+        exec(`Notepad ${filename}`).on("close", () => {
+            const contents = String(fs.readFileSync(filename));
+            fs.rmSync(filename);
+            resolve(contents)
+        });
+    });
 }
