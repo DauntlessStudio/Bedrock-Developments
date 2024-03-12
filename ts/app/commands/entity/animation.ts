@@ -6,14 +6,14 @@ import { NameData } from "../../utils";
 import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types";
 
 program_entity.command('anim')
-  .description('adds an animation or animation controller reference to entities')
-  .argument('<names...>', 'animation names as "entity.anim"')
-  .option('-t, --type <family type...>', 'filter entities by family type')
-  .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-  .option('-s, --script', 'should these animations be added to script')
-  .addOption(new Option('-c, --create [anim type]', 'create the animation as well').choices(['ctrl', 'anim']).preset('ctrl'))
-  .action(triggerEntityAddAnim)
-  .hook('postAction', printVersion);
+.description('adds an animation or animation controller reference to entities')
+.argument('<names...>', 'animation names as "entity.anim"')
+.option('-t, --type <family type...>', 'filter entities by family type')
+.addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
+.option('-s, --script', 'should these animations be added to script')
+.addOption(new Option('-c, --create [anim type]', 'create the animation as well').choices(['ctrl', 'anim']).preset('ctrl'))
+.action(triggerEntityAddAnim)
+.hook('postAction', printVersion);
 
 function triggerEntityAddAnim(names: string[], options: OptionValues) {
   const family: string[] = options.type ?? [];

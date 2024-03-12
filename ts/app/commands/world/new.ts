@@ -11,7 +11,6 @@ program_world.command('new')
 .addOption(new Option('-m, --mode <gamemode>', 'gamemode').choices(['0', '1', '2', '3']))
 .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
 .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
-// .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
 .action(triggerWorldsNew)
 .hook('postAction', printVersion);
 

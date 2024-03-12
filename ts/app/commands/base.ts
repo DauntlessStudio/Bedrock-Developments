@@ -7,14 +7,12 @@ const version = '3.0.0';
 export const program = new Command();
 
 program
-  .name('bed')
-  .description('CLI to assist Minecraft Bedrock development')
-  .option('--rpath <rp>', 'Path to Resource Pack')
-  .on('option:rpath', setResourcePath)
-  .option('--bpath <bp>', 'Path to Behavior Pack')
-  .on('option:bpath', setBehaviorPath)
-//   .option('-i, --indent <number>', 'set indent tabs level for JSON files', '1')
-//   .on('option:indent', Global.setIndentLevel)
+.name('bed')
+.description('CLI to assist Minecraft Bedrock development')
+.option('--rpath <rp>', 'Path to Resource Pack')
+.on('option:rpath', setResourcePath)
+.option('--bpath <bp>', 'Path to Behavior Pack')
+.on('option:bpath', setBehaviorPath)
 .version(version, '-V, --version')
 .action(printVersion);
 

@@ -6,15 +6,15 @@ import { ServerEntity } from "../../types";
 import { chalk } from "../../utils";
 
 program_entity.command('group')
-  .description('adds a component group to entities')
-  .option('-g --group [component group]', 'the component group as a json object {"group_name":{"minecraft:is_baby":{}}}')
-  .option('-t, --type <family type...>', 'filter entities by family type')
-  .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-  .option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
-  .option('--no-add', 'do not add an "add" event')
-  .option('--no-remove', 'do not add an "remove" event')
-  .action(triggerEntityAddGroup)
-  .hook('postAction', printVersion);
+.description('adds a component group to entities')
+.option('-g --group [component group]', 'the component group as a json object {"group_name":{"minecraft:is_baby":{}}}')
+.option('-t, --type <family type...>', 'filter entities by family type')
+.addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
+.option('-o, --overwrite', 'should the new component group overwrite the old one rather than merge with it')
+.option('--no-add', 'do not add an "add" event')
+.option('--no-remove', 'do not add an "remove" event')
+.action(triggerEntityAddGroup)
+.hook('postAction', printVersion);
 
 async function triggerEntityAddGroup(options: OptionValues) {
   const family: string[] = options.type ?? [];

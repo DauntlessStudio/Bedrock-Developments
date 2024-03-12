@@ -6,15 +6,15 @@ import { NameData } from "../../utils";
 import { ServerAnimationController } from "../../types";
 
 program_new.command('ctrl')
-  .description('creates new bedrock behavior animation controllers')
-  .argument('<names...>', 'controller names as "entity.anim"')
-  .addOption(new Option('-e, --entry [on entry commands...]', 'the commands to play on entry').default(['/say anim_name']))
-  .addOption(new Option('-x, --exit [on exit commands...]', 'the commands to play on exit').preset(['/say anim_name']))
-  .option('-a, --anim <animations...>', 'the animations to play')
-  .option('-q, --query [query]', 'the query to transition from default', 'true')
-  .addOption(new Option('-t, --transition [transition]', 'the query to transition back to default').preset('true'))
-  .action(triggerCreateNewController)
-  .hook('postAction', printVersion);
+.description('creates new bedrock behavior animation controllers')
+.argument('<names...>', 'controller names as "entity.anim"')
+.addOption(new Option('-e, --entry [on entry commands...]', 'the commands to play on entry').default(['/say anim_name']))
+.addOption(new Option('-x, --exit [on exit commands...]', 'the commands to play on exit').preset(['/say anim_name']))
+.option('-a, --anim <animations...>', 'the animations to play')
+.option('-q, --query [query]', 'the query to transition from default', 'true')
+.addOption(new Option('-t, --transition [transition]', 'the query to transition back to default').preset('true'))
+.action(triggerCreateNewController)
+.hook('postAction', printVersion);
 
 async function triggerCreateNewController(names: string[], options: OptionValues) {
   const on_entry: string[] = options.entry;

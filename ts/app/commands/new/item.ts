@@ -23,17 +23,17 @@ enum ServerItemOptions {
 };
 
 program_new.command("item")
-	.description("creates new bedrock items")
-	.argument("<names...>", 'item names as "namespace:item"')
-	.option("--no-lang", "do not add lang file")
-	.option("-s, --stack <stack_size>", "max stack size", "64")
-	.addOption(
-		new Option("-t, --type <item_type>", "basic").choices(
-			Object.keys(ServerItemOptions)
-		)
+.description("creates new bedrock items")
+.argument("<names...>", 'item names as "namespace:item"')
+.option("--no-lang", "do not add lang file")
+.option("-s, --stack <stack_size>", "max stack size", "64")
+.addOption(
+	new Option("-t, --type <item_type>", "basic").choices(
+		Object.keys(ServerItemOptions)
 	)
-	.action(triggerCreateNewItem)
-	.hook("postAction", printVersion);
+)
+.action(triggerCreateNewItem)
+.hook("postAction", printVersion);
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
     const commandOptions = {

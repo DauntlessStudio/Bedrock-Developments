@@ -6,13 +6,13 @@ import { ServerAnimation } from "../../types";
 import { NameData } from "../../utils";
 
 program_new.command('anim')
-  .description('creates new bedrock behavior animations')
-  .argument('<names...>', 'animation names names as "entity.anim"')
-  .option('-l, --loop', 'should the animation loop')
-  .addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
-  .addOption(new Option('-t, --time <time>', 'the animation length').default(1.0).argParser(parseFloat))
-  .action(triggerCreateNewAnimation)
-  .hook('postAction', printVersion);
+.description('creates new bedrock behavior animations')
+.argument('<names...>', 'animation names names as "entity.anim"')
+.option('-l, --loop', 'should the animation loop')
+.addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
+.addOption(new Option('-t, --time <time>', 'the animation length').default(1.0).argParser(parseFloat))
+.action(triggerCreateNewAnimation)
+.hook('postAction', printVersion);
 
 function triggerCreateNewAnimation(names: string[], options: OptionValues) {
   const loop: boolean = Boolean(options.loop);

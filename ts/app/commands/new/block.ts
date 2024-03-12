@@ -7,14 +7,14 @@ import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerA
 import { LangFile } from "../../types/minecraft";
 
 program_new.command('block')
-  .description('creates new bedrock blocks')
-  .argument('<names...>', 'block names as "namespace:block"')
-  .option('--no-lang', 'do not add lang file')
-  .option('-e, --emissive <emission>', 'block emmission level [1-15]')
-  .option('-t, --table', 'create a loot table')
-  .option('-g, --geo', 'create a custom geo')
-  .action(triggerCreateNewBlock)
-  .hook('postAction', printVersion);
+.description('creates new bedrock blocks')
+.argument('<names...>', 'block names as "namespace:block"')
+.option('--no-lang', 'do not add lang file')
+.option('-e, --emissive <emission>', 'block emmission level [1-15]')
+.option('-t, --table', 'create a loot table')
+.option('-g, --geo', 'create a custom geo')
+.action(triggerCreateNewBlock)
+.hook('postAction', printVersion);
 
 function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO: Add template file creators to types files, add textures to item/terrain texture
   const lang: boolean = options.lang;

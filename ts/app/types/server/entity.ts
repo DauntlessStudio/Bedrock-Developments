@@ -1,5 +1,5 @@
 import { Directories, getFiles, setFiles } from "../../file_manager";
-import { NameData, chalk, currentFormatVersion } from "../../utils";
+import mergeDeep, { NameData, chalk, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
 import { IServerAnimation, IServerAnimationAnim, ServerAnimation, ServerAnimationName } from "./animation";
@@ -335,7 +335,8 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                         console.warn(chalk.yellow(`${this.Identifier} already has component ${key}`));
                         return;
                     case 'merge':
-                        //TODO: handle merge
+                        mergeDeep(this["minecraft:entity"].components[key], components[key]);
+                        return;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing component ${key} on ${this.Identifier}`));
                         this["minecraft:entity"].components[key] = components[key];
@@ -357,13 +358,14 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                 switch (handleExisting) {
                     case 'ignore': 
                         console.warn(chalk.yellow(`${this.Identifier} already has component group ${key}`));
-                        return;
+                        break;
                     case 'merge':
-                        //TODO: handle merge
+                        mergeDeep(this["minecraft:entity"].component_groups![key], groups[key]);
+                        break;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing component group ${key} on ${this.Identifier}`));
                         this["minecraft:entity"].component_groups![key] = groups[key];
-                        return;
+                        break;
                 }
             } else {
                 console.log(chalk.green(`Added component group ${key} to ${this.Identifier}`));
@@ -401,7 +403,7 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                         console.warn(chalk.yellow(`${this.Identifier} already has event ${key}`));
                         return;
                     case 'merge':
-                        //TODO: handle merge
+                        mergeDeep(this["minecraft:entity"].events[key], events[key]);
                         break;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing event ${key} on ${this.Identifier}`));
@@ -427,7 +429,7 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                         console.warn(chalk.yellow(`${this.Identifier} already has property ${idKey}`));
                         break;
                     case 'merge':
-                        //TODO: handle merge
+                        mergeDeep(this["minecraft:entity"].description.properties![idKey], properties[idKey]);
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing property ${idKey} on ${this.Identifier}`));
                         this["minecraft:entity"].description.properties![idKey] = properties[idKey];
@@ -512,7 +514,7 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
                         console.warn(chalk.yellow(`${this.Identifier} already has animation reference ${key}`));
                         break;
                     case 'merge':
-                        //TODO: handle merge
+                        mergeDeep(this["minecraft:entity"].description.animations![key], animations[key]);
                         break;
                     case 'overwrite':
                         console.log(chalk.green(`Overwriting existing animation reference ${key} on ${this.Identifier}`));

@@ -13,7 +13,6 @@ program_world.command('packs')
 .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
 .addOption(new Option('-l, --local', 'use the local packs in this workspace'))
 .addOption(new Option('-d, --delete', 'should the packs be removed'))
-// .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
 .action(triggerWorldsPacks)
 .hook('postAction', printVersion);
 

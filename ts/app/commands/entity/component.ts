@@ -6,13 +6,13 @@ import { ServerEntity } from "../../types";
 import { chalk } from "../../utils";
 
 program_entity.command('component')
-  .description('adds a component to entities')
-  .option('-c --component [component]', 'the component as a json object {"minecraft:is_baby":{}}')
-  .option('-t, --type <family type...>', 'filter entities by family type')
-  .addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
-  .option('-o, --overwrite', 'should the new component overwrite the old one rather than merge with it')
-  .action(triggerEntityAddComponent)
-  .hook('postAction', printVersion);
+.description('adds a component to entities')
+.option('-c --component [component]', 'the component as a json object {"minecraft:is_baby":{}}')
+.option('-t, --type <family type...>', 'filter entities by family type')
+.addOption(new Option('-f, --file [file]', 'the entity files that should be modified').makeOptionMandatory().preset('**/*.json'))
+.option('-o, --overwrite', 'should the new component overwrite the old one rather than merge with it')
+.action(triggerEntityAddComponent)
+.hook('postAction', printVersion);
 
 async function triggerEntityAddComponent(options: OptionValues) {
   const family: string[] = options.type ?? [];
