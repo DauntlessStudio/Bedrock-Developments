@@ -8,7 +8,7 @@ import { v4 } from 'uuid';
 import { execSync } from "child_process";
 
 const APPDATA = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
-const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
+export const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 const DOWNLOAD = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
 
 export function cache(target: any, propertyName: string, descriptor: PropertyDescriptor) {
@@ -37,11 +37,11 @@ interface IMinecraftPack {
     type: 'behavior'|'resource';
 }
 
-interface IBehaviorPack extends IMinecraftPack {
+export interface IBehaviorPack extends IMinecraftPack {
     type: 'behavior';
 }
 
-interface IResourcePack extends IMinecraftPack {
+export interface IResourcePack extends IMinecraftPack {
     type: 'resource';
 }
 
@@ -156,13 +156,16 @@ export class MinecraftWorld {
         }
 
         console.log(`${chalk.green(`Packaging World`)}`);
-        archiveDirectory(outputPath, `${outputPath}.mc${type}`, () => {
-            console.log(`${chalk.green(`Cleaning Up`)}`);
-            fs.rmSync(outputPath, { recursive: true, force: true });
-
-            console.log(`${chalk.green(`Packaged ${this.filePath}.mc${type} To ${DOWNLOAD}`)}`);
-            execSync(`start %windir%\\explorer.exe "${DOWNLOAD.replace(/\//g, '\\')}"`);
-        });
+        return new Promise<void>(resolve => {
+            archiveDirectory(outputPath, `${outputPath}.mc${type}`, () => {
+                console.log(`${chalk.green(`Cleaning Up`)}`);
+                fs.rmSync(outputPath, { recursive: true, force: true });
+    
+                console.log(`${chalk.green(`Packaged ${this.filePath}.mc${type} To ${DOWNLOAD}`)}`);
+                execSync(`start %windir%\\explorer.exe "${DOWNLOAD.replace(/\//g, '\\')}"`);
+                resolve();
+            });
+        })
     }
 
     private getPacks<T extends IMinecraftPack>(type: 'behavior'|'resource'): T[] {
@@ -180,6 +183,39 @@ export class MinecraftWorld {
         }
 
         return [];
+    }
+
+    public static getPackFromManifest(filepath: string): IResourcePack|IBehaviorPack {
+        const manifest = JSON.parse(String(fs.readFileSync(filepath)));
+        const type = filepath.includes('resource') ? 'resource' : 'behavior';
+        const uuid = manifest.header.uuid;
+        const directory = path.dirname(filepath);
+        const name = directory.split('\\').pop()!;
+
+        const pack = {
+            directory,
+            name,
+            type,
+            uuid,
+        };
+
+        return type === 'resource' ? pack as IResourcePack : pack as IBehaviorPack;
+    }
+
+    public addPack(pack: IBehaviorPack|IResourcePack) {
+        getFiles(this.filePath + `/world_${pack.type}_packs.json`).forEach(file => {
+            if (file.fileContents.includes(pack.uuid)) return;
+
+            const json = JSON.parse(file.fileContents);
+            json.push({
+                pack_id: pack.uuid,
+                version: [ 1, 0, 0 ],
+            });
+            file.fileContents = JSON.stringify(json, null, '\t');
+            file.handleExisting = 'overwrite';
+
+            setFiles([file]);
+        });
     }
 
     private async addManifest() {

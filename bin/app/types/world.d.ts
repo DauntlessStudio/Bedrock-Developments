@@ -1,4 +1,5 @@
 import * as nbt from 'prismarine-nbt';
+export declare const MOJANG: string;
 export declare function cache(target: any, propertyName: string, descriptor: PropertyDescriptor): void;
 interface IMinecraftPack {
     uuid: string;
@@ -6,10 +7,10 @@ interface IMinecraftPack {
     name: string;
     type: 'behavior' | 'resource';
 }
-interface IBehaviorPack extends IMinecraftPack {
+export interface IBehaviorPack extends IMinecraftPack {
     type: 'behavior';
 }
-interface IResourcePack extends IMinecraftPack {
+export interface IResourcePack extends IMinecraftPack {
     type: 'resource';
 }
 interface ILevelDat {
@@ -100,8 +101,10 @@ export declare class MinecraftWorld {
     set LevelDat(v: ILevelDatOptions);
     constructor(filePath: string);
     static getAllWorlds(): MinecraftWorld[];
-    exportWorld(include_packs: boolean, type: 'template' | 'world'): void;
+    exportWorld(include_packs: boolean, type: 'template' | 'world'): Promise<void>;
     private getPacks;
+    static getPackFromManifest(filepath: string): IResourcePack | IBehaviorPack;
+    addPack(pack: IBehaviorPack | IResourcePack): void;
     private addManifest;
 }
 export {};

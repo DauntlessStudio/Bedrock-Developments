@@ -3,16 +3,6 @@ import { runProgram } from './app/commands';
 
 
 // // #region World Commands
-// world.command('packs')
-//   .description('attach packs to world')
-//   .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
-//   .addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
-//   .addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
-//   .addOption(new Option('-d, --delete', 'should the packs be removed'))
-//   .addOption(new Option('-e, --experimental [toggle]', 'turn on experimental toggle').preset(World.experimentalToggle.betaAPI).choices(Object.values(World.experimentalToggle)))
-//   .action(triggerWorldsPacks)
-//   .hook('postAction', printVersion);
-
 // world.command('new')
 //   .description('create new world')
 //   .addArgument(new Argument('<name>', 'the world name'))

@@ -39,7 +39,7 @@ async function triggerWorldsExport(options: OptionValues) {
 
   const selectedWorld = worlds.find((worldOption, index) => index === Number(world) || worldOption.Name === world);
   if (selectedWorld) {
-    selectedWorld.exportWorld(packs, type);
+    await selectedWorld.exportWorld(packs, type);
   } else {
     console.error(`${chalk.red(`${world} does not match the any names or indices in the world list`)}`);
   }
