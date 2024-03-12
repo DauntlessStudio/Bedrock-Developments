@@ -1,6 +1,13 @@
 import * as nbt from 'prismarine-nbt';
 export declare const MOJANG: string;
 export declare function cache(target: any, propertyName: string, descriptor: PropertyDescriptor): void;
+export interface INewWorldOptions {
+    behavior_pack_manifest_path?: string;
+    resource_pack_manifest_path?: string;
+    gamemode?: 0 | 1 | 2 | 3;
+    flatworld?: boolean;
+    testworld?: boolean;
+}
 interface IMinecraftPack {
     uuid: string;
     directory: string;
@@ -22,67 +29,67 @@ interface ILevelDat {
     metadata: nbt.Metadata;
 }
 interface ILevelDatOptions {
-    LevelName: {
-        type: nbt.TagType.String;
+    LevelName?: {
+        type: 'string';
         value: string;
     };
-    RandomSeed: {
-        type: nbt.TagType.Long;
+    RandomSeed?: {
+        type: 'long';
         value: number[];
     };
-    GameType: {
-        type: nbt.TagType.Int;
+    GameType?: {
+        type: 'int';
         value: number;
     };
-    Generator: {
-        type: nbt.TagType.Int;
+    Generator?: {
+        type: 'int';
         value: number;
     };
-    commandsEnabled: {
-        type: nbt.TagType.Byte;
+    commandsEnabled?: {
+        type: 'byte';
         value: number;
     };
-    dodaylightcycle: {
-        type: nbt.TagType.Byte;
+    dodaylightcycle?: {
+        type: 'byte';
         value: number;
     };
-    domobloot: {
-        type: nbt.TagType.Byte;
+    domobloot?: {
+        type: 'byte';
         value: number;
     };
-    domobspawning: {
-        type: nbt.TagType.Byte;
+    domobspawning?: {
+        type: 'byte';
         value: number;
     };
-    mobgriefing: {
-        type: nbt.TagType.Byte;
+    mobgriefing?: {
+        type: 'byte';
         value: number;
     };
-    keepinventory: {
-        type: nbt.TagType.Byte;
+    keepinventory?: {
+        type: 'byte';
         value: number;
     };
-    doweathercycle: {
-        type: nbt.TagType.Byte;
+    doweathercycle?: {
+        type: 'byte';
         value: number;
     };
-    experiments: {
-        type: nbt.TagType.Compound;
+    experiments?: {
+        type: 'compound';
         value: {
-            gametest: {
-                type: nbt.TagType.Byte;
+            gametest?: {
+                type: 'byte';
                 value: number;
             };
-            experiments_ever_used: {
-                type: nbt.TagType.Byte;
+            experiments_ever_used?: {
+                type: 'byte';
                 value: number;
             };
-            saved_with_toggled_experiments: {
-                type: nbt.TagType.Byte;
+            saved_with_toggled_experiments?: {
+                type: 'byte';
                 value: number;
             };
-            data_driven_vanilla_blocks_and_items: {
-                type: nbt.TagType.Byte;
+            data_driven_vanilla_blocks_and_items?: {
+                type: 'byte';
                 value: number;
             };
         };
@@ -90,7 +97,7 @@ interface ILevelDatOptions {
     [key: string]: {
         type: string;
         value: any;
-    };
+    } | undefined;
 }
 export declare class MinecraftWorld {
     filePath: string;
@@ -100,6 +107,7 @@ export declare class MinecraftWorld {
     get LevelDat(): Promise<ILevelDat>;
     set LevelDat(v: ILevelDatOptions);
     constructor(filePath: string);
+    static create(worldName: string, options: INewWorldOptions): Promise<MinecraftWorld>;
     static getAllWorlds(): MinecraftWorld[];
     exportWorld(include_packs: boolean, type: 'template' | 'world'): Promise<void>;
     private getPacks;

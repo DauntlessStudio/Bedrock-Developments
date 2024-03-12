@@ -1,4 +1,4 @@
-import { Directories, File, archiveDirectory, copySourceDirectory, getFiles, setFiles } from "../new_file_manager";
+import { Directories, File, archiveDirectory, copySourceDirectory, copySourceFile, getFiles, setFiles } from "../new_file_manager";
 import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import * as fs from 'fs';
@@ -30,6 +30,14 @@ export function cache(target: any, propertyName: string, descriptor: PropertyDes
     }
 }
 
+export interface INewWorldOptions{
+    behavior_pack_manifest_path?: string;
+    resource_pack_manifest_path?: string;
+    gamemode?: 0|1|2|3;
+    flatworld?: boolean;
+    testworld?: boolean;
+}
+
 interface IMinecraftPack {
     uuid: string;
     directory: string;
@@ -55,28 +63,26 @@ interface ILevelDat {
 }
 
 interface ILevelDatOptions {
-    LevelName: {type: nbt.TagType.String; value: string;}
-    RandomSeed: {type: nbt.TagType.Long; value: number[];}
-    GameType: {type: nbt.TagType.Int; value: number;}
-    Generator: {type: nbt.TagType.Int; value: number;}
-
-    commandsEnabled: {type: nbt.TagType.Byte; value: number;}
-    dodaylightcycle: {type: nbt.TagType.Byte; value: number;}
-    domobloot: {type: nbt.TagType.Byte; value: number;}
-    domobspawning: {type: nbt.TagType.Byte; value: number;}
-    mobgriefing: {type: nbt.TagType.Byte; value: number;}
-    keepinventory: {type: nbt.TagType.Byte; value: number;}
-    doweathercycle: {type: nbt.TagType.Byte; value: number;}
-
-    experiments: {type: nbt.TagType.Compound, value: {
-        gametest: {type: nbt.TagType.Byte, value: number;}
-        experiments_ever_used: {type: nbt.TagType.Byte, value: number;}
-        saved_with_toggled_experiments: {type: nbt.TagType.Byte, value: number;}
-        data_driven_vanilla_blocks_and_items: {type: nbt.TagType.Byte, value: number;}
+    LevelName?: {type: 'string'; value: string;}
+    RandomSeed?: {type: 'long'; value: number[];}
+    GameType?: {type: 'int'; value: number;}
+    Generator?: {type: 'int'; value: number;}
+    commandsEnabled?: {type: 'byte'; value: number;}
+    dodaylightcycle?: {type: 'byte'; value: number;}
+    domobloot?: {type: 'byte'; value: number;}
+    domobspawning?: {type: 'byte'; value: number;}
+    mobgriefing?: {type: 'byte'; value: number;}
+    keepinventory?: {type: 'byte'; value: number;}
+    doweathercycle?: {type: 'byte'; value: number;}
+    experiments?: {type: 'compound', value: {
+        gametest?: {type: 'byte', value: number;}
+        experiments_ever_used?: {type: 'byte', value: number;}
+        saved_with_toggled_experiments?: {type: 'byte', value: number;}
+        data_driven_vanilla_blocks_and_items?: {type: 'byte', value: number;}
     }
     }
 
-    [key: string]: {type: string; value: any;}
+    [key: string]: {type: string; value: any;}|undefined
 }
 
 export class MinecraftWorld {
@@ -118,6 +124,67 @@ export class MinecraftWorld {
     
     constructor(filePath: string) {
         this.filePath = filePath;
+    }
+
+    public static async create(worldName: string, options: INewWorldOptions): Promise<MinecraftWorld> {
+        const world = new MinecraftWorld(`${DOWNLOAD}/${worldName}`);
+
+        if (options.behavior_pack_manifest_path) {
+            world.addPack(MinecraftWorld.getPackFromManifest(options.behavior_pack_manifest_path));
+        }
+        if (options.resource_pack_manifest_path) {
+            world.addPack(MinecraftWorld.getPackFromManifest(options.resource_pack_manifest_path));
+        }
+    
+        copySourceFile('world/level.dat', `${world.filePath}/level.dat`);
+        setFiles([{filePath: `${world.filePath}/levelname.txt`, fileContents: worldName}]);
+
+        const dat = await world.LevelDat;
+
+        dat.parsed.value.LevelName = nbt.string(worldName);
+        dat.parsed.value.RandomSeed = nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]);
+        dat.parsed.value.GameType = nbt.int(options.gamemode ?? 0);
+        
+        if (options.flatworld) {
+            dat.parsed.value.Generator = nbt.int(2);
+        }
+
+        if (options.testworld) {
+            dat.parsed.value.commandsEnabled = nbt.byte(1);
+            dat.parsed.value.dodaylightcycle = nbt.byte(0);
+            dat.parsed.value.domobloot = nbt.byte(0);
+            dat.parsed.value.domobspawning = nbt.byte(0);
+            dat.parsed.value.mobgriefing = nbt.byte(0);
+            dat.parsed.value.keepinventory = nbt.byte(1);
+            dat.parsed.value.doweathercycle = nbt.byte(0);
+        }
+        world.LevelDat = {
+            LevelName: nbt.string(worldName),
+            RandomSeed: nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]),
+            GameType: nbt.int(options.gamemode ?? 0),
+            Generator: nbt.int(2),
+            commandsEnabled: nbt.byte(1),
+            dodaylightcycle: nbt.byte(0),
+            domobloot: nbt.byte(0),
+            domobspawning: nbt.byte(0),
+            mobgriefing: nbt.byte(0),
+            keepinventory: nbt.byte(1),
+            doweathercycle: nbt.byte(0),
+        }
+
+        world.LevelDat = dat.parsed.value;
+
+        await new Promise<void>(resolve => {
+            archiveDirectory(world.filePath, `${world.filePath}.mcworld`, () => {
+                console.log(`${chalk.green(`Opening World`)}`);
+        
+                execSync(`"${world.filePath}.mcworld"`);
+                fs.rmSync(`${world.filePath}.mcworld`);
+                resolve();
+            });
+        });
+
+        return world;
     }
 
     public static getAllWorlds(): MinecraftWorld[] {
@@ -220,7 +287,7 @@ export class MinecraftWorld {
 
     private async addManifest() {
         const dat = await this.LevelDat;
-        const version_array = dat.parsed.value.lastOpenedWithVersion.value.value.slice(0, 3);
+        const version_array = dat.parsed.value.lastOpenedWithVersion!.value.value.slice(0, 3);
 
         setFiles([{
             filePath: `${this.filePath}/manifest.json`,
