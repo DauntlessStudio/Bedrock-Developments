@@ -1,34 +1,39 @@
-import { Directories, File, getFiles } from "../new_file_manager";
+import { Directories, File, archiveDirectory, copySourceDirectory, getFiles, setFiles } from "../new_file_manager";
 import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import * as fs from 'fs';
 import path from "path";
 import * as nbt from 'prismarine-nbt'
+import { v4 } from 'uuid';
+import { execSync } from "child_process";
 
 const APPDATA = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 const DOWNLOAD = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
 
-export function cache(target: any, key: string|symbol) {
-    const privatePropKey = Symbol();
-    let value: any;
+export function cache(target: any, propertyName: string, descriptor: PropertyDescriptor) {
 
-    Reflect.defineProperty(target, key, {
-      get(this: any) {
-        if (!value) {
-            return this[privatePropKey]
+    if (descriptor.get) {
+        const get = descriptor.get;
+        target[`${propertyName}_cached`] = undefined;
+        
+        descriptor.get = function() {
+            const obj = this as any;
+            if (obj[`${propertyName}_cached`]) {
+                return obj[`${propertyName}_cached`];
+            } else {
+                const value = get.apply(obj);
+                obj[`${propertyName}_cached`] = value;
+                return value;
+            }
         }
-        return value
-      },
-      set(this: any, newValue: string) {
-        this[privatePropKey] = newValue;
-      },
-    });
+    }
 }
 
 interface IMinecraftPack {
     uuid: string;
     directory: string;
+    name: string;
     type: 'behavior'|'resource';
 }
 
@@ -70,6 +75,8 @@ interface ILevelDatOptions {
         data_driven_vanilla_blocks_and_items: {type: nbt.TagType.Byte, value: number;}
     }
     }
+
+    [key: string]: {type: string; value: any;}
 }
 
 export class MinecraftWorld {
@@ -85,6 +92,7 @@ export class MinecraftWorld {
         return this.getPacks('resource');
     }
     
+    @cache
     public get Name() : string {
         return String(fs.readFileSync(this.filePath + '/levelname.txt'));
     }
@@ -123,19 +131,88 @@ export class MinecraftWorld {
         }
     }
 
+    public exportWorld(include_packs: boolean, type: 'template'|'world') {
+        const outputPath = `${DOWNLOAD}/${this.Name}`;
+        this.addManifest();
+
+        console.log(`${chalk.green(`Exporting ${this.filePath}`)}`);
+        copySourceDirectory(this.filePath, outputPath);
+
+        if (include_packs) {
+            try {
+                fs.mkdirSync(`${outputPath}/behavior_packs`);
+                fs.mkdirSync(`${outputPath}/resource_packs`);
+            } catch (error) {}
+
+            for (const bp of this.BehaviorPacks) {
+                console.log(`${chalk.green(`Exporting ${bp.name}`)}`);
+                copySourceDirectory(bp.directory, `${outputPath}/behavior_packs/${bp.name}`);
+            }
+
+            for (const rp of this.ResourcePacks) {
+                console.log(`${chalk.green(`Exporting ${rp.name}`)}`);
+                copySourceDirectory(rp.directory, `${outputPath}/resource_packs/${rp.name}`);
+            }
+        }
+
+        console.log(`${chalk.green(`Packaging World`)}`);
+        archiveDirectory(outputPath, `${outputPath}.mc${type}`, () => {
+            console.log(`${chalk.green(`Cleaning Up`)}`);
+            fs.rmSync(outputPath, { recursive: true, force: true });
+
+            console.log(`${chalk.green(`Packaged ${this.filePath}.mc${type} To ${DOWNLOAD}`)}`);
+            execSync(`start %windir%\\explorer.exe "${DOWNLOAD.replace(/\//g, '\\')}"`);
+        });
+    }
+
     private getPacks<T extends IMinecraftPack>(type: 'behavior'|'resource'): T[] {
         if (fs.existsSync(`${this.filePath}/world_${type}_packs.json`)) {
             let bp: any[] = JSONC.parse(String(fs.readFileSync(`${this.filePath}/world_${type}_packs.json`))) as any[];
             return bp.map(pack => {
+                const directory = findPackPathWithID(pack.pack_id, type);
                 return {
                     type: type,
+                    name: path.basename(directory),
                     uuid: pack.pack_id,
-                    directory: findPackPathWithID(pack.pack_id, type),
+                    directory,
                 } as T
             });
         }
 
         return [];
+    }
+
+    private async addManifest() {
+        const dat = await this.LevelDat;
+        const version_array = dat.parsed.value.lastOpenedWithVersion.value.value.slice(0, 3);
+
+        setFiles([{
+            filePath: `${this.filePath}/manifest.json`,
+            handleExisting: 'overwrite_silent',
+            fileContents: JSON.stringify({
+                format_version : 2,
+                header : 
+                {
+                    base_game_version : version_array,
+                    description : "",
+                    lock_template_options : true,
+                    name : this.Name,
+                    platform_locked : false,
+                    uuid : v4(),
+                    version : [ 1, 0, 0 ]
+                },
+                modules : 
+                [
+                    
+                    {
+                        description : "",
+                        type : "world_template",
+                        uuid : v4(),
+                        version : [ 1, 0, 0 ]
+                    }
+                ]
+            }, null, '/t')
+        }]);
     }
 }
 

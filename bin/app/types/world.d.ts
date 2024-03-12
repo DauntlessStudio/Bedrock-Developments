@@ -1,8 +1,9 @@
 import * as nbt from 'prismarine-nbt';
-export declare function cache(target: any, key: string | symbol): void;
+export declare function cache(target: any, propertyName: string, descriptor: PropertyDescriptor): void;
 interface IMinecraftPack {
     uuid: string;
     directory: string;
+    name: string;
     type: 'behavior' | 'resource';
 }
 interface IBehaviorPack extends IMinecraftPack {
@@ -85,6 +86,10 @@ interface ILevelDatOptions {
             };
         };
     };
+    [key: string]: {
+        type: string;
+        value: any;
+    };
 }
 export declare class MinecraftWorld {
     filePath: string;
@@ -95,6 +100,8 @@ export declare class MinecraftWorld {
     set LevelDat(v: ILevelDatOptions);
     constructor(filePath: string);
     static getAllWorlds(): MinecraftWorld[];
+    exportWorld(include_packs: boolean, type: 'template' | 'world'): void;
     private getPacks;
+    private addManifest;
 }
 export {};

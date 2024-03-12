@@ -1,8 +1,6 @@
-import { OptionValues, Option } from "commander";
 import { printVersion, } from "../base";
 import { program_world } from "./world";
-import { setFiles, File } from "../../new_file_manager";
-import { NameData, chalk } from "../../utils";
+import { chalk } from "../../utils";
 import { MinecraftWorld } from "../../types";
 
 program_world.command('list')

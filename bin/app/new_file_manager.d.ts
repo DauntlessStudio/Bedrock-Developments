@@ -16,4 +16,6 @@ export declare class Directories {
 export declare function getFiles(globPattern: string): File[];
 export declare function setFiles(files: File[]): void;
 export declare function copySourceFile(sourceFile: string, targetPath: string): void;
+export declare function copySourceDirectory(src: string, dest: string): void;
+export declare function archiveDirectory(dir: string, zipPath: string, callback: Function): void;
 export declare function getStringFromTemporaryFile(): Promise<string>;

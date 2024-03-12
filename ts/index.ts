@@ -3,22 +3,6 @@ import { runProgram } from './app/commands';
 
 
 // // #region World Commands
-// let world = program.command('world')
-//   .description('tools for working with worlds');
-
-// world.command('list')
-//   .description('list installed worlds')
-//   .action(triggerWorldsList)
-//   .hook('postAction', printVersion);
-
-// world.command('export')
-//   .description('export selected world as .mcworld')
-//   .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
-//   .option('-p, --packs', "package the world's behavior and resource packs")
-//   .addOption(new Option('-t, --type <export type>', 'what format should be exported').default(World.exportType.world).choices(Object.values(World.exportType)))
-//   .action(triggerWorldsExport)
-//   .hook('postAction', printVersion);
-
 // world.command('packs')
 //   .description('attach packs to world')
 //   .addArgument(new Argument('<name|index>', 'the name or index of world to add packs to'))
@@ -56,13 +40,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-
-// async function triggerWorldsExport(world: string, options: OptionValues) {
-//   const packs = options.packs;
-//   const type = options.type;
-
-//   World.worldExport({name: world}, packs, type);
-// }
 
 // async function triggerWorldsPacks(world: string, options: OptionValues) {
 //   if (options.delete) {

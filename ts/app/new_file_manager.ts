@@ -3,6 +3,7 @@ import * as path from 'path';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
 import { chalk } from './utils';
 import { exec } from "child_process";
+import * as archiver from 'archiver';
 
 export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'};
 
@@ -85,6 +86,33 @@ export function copySourceFile(sourceFile: string, targetPath: string) {
 
     console.log(`${chalk.green(`Writing file at ${targetPath}`)}`);
     fs.copyFileSync(path.join(Directories.SOURCE_PATH, sourceFile), targetPath);
+}
+
+export function copySourceDirectory(src: string, dest: string) {
+    fs.mkdirSync(dest, { recursive: true })
+    let entries = fs.readdirSync(src, { withFileTypes: true });
+
+    for (let entry of entries)
+    {
+        let srcPath = path.join(src, entry.name);
+        let destPath = path.join(dest, entry.name);
+
+        entry.isDirectory() ? copySourceDirectory(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
+    }
+}
+
+export function archiveDirectory(dir: string, zipPath: string, callback: Function) {
+    let output = fs.createWriteStream(zipPath);
+    let archive = archiver.default('zip', { zlib: { level: 9 } });
+   
+    output.on('close', async () => {
+     await callback();
+     fs.rmSync(dir, {recursive: true, force: true});
+    });
+   
+    archive.pipe(output);
+    archive.directory(dir, '');
+    archive.finalize();
 }
 
 export function getStringFromTemporaryFile(): Promise<string> {
