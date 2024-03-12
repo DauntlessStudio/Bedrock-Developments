@@ -1,9 +1,8 @@
 import { program } from "./base";
-import * as New from './new';
-import * as Entity from './entity';
+export * from './new';
+export * from './entity';
+export * from './world';
 
 export function runProgram(): void {
-    New;
-    Entity;
     program.parse();
 }

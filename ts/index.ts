@@ -1,24 +1,6 @@
 #! /usr/bin/env node
 import { runProgram } from './app/commands';
 
-// // #region Package Commands
-// let pkg = program.command('pkg')
-//   .description('package manager for bedrock files');
-
-// pkg.command('list')
-//   .description('list packages at repo')
-//   .option('-d, --detailed', 'gets extra details about the package, if available')
-//   .option('-f --filter <filter>', 'filter the packages by name or category')
-//   .action(triggerPackagesList)
-//   .hook('postAction', printVersion);
-
-// pkg.command('import')
-//   .description('import packages from repo')
-//   .argument('<packages...>', 'the packages to import as either index value or name')
-//   .action(triggerPackagesImport)
-//   .hook('postAction', printVersion);
-
-// // #endregion
 
 // // #region World Commands
 // let world = program.command('world')
@@ -74,57 +56,6 @@ import { runProgram } from './app/commands';
 runProgram();
 
 // // #region Triggers
-// async function triggerEntityAddDamageSensor(sensor: string, options: OptionValues) {
-//   await setPaths();
-//   const type = options.type;
-//   const file = options.file;
-//   const start = options.start;
-//   await Entity.entityAddDamageSensor(sensor, {family: type, file: file}, start);
-// }
-
-// async function triggerPackagesList(options: OptionValues) {
-//   const verbose = options.detailed;
-//   const filter = options.filter;
-
-//   try {
-//     let response = await Package.packageList(filter);
-
-//     for (const pkg of response) {
-//       console.log(`[${pkg.index}] ${Global.chalk.green(`${pkg.display_name}`)}`);
-//       if (verbose && pkg.description) {
-//         console.log(`\t${pkg.description}`)
-//       }
-//     }
-//   } catch (error) {
-//     console.log(`${Global.chalk.red(`GITHUB_TOKEN either missing or invalid`)}`);
-//     console.log(`${Global.chalk.yellow('Create Token at: https://github.com/settings/tokens/new')}`);
-//     console.log(`${Global.chalk.yellow('Paste Token into new Environment Variable called GITHUB_TOKEN')}`);
-//   }
-// }
-
-// async function triggerPackagesImport(names: string[]) {
-//   await setPaths();
-//   try {
-//     await Package.packageImport(names);
-//   } catch (error) {
-//     console.log(`${Global.chalk.red(`GITHUB_TOKEN either missing or invalid`)}`);
-//     console.log(`${Global.chalk.yellow('Create Token at: https://github.com/settings/tokens/new')}`);
-//     console.log(`${Global.chalk.yellow('Paste Token into new Environment Variable called GITHUB_TOKEN')}`);
-//   }
-// }
-
-// async function triggerCreateVanillaEntity(names: string[], options: OptionValues) {
-//   await setPaths();
-//   const client = options.client;
-//   await Entity.createVanillaEntity(names, client);
-// }
-
-// async function triggerWorldsList() {
-//   let worlds = World.worldList();
-//   worlds.forEach((value, index) => {
-//     console.log(`[${index}] ${Global.chalk.green(`${value.name}`)}`);
-//   })
-// }
 
 // async function triggerWorldsExport(world: string, options: OptionValues) {
 //   const packs = options.packs;
