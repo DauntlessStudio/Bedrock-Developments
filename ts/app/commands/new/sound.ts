@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { File, setFiles } from "../../new_file_manager";
+import { File, setFiles } from "../../file_manager";
 import { ClientSoundCategory, ClientSoundDefinitions } from "../../types";
 
 const categories: string[] = ['ambient', 'block', 'bottle', 'bucket', 'hostile', 'music', 'neutral', 'player', 'record', 'ui', 'weather'];

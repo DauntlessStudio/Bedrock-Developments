@@ -1,4 +1,4 @@
-import { Directories, File, getFiles } from "../new_file_manager";
+import { Directories, File, getFiles } from "../file_manager";
 import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import path from "path";
@@ -57,7 +57,7 @@ export class MinecraftDataType {
         }
     }
 
-    public toFile(handleExisting? : 'overwrite' | 'merge' | 'overwrite_silent'): File {
+    public toFile(handleExisting? : 'overwrite' | 'overwrite_silent'): File {
         return {filePath: this.filePath, fileContents: this.serialize(), handleExisting};
     }
 

@@ -1,4 +1,4 @@
-import { Directories, getFiles, setFiles } from "../../new_file_manager";
+import { Directories, getFiles, setFiles } from "../../file_manager";
 import { NameData, chalk, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";

@@ -1,4 +1,4 @@
-import { Directories, File } from "../../new_file_manager";
+import { Directories, File } from "../../file_manager";
 import { NameData, currentFormatVersion } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";

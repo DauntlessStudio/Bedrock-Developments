@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { setFiles } from "../../new_file_manager";
+import { setFiles } from "../../file_manager";
 import {  MCFunction } from "../../types/minecraft";
 
 program_new.command('function')

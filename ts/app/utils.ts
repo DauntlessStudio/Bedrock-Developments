@@ -4,21 +4,6 @@ import * as path from 'path';
 export const chalk = new Instance();
 export const currentFormatVersion = '1.20.50';
 
-export class nameObject {
-    fullname: string;
-    namespace: string;
-    shortname: string;
-    displayname: string;
-    pathname: string;
-    constructor(fullname: string, namespace: string, shortname: string, displayname: string, pathname: string) {
-        this.fullname = fullname;
-        this.namespace = namespace;
-        this.shortname = shortname;
-        this.displayname = displayname;
-        this.pathname = pathname
-    }
-}
-
 export class NameData {
     original: string;
     fullname: string;
@@ -52,59 +37,24 @@ export class NameData {
     }
 }
 
-/**
- * @remarks breaks a name input into usable parts
- * @param input the name to be taken apart i.e. namespace:template_entity
- * @returns an object containing parts of the name
- */
-export function getNameObject(input: string) {
-    let paths = input.replace(/\/|\\+/, '/').split('/');
-    let local_fullname = paths.pop();
-    let local_pathname = paths.join('/');
-    local_pathname = local_pathname ? local_pathname + '/' : '';
-    let local_namespace = local_fullname?.split(/\.|:/).shift();
-    let local_shortname = local_fullname?.split(/\.|:/).pop();
-    let local_displayname = local_shortname?.replace(/_/g, ' ');
-    
-    if (local_displayname) {
-        const words = local_displayname.split(' ');
-        for (let i = 0; i < words.length; i++) {
-            words[i] = words[i][0].toUpperCase() + words[i].substring(1);
-        }
-        local_displayname = words.join(' ');
-    }
-
-    return new nameObject(local_fullname!, local_namespace!, local_shortname!, local_displayname!, local_pathname);
+export function isObject(item: any) {
+  return item && typeof item === "object" && !Array.isArray(item);
 }
 
-/**
- * @remarks breaks multiple nmaes into usable parts
- * @param inputs an array of names to be taken apart
- * @returns an array of custom name objects
- */
-export function getNamesObjects(inputs: string[]) {
-    let names = [];
-    for (const name of inputs) {
-        names.push(getNameObject(name));
-    }
-
-    return names;
-}
-
-export function isNumeric(str: string|undefined) {
-    if (str === undefined) {
-        return false;
-    }
-    return !isNaN(Number(str)) && !isNaN(parseFloat(str));
-}
-
-export function pushUnique(arr: any[], value: any) {
-    if (!arr.includes(value)) {
-        arr.push(value);
-    }
-}
-
-export function jsonJoin(source: any, target: any) {
-    let new_obj = {...source, ...target};
-    Object.assign(source, new_obj);
+export default function mergeDeep(target: any, source: any) {
+  let output = Object.assign({}, target);
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach((key) => {
+      if (isObject(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] });
+        else output[key] = mergeDeep(target[key], source[key]);
+      } else if (Array.isArray(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] });
+        else Object.assign(output, { [key]: target[key].concat(source[key]) });
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
 }

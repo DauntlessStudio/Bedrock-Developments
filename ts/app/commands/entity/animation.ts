@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_entity } from "./entity";
-import { Directories, File, copySourceFile, getFiles, setFiles } from "../../new_file_manager";
+import { Directories, File, copySourceFile, getFiles, setFiles } from "../../file_manager";
 import { NameData } from "../../utils";
 import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types";
 

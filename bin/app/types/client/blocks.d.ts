@@ -1,4 +1,4 @@
-import { File } from "../../new_file_manager";
+import { File } from "../../file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { Identifier } from "../shared_types";
 export interface IClientBlocks {

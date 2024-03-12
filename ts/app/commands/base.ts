@@ -1,5 +1,5 @@
 import {Argument, Command, Option, OptionValues} from 'commander';
-import { Directories } from '../new_file_manager';
+import { Directories } from '../file_manager';
 import axios from 'axios';
 import { chalk } from '../utils';
 

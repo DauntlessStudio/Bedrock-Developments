@@ -1,7 +1,7 @@
 import { OptionValues } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { Directories, File, copySourceFile, setFiles } from "../../new_file_manager";
+import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
 import { NameData } from "../../utils";
 import { ClientEntity, ClientGeometry, ServerEntity } from "../../types";
 import { LangFile } from "../../types/minecraft";

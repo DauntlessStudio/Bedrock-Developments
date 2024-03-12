@@ -105,7 +105,6 @@ export declare class MinecraftWorld {
     get ResourcePacks(): IResourcePack[];
     get Name(): string;
     get LevelDat(): Promise<ILevelDat>;
-    set LevelDat(v: ILevelDatOptions);
     constructor(filePath: string);
     static create(worldName: string, options: INewWorldOptions): Promise<MinecraftWorld>;
     static getAllWorlds(): MinecraftWorld[];
@@ -114,5 +113,6 @@ export declare class MinecraftWorld {
     static getPackFromManifest(filepath: string): IResourcePack | IBehaviorPack;
     addPack(pack: IBehaviorPack | IResourcePack): void;
     private addManifest;
+    private setLevelDat;
 }
 export {};

@@ -1,4 +1,4 @@
-import { Directories, File, archiveDirectory, copySourceDirectory, copySourceFile, getFiles, setFiles } from "../new_file_manager";
+import { Directories, File, archiveDirectory, copySourceDirectory, copySourceFile, getFiles, setFiles } from "../file_manager";
 import * as JSONC from 'comment-json';
 import { NameData, chalk } from "../utils";
 import * as fs from 'fs';
@@ -107,21 +107,6 @@ export class MinecraftWorld {
         return nbt.parse(fs.readFileSync(this.filePath + '/level.dat')) as unknown as Promise<ILevelDat>;
     }
     
-    public set LevelDat(v : ILevelDatOptions) {
-        this.LevelDat.then(levelDat => {
-            levelDat.parsed.value = v;
-            
-            // Write 8 metadata bytes in front of nbt data
-            let nbt_buffer = nbt.writeUncompressed(levelDat.parsed as unknown as nbt.NBT, levelDat.type);
-            let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
-            new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
-
-            let stream = fs.createWriteStream(this.filePath + '/level.dat');
-            stream.write(new_buffer);
-            stream.end();
-        });
-    }  
-    
     constructor(filePath: string) {
         this.filePath = filePath;
     }
@@ -158,21 +143,8 @@ export class MinecraftWorld {
             dat.parsed.value.keepinventory = nbt.byte(1);
             dat.parsed.value.doweathercycle = nbt.byte(0);
         }
-        world.LevelDat = {
-            LevelName: nbt.string(worldName),
-            RandomSeed: nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]),
-            GameType: nbt.int(options.gamemode ?? 0),
-            Generator: nbt.int(2),
-            commandsEnabled: nbt.byte(1),
-            dodaylightcycle: nbt.byte(0),
-            domobloot: nbt.byte(0),
-            domobspawning: nbt.byte(0),
-            mobgriefing: nbt.byte(0),
-            keepinventory: nbt.byte(1),
-            doweathercycle: nbt.byte(0),
-        }
 
-        world.LevelDat = dat.parsed.value;
+        world.setLevelDat(dat);
 
         await new Promise<void>(resolve => {
             archiveDirectory(world.filePath, `${world.filePath}.mcworld`, () => {
@@ -316,6 +288,17 @@ export class MinecraftWorld {
                 ]
             }, null, '/t')
         }]);
+    }
+
+    private setLevelDat(v: ILevelDat) {
+        // Write 8 metadata bytes in front of nbt data
+        let nbt_buffer = nbt.writeUncompressed(v.parsed as unknown as nbt.NBT, v.type);
+        let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
+        new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
+
+        let stream = fs.createWriteStream(this.filePath + '/level.dat');
+        stream.write(new_buffer);
+        stream.end();
     }
 }
 

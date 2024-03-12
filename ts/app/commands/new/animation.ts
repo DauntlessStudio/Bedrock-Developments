@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion, } from "../base";
 import { program_new } from "./new";
-import { setFiles, File } from "../../new_file_manager";
+import { setFiles, File } from "../../file_manager";
 import { ServerAnimation } from "../../types";
 import { NameData } from "../../utils";
 

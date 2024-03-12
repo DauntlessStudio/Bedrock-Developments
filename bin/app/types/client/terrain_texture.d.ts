@@ -1,4 +1,4 @@
-import { File } from "../../new_file_manager";
+import { File } from "../../file_manager";
 import { MinecraftDataType } from "../minecraft";
 export interface IClientTerrainTexture {
     num_mip_levels: number;
