@@ -2,7 +2,7 @@ import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangTripleArray } from "../shared_types";
 import { IClientACParticleEffects, IClientACSoundEffects } from "./animation_controller";
-export type ClientAnimationName = `animation.${string}`;
+export declare type ClientAnimationName = `animation.${string}`;
 export interface IClientAnimation {
     format_version: FormatVersion;
     animations: {

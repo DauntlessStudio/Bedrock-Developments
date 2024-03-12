@@ -7,8 +7,8 @@ export interface IClientEntity {
         description: IClientEntityDescription;
     };
 }
-export type ClientEntityTexturePath = `textures/${string}`;
-export type ClientEntityGeometryReference = `geometry.${string}`;
+export declare type ClientEntityTexturePath = `textures/${string}`;
+export declare type ClientEntityGeometryReference = `geometry.${string}`;
 export interface IClientEntityDescription {
     identifier: Identifier;
     min_engine_version?: FormatVersion;

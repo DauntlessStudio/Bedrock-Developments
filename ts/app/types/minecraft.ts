@@ -53,7 +53,7 @@ export class MinecraftDataType {
             return new create(filepath, JSONC.parse(json));
         } catch (error) {
             console.error(`${chalk.red(`Failed to parse ${filepath}\n${error}\nCreating from template instead.`)}`);
-            return this.createFromTemplate(new NameData(filepath)) as T;
+            return this.createFromTemplate(new NameData(filepath)) as unknown as T;
         }
     }
 
@@ -73,7 +73,7 @@ export class MinecraftDataType {
             }
         }
 
-        return this.createFromTemplate(new NameData(path)) as T;
+        return this.createFromTemplate(new NameData(path)) as unknown as T;
     }
 }
 
