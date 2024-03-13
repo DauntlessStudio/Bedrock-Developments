@@ -1,5 +1,5 @@
-import { MinecraftDataType } from "./minecraft";
-import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "./shared_types";
+import { MinecraftDataType } from "./minecraft.js";
+import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "./shared_types.js";
 export interface IGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IGeometryNew[];

@@ -1,7 +1,7 @@
-import { NameData } from "../../utils";
-import { GeometryName } from "../client";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
+import { NameData } from "../../utils.js";
+import { GeometryName } from "../client/index.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, MolangTripleArray } from "../shared_types.js";
 export interface IServerBlock {
     format_version: FormatVersion;
     ["minecraft:block"]: {

@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_entity } from "./entity";
 import { File, getFiles, setFiles } from "../../file_manager";
-import { Identifier, ServerEntity } from "../../types";
+import { Identifier, ServerEntity } from "../../types/index";
 
 
 program_entity.command('property')

@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion, } from "../base";
 import { program_new } from "./new";
 import { setFiles, File } from "../../file_manager";
-import { ServerAnimation } from "../../types";
+import { ServerAnimation } from "../../types/index";
 import { NameData } from "../../utils";
 
 program_new.command('anim')

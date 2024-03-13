@@ -1,7 +1,7 @@
 import { program } from "./base";
-export * from './new';
-export * from './entity';
-export * from './world';
+export * from './new/index';
+export * from './entity/index';
+export * from './world/index';
 
 export function runProgram(): void {
     program.parse();

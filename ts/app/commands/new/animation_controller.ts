@@ -3,7 +3,7 @@ import { printVersion, } from "../base";
 import { program_new } from "./new";
 import { setFiles, File } from "../../file_manager";
 import { NameData } from "../../utils";
-import { ServerAnimationController } from "../../types";
+import { ServerAnimationController } from "../../types/index";
 
 program_new.command('ctrl')
 .description('creates new bedrock behavior animation controllers')

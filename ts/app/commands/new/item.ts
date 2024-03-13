@@ -1,10 +1,9 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
-import { ClientItemTexture, IServerItem, ServerItem } from "../../types";
+import { ClientItemTexture, ServerItem, LangFile } from "../../types/index";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
 import { NameData } from "../../utils";
-import { LangFile } from "../../types/minecraft";
 
 interface ItemCommandOptions {
     lang: boolean;

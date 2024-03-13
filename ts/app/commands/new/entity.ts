@@ -3,7 +3,7 @@ import { printVersion } from "../base";
 import { program_new } from "./new";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
 import { NameData } from "../../utils";
-import { ClientEntity, ClientGeometry, ServerEntity } from "../../types";
+import { ClientEntity, ClientGeometry, ServerEntity } from "../../types/index";
 import { LangFile } from "../../types/minecraft";
 
 program_new.command('entity')

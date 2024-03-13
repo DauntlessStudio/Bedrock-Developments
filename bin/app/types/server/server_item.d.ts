@@ -1,5 +1,5 @@
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, SlotOptions } from "../shared_types.js";
 interface IServerItem {
     format_version: FormatVersion;
     ["minecraft:item"]: IServerItemItem;
