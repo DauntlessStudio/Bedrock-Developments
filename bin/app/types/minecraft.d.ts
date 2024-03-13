@@ -1,5 +1,5 @@
-import { File } from "../file_manager";
-import { NameData } from "../utils";
+import { File } from "../file_manager.js";
+import { NameData } from "../utils.js";
 export declare function non_serializable(target: any, key: string | symbol): void;
 export declare class MinecraftDataType {
     filePath: string;

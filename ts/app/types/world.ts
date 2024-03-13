@@ -5,8 +5,8 @@ import * as fs from 'fs';
 import path from "path";
 import { v4 } from 'uuid';
 import { execSync } from "child_process";
+import { NbtFile } from "deepslate";
 
-const nbtFile = async () => {const slate = await import('deepslate'); return slate.NbtFile};
 const APPDATA = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 export const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 const DOWNLOAD = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
@@ -71,12 +71,10 @@ export class MinecraftWorld {
         return String(fs.readFileSync(this.filePath + '/levelname.txt'));
     }
     
-    public get LevelDat() : Promise<any> {
+    public get LevelDat() : NbtFile {
         const buffer = fs.readFileSync(this.filePath + '/level.dat');
         const uint8Array = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-        return new Promise<any>(resolve => {
-            nbtFile().then(nbtFile => resolve(nbtFile.read(uint8Array, {bedrockHeader: true, littleEndian: true})));
-        });
+        return NbtFile.read(uint8Array, {bedrockHeader: true, littleEndian: true})
     }
     
     constructor(filePath: string) {
@@ -96,8 +94,7 @@ export class MinecraftWorld {
         copySourceFile('world/level.dat', `${world.filePath}/level.dat`);
         setFiles([{filePath: `${world.filePath}/levelname.txt`, fileContents: worldName}]);
 
-        const nFile = await nbtFile();
-        const levelDat = (await world.LevelDat).toJson();
+        const levelDat = world.LevelDat.toJson() as any;
 
         levelDat.root.LevelName = {type: 8, value: worldName};
         levelDat.root.RandomSeed = {type: 4, value: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]};
@@ -117,7 +114,7 @@ export class MinecraftWorld {
             levelDat.root.doweathercycle = {type: 1, value: 0};
         }
 
-        world.setLevelDat(nFile.fromJson(levelDat).write());
+        world.setLevelDat(NbtFile.fromJson(levelDat).write());
 
         await new Promise<void>(resolve => {
             archiveDirectory(world.filePath, `${world.filePath}.mcworld`, () => {
@@ -231,7 +228,7 @@ export class MinecraftWorld {
     }
 
     private async addManifest() {
-        const dat = (await this.LevelDat).toJson();
+        const dat = this.LevelDat.toJson() as any;
         const version_array = dat.root.lastOpenedWithVersion.value.items.slice(0, 3);
         console.log(version_array)
 

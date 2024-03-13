@@ -1,6 +1,6 @@
-import { Directories, File, getFiles } from "../file_manager";
+import { Directories, File, getFiles } from "../file_manager.js";
 import * as JSONC from 'comment-json';
-import { NameData, chalk } from "../utils";
+import { NameData, chalk } from "../utils.js";
 import path from "path";
 
 export function non_serializable(target: any, key: string|symbol) {

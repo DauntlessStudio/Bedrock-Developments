@@ -1,7 +1,7 @@
 import {Argument, Command, Option, OptionValues} from 'commander';
-import { Directories } from '../file_manager';
+import { Directories } from '../file_manager.js';
 import axios from 'axios';
-import { chalk } from '../utils';
+import { chalk } from '../utils.js';
 
 const version = '3.0.0';
 export const program = new Command();

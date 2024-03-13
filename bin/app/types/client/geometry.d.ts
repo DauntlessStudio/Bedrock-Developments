@@ -1,6 +1,6 @@
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types.js";
 export type GeometryName = `geometry.${string}`;
 export interface IClientGeometry {
     format_version: FormatVersion;

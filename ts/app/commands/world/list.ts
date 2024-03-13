@@ -1,7 +1,7 @@
-import { printVersion, } from "../base";
-import { program_world } from "./world";
-import { chalk } from "../../utils";
-import { MinecraftWorld } from "../../types";
+import { printVersion, } from "../base.js";
+import { program_world } from "./world.js";
+import { chalk } from "../../utils.js";
+import { MinecraftWorld } from "../../types/index.js";
 
 program_world.command('list')
 .description('list installed worlds')

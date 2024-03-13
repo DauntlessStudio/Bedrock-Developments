@@ -1,5 +1,5 @@
-import { Directories, File } from "../../file_manager";
-import { MinecraftDataType } from "../minecraft";
+import { Directories, File } from "../../file_manager.js";
+import { MinecraftDataType } from "../minecraft.js";
 
 export interface IClientItemTexture {
     resource_pack_name: 'vanilla';

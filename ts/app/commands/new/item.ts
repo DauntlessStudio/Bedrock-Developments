@@ -1,10 +1,9 @@
 import { OptionValues, Option } from "commander";
-import { printVersion } from "../base";
-import { program_new } from "./new";
-import { ClientItemTexture, IServerItem, ServerItem } from "../../types";
-import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
-import { NameData } from "../../utils";
-import { LangFile } from "../../types/minecraft";
+import { printVersion } from "../base.js";
+import { program_new } from "./new.js";
+import { ClientItemTexture, ServerItem, LangFile } from "../../types/index.js";
+import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
 
 interface ItemCommandOptions {
     lang: boolean;

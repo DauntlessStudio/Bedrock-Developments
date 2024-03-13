@@ -1,4 +1,4 @@
-export declare const chalk: import("chalk").Chalk;
+export declare const chalk: import("chalk").ChalkInstance;
 export declare const currentFormatVersion = "1.20.50";
 export declare class NameData {
     original: string;

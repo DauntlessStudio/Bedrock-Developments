@@ -1,7 +1,7 @@
-import { Directories, File } from "../../file_manager";
-import { NameData, currentFormatVersion } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion } from "../shared_types";
+import { Directories, File } from "../../file_manager.js";
+import { NameData, currentFormatVersion } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion } from "../shared_types.js";
 
 export type ClientSoundCategory = 'ambient'|'block'|'bottle'|'bucket'|'hostile'|'music'|'neutral'|'player'|'record'|'ui'|'weather';
 

@@ -1,7 +1,7 @@
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangOption } from "../shared_types";
-import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, MolangOption } from "../shared_types.js";
+import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity.js";
 export interface IClientAttachable {
     format_version: FormatVersion;
     ['minecraft:attachable']: {

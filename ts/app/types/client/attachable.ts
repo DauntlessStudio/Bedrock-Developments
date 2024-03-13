@@ -1,8 +1,8 @@
-import { Directories } from "../../file_manager";
-import { NameData, currentFormatVersion } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangOption } from "../shared_types";
-import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity";
+import { Directories } from "../../file_manager.js";
+import { NameData, currentFormatVersion } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, MolangOption } from "../shared_types.js";
+import { ClientEntityGeometryReference, IClientEntityDescription } from "./entity.js";
 
 export interface IClientAttachable {
     format_version: FormatVersion;

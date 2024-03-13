@@ -1,6 +1,6 @@
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types.js";
 import { ServerAnimationName } from "./animation";
 import { ServerACName } from "./animation_controller";
 import { IServerItemComponents } from "./item";

@@ -1,6 +1,6 @@
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, MolangDoubleArray } from "../shared_types";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, MolangDoubleArray } from "../shared_types.js";
 interface IClientRenderController {
     format_version: FormatVersion;
     render_controllers: {

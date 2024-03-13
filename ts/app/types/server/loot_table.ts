@@ -1,7 +1,7 @@
-import { Directories } from "../../file_manager";
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { Identifier } from "../shared_types";
+import { Directories } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { Identifier } from "../shared_types.js";
 
 export interface IServerLootTable {
     pools: IServerLootTablePool[];

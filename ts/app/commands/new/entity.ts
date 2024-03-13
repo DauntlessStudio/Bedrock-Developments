@@ -1,10 +1,10 @@
 import { OptionValues } from "commander";
-import { printVersion } from "../base";
-import { program_new } from "./new";
-import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
-import { NameData } from "../../utils";
-import { ClientEntity, ClientGeometry, ServerEntity } from "../../types";
-import { LangFile } from "../../types/minecraft";
+import { printVersion } from "../base.js";
+import { program_new } from "./new.js";
+import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
+import { ClientEntity, ClientGeometry, ServerEntity } from "../../types/index.js";
+import { LangFile } from "../../types/index.js";
 
 program_new.command('entity')
 .description('creates new bedrock entities')

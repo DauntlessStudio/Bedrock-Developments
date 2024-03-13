@@ -1,8 +1,8 @@
-import { printVersion, } from "../base";
-import { program_world } from "./world";
-import { MOJANG, MinecraftWorld } from "../../types";
+import { printVersion, } from "../base.js";
+import { program_world } from "./world.js";
+import { MOJANG, MinecraftWorld } from "../../types/index.js";
 import { Argument, Option, OptionValues } from "commander";
-import { Directories } from "../../file_manager";
+import { Directories } from "../../file_manager.js";
 
 program_world.command('new')
 .description('create new world')

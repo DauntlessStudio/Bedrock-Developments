@@ -1,9 +1,9 @@
 import { OptionValues, Option } from "commander";
-import { printVersion, } from "../base";
-import { program_new } from "./new";
-import { setFiles, File } from "../../file_manager";
-import { NameData } from "../../utils";
-import { ServerAnimationController } from "../../types";
+import { printVersion, } from "../base.js";
+import { program_new } from "./new.js";
+import { setFiles, File } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
+import { ServerAnimationController } from "../../types/index.js";
 
 program_new.command('ctrl')
 .description('creates new bedrock behavior animation controllers')

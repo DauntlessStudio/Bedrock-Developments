@@ -1,10 +1,10 @@
-import { printVersion, } from "../base";
-import { program_world } from "./world";
-import { chalk } from "../../utils";
-import { IBehaviorPack, IResourcePack, MOJANG, MinecraftWorld } from "../../types";
+import { printVersion, } from "../base.js";
+import { program_world } from "./world.js";
+import { chalk } from "../../utils.js";
+import { IBehaviorPack, IResourcePack, MOJANG, MinecraftWorld } from "../../types/index.js";
 import { OptionValues, Option } from "commander";
 import { createInterface } from "readline";
-import { Directories, getFiles } from "../../file_manager";
+import { Directories, getFiles } from "../../file_manager.js";
 
 program_world.command('packs')
 .description('attach packs to world')

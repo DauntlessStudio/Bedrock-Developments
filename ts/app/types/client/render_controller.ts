@@ -1,7 +1,7 @@
-import { Directories } from "../../file_manager";
-import { NameData, currentFormatVersion } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, MolangDoubleArray } from "../shared_types";
+import { Directories } from "../../file_manager.js";
+import { NameData, currentFormatVersion } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, MolangDoubleArray } from "../shared_types.js";
 
 interface IClientRenderController {
     format_version: FormatVersion;

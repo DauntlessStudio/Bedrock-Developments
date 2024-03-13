@@ -1,7 +1,7 @@
-import { Directories, getFiles, setFiles } from "../../file_manager";
-import mergeDeep, { NameData, chalk, currentFormatVersion } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
+import { Directories, getFiles, setFiles } from "../../file_manager.js";
+import mergeDeep, { NameData, chalk, currentFormatVersion } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types.js";
 import { IServerAnimation, IServerAnimationAnim, ServerAnimation, ServerAnimationName } from "./animation";
 import { IServerAC, IServerAnimationController, ServerACName, ServerAnimationController } from "./animation_controller";
 import { IServerItemComponents } from "./item";

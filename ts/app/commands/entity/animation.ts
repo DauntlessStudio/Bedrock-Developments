@@ -1,9 +1,9 @@
 import { OptionValues, Option } from "commander";
-import { printVersion } from "../base";
-import { program_entity } from "./entity";
-import { Directories, File, copySourceFile, getFiles, setFiles } from "../../file_manager";
-import { NameData } from "../../utils";
-import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types";
+import { printVersion } from "../base.js";
+import { program_entity } from "./entity.js";
+import { Directories, File, copySourceFile, getFiles, setFiles } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
+import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types/index.js";
 
 program_entity.command('anim')
 .description('adds an animation or animation controller reference to entities')

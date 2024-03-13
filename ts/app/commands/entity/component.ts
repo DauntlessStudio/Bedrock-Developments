@@ -1,9 +1,9 @@
 import { OptionValues, Option } from "commander";
-import { printVersion } from "../base";
-import { program_entity } from "./entity";
-import { File, getFiles, getStringFromTemporaryFile, setFiles } from "../../file_manager";
-import { ServerEntity } from "../../types";
-import { chalk } from "../../utils";
+import { printVersion } from "../base.js";
+import { program_entity } from "./entity.js";
+import { File, getFiles, getStringFromTemporaryFile, setFiles } from "../../file_manager.js";
+import { ServerEntity } from "../../types/index.js";
+import { chalk } from "../../utils.js";
 
 program_entity.command('component')
 .description('adds a component to entities')

@@ -1,3 +1,4 @@
+import { NbtFile } from "deepslate";
 export declare const MOJANG: string;
 export declare function cache(target: any, propertyName: string, descriptor: PropertyDescriptor): void;
 export interface INewWorldOptions {
@@ -24,7 +25,7 @@ export declare class MinecraftWorld {
     get BehaviorPacks(): IBehaviorPack[];
     get ResourcePacks(): IResourcePack[];
     get Name(): string;
-    get LevelDat(): Promise<any>;
+    get LevelDat(): NbtFile;
     constructor(filePath: string);
     static create(worldName: string, options: INewWorldOptions): Promise<MinecraftWorld>;
     static getAllWorlds(): MinecraftWorld[];

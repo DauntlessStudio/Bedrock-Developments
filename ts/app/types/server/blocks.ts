@@ -1,8 +1,8 @@
-import { Directories } from "../../file_manager";
-import { NameData, currentFormatVersion } from "../../utils";
+import { Directories } from "../../file_manager.js";
+import { NameData, currentFormatVersion } from "../../utils.js";
 import { GeometryName } from "../client";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, MolangTripleArray } from "../shared_types.js";
 
 export interface IServerBlock {
     format_version: FormatVersion;

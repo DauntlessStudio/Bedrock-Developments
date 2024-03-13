@@ -1,9 +1,9 @@
 import { OptionValues, Option } from "commander";
-import { printVersion, } from "../base";
-import { program_new } from "./new";
-import { setFiles, File } from "../../file_manager";
-import { ServerAnimation } from "../../types";
-import { NameData } from "../../utils";
+import { printVersion, } from "../base.js";
+import { program_new } from "./new.js";
+import { setFiles, File } from "../../file_manager.js";
+import { ServerAnimation } from "../../types/index.js";
+import { NameData } from "../../utils.js";
 
 program_new.command('anim')
 .description('creates new bedrock behavior animations')

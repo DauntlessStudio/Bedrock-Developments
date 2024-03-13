@@ -1,8 +1,8 @@
 import { OptionValues, Option } from "commander";
-import { printVersion } from "../base";
-import { program_new } from "./new";
-import { setFiles } from "../../file_manager";
-import {  MCFunction } from "../../types/minecraft";
+import { printVersion } from "../base.js";
+import { program_new } from "./new.js";
+import { setFiles } from "../../file_manager.js";
+import {  MCFunction } from "../../types/index.js";
 
 program_new.command('function')
 .description('creates new bedrock functions')

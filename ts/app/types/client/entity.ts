@@ -1,7 +1,7 @@
-import { Directories } from "../../file_manager";
-import { NameData, currentFormatVersion } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, Identifier, MolangOption } from "../shared_types";
+import { Directories } from "../../file_manager.js";
+import { NameData, currentFormatVersion } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, Identifier, MolangOption } from "../shared_types.js";
 
 export interface IClientEntity {
     format_version: FormatVersion;

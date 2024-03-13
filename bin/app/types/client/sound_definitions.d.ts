@@ -1,6 +1,6 @@
-import { File } from "../../file_manager";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion } from "../shared_types";
+import { File } from "../../file_manager.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion } from "../shared_types.js";
 export type ClientSoundCategory = 'ambient' | 'block' | 'bottle' | 'bucket' | 'hostile' | 'music' | 'neutral' | 'player' | 'record' | 'ui' | 'weather';
 export interface IClientSoundDefinitions {
     format_version: FormatVersion;

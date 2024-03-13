@@ -1,6 +1,6 @@
-import { Directories, File } from "../../file_manager";
-import { MinecraftDataType } from "../minecraft";
-import { Identifier } from "../shared_types";
+import { Directories, File } from "../../file_manager.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { Identifier } from "../shared_types.js";
 
 export interface IClientBlocks {
     [key: Identifier]: IClientBlocksEntry

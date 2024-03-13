@@ -1,6 +1,6 @@
-import { NameData } from "../../utils";
-import { MinecraftDataType } from "../minecraft";
-import { FormatVersion, MolangTripleArray } from "../shared_types";
+import { NameData } from "../../utils.js";
+import { MinecraftDataType } from "../minecraft.js";
+import { FormatVersion, MolangTripleArray } from "../shared_types.js";
 import { IClientACParticleEffects, IClientACSoundEffects } from "./animation_controller";
 export type ClientAnimationName = `animation.${string}`;
 export interface IClientAnimation {
