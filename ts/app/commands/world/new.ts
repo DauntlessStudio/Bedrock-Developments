@@ -29,11 +29,9 @@ async function triggerWorldsNew(name: string, options: OptionValues) {
 	  resource_pack_manifest_path = MOJANG + '/development_resource_packs/' + resource_pack_manifest_path + '/manifest.json';
 	}
 
-	console.log(behavior_pack_manifest_path)
-
     MinecraftWorld.create(name, {
-			behavior_pack_manifest_path: options.bpack,
-			resource_pack_manifest_path: options.rpack,
+			behavior_pack_manifest_path,
+			resource_pack_manifest_path,
 			gamemode: options.mode,
 			flatworld: options.flat,
 			testworld: options.test,

@@ -212,7 +212,12 @@ export class MinecraftWorld {
     }
 
     public addPack(pack: IBehaviorPack|IResourcePack) {
-        getFiles(this.filePath + `/world_${pack.type}_packs.json`).forEach(file => {
+        const files = getFiles(this.filePath + `/world_${pack.type}_packs.json`);
+        if (!files.length) {
+            files.push({filePath: this.filePath + `/world_${pack.type}_packs.json`, fileContents: '[]'});
+        }
+
+        files.forEach(file => {
             if (file.fileContents.includes(pack.uuid)) return;
 
             const json = JSON.parse(file.fileContents);
@@ -222,9 +227,9 @@ export class MinecraftWorld {
             });
             file.fileContents = JSON.stringify(json, null, '\t');
             file.handleExisting = 'overwrite';
-
-            setFiles([file]);
         });
+
+        setFiles(files);
     }
 
     private async addManifest() {
