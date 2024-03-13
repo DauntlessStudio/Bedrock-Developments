@@ -1,7 +1,7 @@
 import { File } from "../../file_manager";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
-export declare type ClientSoundCategory = 'ambient' | 'block' | 'bottle' | 'bucket' | 'hostile' | 'music' | 'neutral' | 'player' | 'record' | 'ui' | 'weather';
+export type ClientSoundCategory = 'ambient' | 'block' | 'bottle' | 'bucket' | 'hostile' | 'music' | 'neutral' | 'player' | 'record' | 'ui' | 'weather';
 export interface IClientSoundDefinitions {
     format_version: FormatVersion;
     sound_definitions: {

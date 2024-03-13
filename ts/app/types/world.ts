@@ -1,12 +1,12 @@
-import { Directories, File, archiveDirectory, copySourceDirectory, copySourceFile, getFiles, setFiles } from "../file_manager";
+import { archiveDirectory, copySourceDirectory, copySourceFile, getFiles, setFiles } from "../file_manager.js";
 import * as JSONC from 'comment-json';
-import { NameData, chalk } from "../utils";
+import { chalk } from "../utils.js";
 import * as fs from 'fs';
 import path from "path";
-import * as nbt from 'prismarine-nbt'
 import { v4 } from 'uuid';
 import { execSync } from "child_process";
 
+const nbtFile = async () => {const slate = await import('deepslate'); return slate.NbtFile};
 const APPDATA = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
 export const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
 const DOWNLOAD = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
@@ -53,38 +53,6 @@ export interface IResourcePack extends IMinecraftPack {
     type: 'resource';
 }
 
-interface ILevelDat {
-    type: nbt.NBTFormat;
-    parsed: {
-        type: nbt.TagType.Compound;
-        value: ILevelDatOptions;
-    }
-    metadata: nbt.Metadata;
-}
-
-interface ILevelDatOptions {
-    LevelName?: {type: 'string'; value: string;}
-    RandomSeed?: {type: 'long'; value: number[];}
-    GameType?: {type: 'int'; value: number;}
-    Generator?: {type: 'int'; value: number;}
-    commandsEnabled?: {type: 'byte'; value: number;}
-    dodaylightcycle?: {type: 'byte'; value: number;}
-    domobloot?: {type: 'byte'; value: number;}
-    domobspawning?: {type: 'byte'; value: number;}
-    mobgriefing?: {type: 'byte'; value: number;}
-    keepinventory?: {type: 'byte'; value: number;}
-    doweathercycle?: {type: 'byte'; value: number;}
-    experiments?: {type: 'compound', value: {
-        gametest?: {type: 'byte', value: number;}
-        experiments_ever_used?: {type: 'byte', value: number;}
-        saved_with_toggled_experiments?: {type: 'byte', value: number;}
-        data_driven_vanilla_blocks_and_items?: {type: 'byte', value: number;}
-    }
-    }
-
-    [key: string]: {type: string; value: any;}|undefined
-}
-
 export class MinecraftWorld {
     public filePath: string;
     
@@ -103,8 +71,12 @@ export class MinecraftWorld {
         return String(fs.readFileSync(this.filePath + '/levelname.txt'));
     }
     
-    public get LevelDat() : Promise<ILevelDat> {
-        return nbt.parse(fs.readFileSync(this.filePath + '/level.dat')) as unknown as Promise<ILevelDat>;
+    public get LevelDat() : Promise<any> {
+        const buffer = fs.readFileSync(this.filePath + '/level.dat');
+        const uint8Array = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+        return new Promise<any>(resolve => {
+            nbtFile().then(nbtFile => resolve(nbtFile.read(uint8Array, {bedrockHeader: true, littleEndian: true})));
+        });
     }
     
     constructor(filePath: string) {
@@ -124,27 +96,28 @@ export class MinecraftWorld {
         copySourceFile('world/level.dat', `${world.filePath}/level.dat`);
         setFiles([{filePath: `${world.filePath}/levelname.txt`, fileContents: worldName}]);
 
-        const dat = await world.LevelDat;
+        const nFile = await nbtFile();
+        const levelDat = (await world.LevelDat).toJson();
 
-        dat.parsed.value.LevelName = nbt.string(worldName);
-        dat.parsed.value.RandomSeed = nbt.long([Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]);
-        dat.parsed.value.GameType = nbt.int(options.gamemode ?? 0);
+        levelDat.root.LevelName = {type: 8, value: worldName};
+        levelDat.root.RandomSeed = {type: 4, value: [Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000)]};
+        levelDat.root.GameType = {type: 3, value: options.gamemode ?? 0};
         
         if (options.flatworld) {
-            dat.parsed.value.Generator = nbt.int(2);
+            levelDat.root.Generator = {type: 3, value: 2};
         }
 
         if (options.testworld) {
-            dat.parsed.value.commandsEnabled = nbt.byte(1);
-            dat.parsed.value.dodaylightcycle = nbt.byte(0);
-            dat.parsed.value.domobloot = nbt.byte(0);
-            dat.parsed.value.domobspawning = nbt.byte(0);
-            dat.parsed.value.mobgriefing = nbt.byte(0);
-            dat.parsed.value.keepinventory = nbt.byte(1);
-            dat.parsed.value.doweathercycle = nbt.byte(0);
+            levelDat.root.commandsEnabled = {type: 1, value: 1};
+            levelDat.root.dodaylightcycle = {type: 1, value: 0};
+            levelDat.root.domobloot = {type: 1, value: 0};
+            levelDat.root.domobspawning = {type: 1, value: 0};
+            levelDat.root.mobgriefing = {type: 1, value: 0};
+            levelDat.root.keepinventory = {type: 1, value: 1};
+            levelDat.root.doweathercycle = {type: 1, value: 0};
         }
 
-        world.setLevelDat(dat);
+        world.setLevelDat(nFile.fromJson(levelDat).write());
 
         await new Promise<void>(resolve => {
             archiveDirectory(world.filePath, `${world.filePath}.mcworld`, () => {
@@ -258,8 +231,9 @@ export class MinecraftWorld {
     }
 
     private async addManifest() {
-        const dat = await this.LevelDat;
-        const version_array = dat.parsed.value.lastOpenedWithVersion!.value.value.slice(0, 3);
+        const dat = (await this.LevelDat).toJson();
+        const version_array = dat.root.lastOpenedWithVersion.value.items.slice(0, 3);
+        console.log(version_array)
 
         setFiles([{
             filePath: `${this.filePath}/manifest.json`,
@@ -290,14 +264,9 @@ export class MinecraftWorld {
         }]);
     }
 
-    private setLevelDat(v: ILevelDat) {
-        // Write 8 metadata bytes in front of nbt data
-        let nbt_buffer = nbt.writeUncompressed(v.parsed as unknown as nbt.NBT, v.type);
-        let new_buffer: Buffer = Buffer.from([0x0a, 0x00, 0x00, 0x00, 0x07, 0x0a, 0x00, 0x00]);
-        new_buffer = Buffer.concat([new_buffer, nbt_buffer]);
-
+    private setLevelDat(v: Uint8Array) {
         let stream = fs.createWriteStream(this.filePath + '/level.dat');
-        stream.write(new_buffer);
+        stream.write(v);
         stream.end();
     }
 }

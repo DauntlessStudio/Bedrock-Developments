@@ -1,7 +1,7 @@
 import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion, MolangDoubleArray, MolangTripleArray } from "../shared_types";
-export declare type GeometryName = `geometry.${string}`;
+export type GeometryName = `geometry.${string}`;
 export interface IClientGeometry {
     format_version: FormatVersion;
     "minecraft:geometry"?: IClientGeometryNew[];

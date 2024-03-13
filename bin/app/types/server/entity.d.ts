@@ -4,9 +4,9 @@ import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../sh
 import { ServerAnimationName } from "./animation";
 import { ServerACName } from "./animation_controller";
 import { IServerItemComponents } from "./item";
-export declare type DamageType = string;
-export declare type Range = number | [number, number];
-export declare type ServerEntityTarget = 'block' | 'damager' | 'other' | 'parent' | 'player' | 'self' | 'target';
+export type DamageType = string;
+export type Range = number | [number, number];
+export type ServerEntityTarget = 'block' | 'damager' | 'other' | 'parent' | 'player' | 'self' | 'target';
 export interface IServerEntity {
     format_version: FormatVersion;
     ["minecraft:entity"]: {

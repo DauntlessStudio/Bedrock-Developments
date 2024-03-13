@@ -1,7 +1,7 @@
 import { NameData } from "../../utils";
 import { MinecraftDataType } from "../minecraft";
 import { FormatVersion } from "../shared_types";
-export declare type ServerACName = `controller.animation.${string}`;
+export type ServerACName = `controller.animation.${string}`;
 export interface IServerAnimationController {
     format_version: FormatVersion;
     animation_controllers: {

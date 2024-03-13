@@ -7,7 +7,7 @@ interface IClientRenderController {
         [key: string]: IClientRCController;
     };
 }
-declare type Reference = `Array.${string}[${string}]` | `Geometry.${string}` | `Material.${string}` | `Texture.${string}` | `array.${string}[${string}]` | `geometry.${string}` | `material.${string}` | `texture.${string}`;
+type Reference = `Array.${string}[${string}]` | `Geometry.${string}` | `Material.${string}` | `Texture.${string}` | `array.${string}[${string}]` | `geometry.${string}` | `material.${string}` | `texture.${string}`;
 interface IClientRCController {
     arrays?: IClientRCArrays;
     geometry: Reference;
