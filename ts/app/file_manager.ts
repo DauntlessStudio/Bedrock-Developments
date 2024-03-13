@@ -17,6 +17,14 @@ export class Directories {
         return this.source_path + '/';
     }
     
+    public static get VANILLA_BEHAVIOR_PATH() : string {
+        return Directories.SOURCE_PATH + 'vanilla/behavior_pack/';
+    }
+    
+    public static get VANILLA_RESOURCE_PATH() : string {
+        return Directories.SOURCE_PATH + 'vanilla/resource_pack/';
+    }
+    
     public static get BEHAVIOR_PATH() : string {
         return globSync(this.behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
     }

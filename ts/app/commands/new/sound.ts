@@ -37,7 +37,7 @@ function triggerCreateNewSoundDefinition(names: string[], options: OptionValues)
 
         setFiles([soundDef]);
     } else {
-        const vanillaSounds = ClientSoundDefinitions.fromPathOrTemplate(ClientSoundDefinitions, Directories.SOURCE_PATH + 'vanilla/resource_pack/sounds/sound_definitions.json');
+        const vanillaSounds = ClientSoundDefinitions.fromPathOrTemplate(ClientSoundDefinitions, Directories.VANILLA_RESOURCE_PATH + 'sounds/sound_definitions.json');
         const sound = vanillaSounds.sound_definitions[vanilla];
 
         if (sound) {

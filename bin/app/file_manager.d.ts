@@ -8,6 +8,8 @@ export declare class Directories {
     private static resource_path;
     private static source_path;
     static get SOURCE_PATH(): string;
+    static get VANILLA_BEHAVIOR_PATH(): string;
+    static get VANILLA_RESOURCE_PATH(): string;
     static get BEHAVIOR_PATH(): string;
     static get RESOURCE_PATH(): string;
     static set BEHAVIOR_PATH(v: string);
