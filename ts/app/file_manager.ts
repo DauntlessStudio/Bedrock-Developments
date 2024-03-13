@@ -14,7 +14,7 @@ export class Directories {
     private static source_path = path.join(path.resolve(path.dirname(fileURLToPath(import.meta.url))), 'src');
 
     public static get SOURCE_PATH() : string {
-        return this.source_path;
+        return this.source_path + '/';
     }
     
     public static get BEHAVIOR_PATH() : string {

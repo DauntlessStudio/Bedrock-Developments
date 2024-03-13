@@ -1,8 +1,9 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
-import { File, setFiles } from "../../file_manager.js";
+import { Directories, File, setFiles } from "../../file_manager.js";
 import { ClientSoundCategory, ClientSoundDefinitions } from "../../types/index.js";
+import { chalk } from "../../utils.js";
 
 const categories: string[] = ['ambient', 'block', 'bottle', 'bucket', 'hostile', 'music', 'neutral', 'player', 'record', 'ui', 'weather'];
 
@@ -17,11 +18,12 @@ program_new.command('sound')
 
 function triggerCreateNewSoundDefinition(names: string[], options: OptionValues) {
   const category: string = options.category;
-  const vanilla: boolean = options.vanilla;
+  const vanilla: string|undefined = options.vanilla;
   const filepath: string = options.filepath;
 
   names.forEach((name) => {
-    const soundDef = ClientSoundDefinitions.fileWithAddedSound(name, {
+    if (!vanilla) {
+      const soundDef = ClientSoundDefinitions.fileWithAddedSound(name, {
         category: category as ClientSoundCategory,
         sounds: [
             {
@@ -31,8 +33,20 @@ function triggerCreateNewSoundDefinition(names: string[], options: OptionValues)
                 load_on_low_memory: true,
             }
         ]
-    });
+        });
 
-    setFiles([soundDef]);
+        setFiles([soundDef]);
+    } else {
+        const vanillaSounds = ClientSoundDefinitions.fromPathOrTemplate(ClientSoundDefinitions, Directories.SOURCE_PATH + 'vanilla/resource_pack/sounds/sound_definitions.json');
+        const sound = vanillaSounds.sound_definitions[vanilla];
+
+        if (sound) {
+            const soundDef = ClientSoundDefinitions.fileWithAddedSound(name, sound);
+            
+            setFiles([soundDef]);
+        } else {
+            console.error(chalk.red(`Could not find ${vanilla} in vanilla sound definitions`));
+        }
+    }
   });
 }

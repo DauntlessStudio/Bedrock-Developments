@@ -60,6 +60,7 @@ export class ClientSoundDefinitions extends MinecraftDataType implements IClient
     public static fileWithAddedSound(name: string, sound: IClientSoundDefinition): File {
         const sound_def = ClientSoundDefinitions.fromPathOrTemplate(ClientSoundDefinitions, ClientSoundDefinitions.createFilePath());
         sound_def.addSound(name, sound);
+        sound_def.convertSoundsToObjects();
         return sound_def.toFile();
     }
 
