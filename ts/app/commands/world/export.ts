@@ -1,7 +1,7 @@
 import { printVersion, } from "../base";
 import { program_world } from "./world";
 import { chalk } from "../../utils";
-import { MinecraftWorld } from "../../types/index";
+import { MinecraftWorld } from "../../types";
 import { OptionValues, Option } from "commander";
 import { createInterface } from "readline";
 

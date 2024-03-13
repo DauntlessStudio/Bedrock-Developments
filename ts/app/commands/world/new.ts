@@ -1,6 +1,6 @@
 import { printVersion, } from "../base";
 import { program_world } from "./world";
-import { MOJANG, MinecraftWorld } from "../../types/index";
+import { MOJANG, MinecraftWorld } from "../../types";
 import { Argument, Option, OptionValues } from "commander";
 import { Directories } from "../../file_manager";
 

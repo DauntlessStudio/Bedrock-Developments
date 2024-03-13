@@ -1,7 +1,7 @@
-import {Chalk} from 'chalk';
+import {Instance} from 'chalk';
 import * as path from 'path';
 
-export const chalk = new Chalk();
+export const chalk = new Instance();
 export const currentFormatVersion = '1.20.50';
 
 export class NameData {

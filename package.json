@@ -4,15 +4,12 @@
   "description": "APIs for creating and editing files related to Minecraft Bedrock development.",
   "main": "bin/index.js",
   "types": "bin/index.d.ts",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/DauntlessStudio/Bedrock-Developments.git"
   },
   "scripts": {
-    "build": "npm run tsc_watch && npm run alias_watch",
-    "tsc_watch": "tsc -w",
-    "alias_watch": "tsc-alias -w",
+    "build": "npx tsc -w",
     "prepare": "node update_version.js && npx tsc",
     "clear": "rm ./behavior_packs/test_bp/** -rf && rm ./resource_packs/test_rp/** -rf"
   },
@@ -28,7 +25,7 @@
   "dependencies": {
     "archiver": "^5.3.1",
     "axios": "^1.2.3",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.0",
     "commander": "^10.0.0",
     "comment-json": "^4.2.3",
     "glob": "^10.3.10",
@@ -41,7 +38,6 @@
     "@types/glob": "^8.0.1",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.1",
-    "tsc-alias": "^1.8.8",
     "typescript": "^4.9.4"
   }
 }

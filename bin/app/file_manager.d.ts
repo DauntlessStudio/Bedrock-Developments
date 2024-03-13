@@ -1,4 +1,4 @@
-export type File = {
+export declare type File = {
     filePath: string;
     fileContents: string;
     handleExisting?: 'overwrite' | 'overwrite_silent';

@@ -1,6 +1,6 @@
-import { NameData } from "../../utils.js";
-import { MinecraftDataType } from "../minecraft.js";
-import { FormatVersion, RawMessage } from "../shared_types.js";
+import { NameData } from "../../utils";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, RawMessage } from "../shared_types";
 export interface IServerDialogue {
     format_version: FormatVersion;
     ["minecraft:npc_dialogue"]: {

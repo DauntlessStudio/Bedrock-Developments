@@ -3,7 +3,7 @@ import { printVersion } from "../base";
 import { program_new } from "./new";
 import { NameData } from "../../utils";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager";
-import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types/index";
+import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types";
 import { LangFile } from "../../types/minecraft";
 
 program_new.command('block')

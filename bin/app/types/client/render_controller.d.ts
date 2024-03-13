@@ -1,13 +1,13 @@
-import { NameData } from "../../utils.js";
-import { MinecraftDataType } from "../minecraft.js";
-import { FormatVersion, MolangDoubleArray } from "../shared_types.js";
+import { NameData } from "../../utils";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, MolangDoubleArray } from "../shared_types";
 interface IClientRenderController {
     format_version: FormatVersion;
     render_controllers: {
         [key: string]: IClientRCController;
     };
 }
-type Reference = `Array.${string}[${string}]` | `Geometry.${string}` | `Material.${string}` | `Texture.${string}` | `array.${string}[${string}]` | `geometry.${string}` | `material.${string}` | `texture.${string}`;
+declare type Reference = `Array.${string}[${string}]` | `Geometry.${string}` | `Material.${string}` | `Texture.${string}` | `array.${string}[${string}]` | `geometry.${string}` | `material.${string}` | `texture.${string}`;
 interface IClientRCController {
     arrays?: IClientRCArrays;
     geometry: Reference;

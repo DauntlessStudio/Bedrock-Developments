@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_new } from "./new";
 import { setFiles } from "../../file_manager";
-import {  MCFunction } from "../../types/index";
+import {  MCFunction } from "../../types/minecraft";
 
 program_new.command('function')
 .description('creates new bedrock functions')

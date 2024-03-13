@@ -1,5 +1,5 @@
-import { MinecraftDataType } from "./minecraft.js";
-import { FormatVersion, MolangDoubleArray } from "./shared_types.js";
+import { MinecraftDataType } from "./minecraft";
+import { FormatVersion, MolangDoubleArray } from "./shared_types";
 interface IRenderController {
     format_version: FormatVersion;
     render_controllers: Controllers;

@@ -3,7 +3,7 @@ import { printVersion } from "../base";
 import { program_entity } from "./entity";
 import { Directories, File, copySourceFile, getFiles, setFiles } from "../../file_manager";
 import { NameData } from "../../utils";
-import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types/index";
+import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types";
 
 program_entity.command('anim')
 .description('adds an animation or animation controller reference to entities')

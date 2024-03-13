@@ -1,5 +1,5 @@
-import { File } from "../../file_manager.js";
-import { MinecraftDataType } from "../minecraft.js";
+import { File } from "../../file_manager";
+import { MinecraftDataType } from "../minecraft";
 export interface IClientItemTexture {
     resource_pack_name: 'vanilla';
     texture_name: 'atlas.items';

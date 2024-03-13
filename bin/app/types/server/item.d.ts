@@ -1,6 +1,6 @@
-import { NameData } from "../../utils.js";
-import { MinecraftDataType } from "../minecraft.js";
-import { FormatVersion, Identifier, SlotOptions } from "../shared_types.js";
+import { NameData } from "../../utils";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, Identifier, SlotOptions } from "../shared_types";
 export interface IServerItem {
     format_version: FormatVersion;
     ["minecraft:item"]: IServerItemItem;

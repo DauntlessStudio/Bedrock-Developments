@@ -1,12 +1,12 @@
-import { NameData } from "../../utils.js";
-import { MinecraftDataType } from "../minecraft.js";
-import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types.js";
-import { ServerAnimationName } from "./animation.js";
-import { ServerACName } from "./animation_controller.js";
-import { IServerItemComponents } from "./item.js";
-export type DamageType = string;
-export type Range = number | [number, number];
-export type ServerEntityTarget = 'block' | 'damager' | 'other' | 'parent' | 'player' | 'self' | 'target';
+import { NameData } from "../../utils";
+import { MinecraftDataType } from "../minecraft";
+import { EffectNames, FormatVersion, Identifier, MolangTripleArray } from "../shared_types";
+import { ServerAnimationName } from "./animation";
+import { ServerACName } from "./animation_controller";
+import { IServerItemComponents } from "./item";
+export declare type DamageType = string;
+export declare type Range = number | [number, number];
+export declare type ServerEntityTarget = 'block' | 'damager' | 'other' | 'parent' | 'player' | 'self' | 'target';
 export interface IServerEntity {
     format_version: FormatVersion;
     ["minecraft:entity"]: {

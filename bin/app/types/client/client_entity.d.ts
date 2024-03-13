@@ -1,5 +1,5 @@
-import { MinecraftDataType } from "../minecraft.js";
-import { FormatVersion, Identifier, MolangOption } from "../shared_types.js";
+import { MinecraftDataType } from "../minecraft";
+import { FormatVersion, Identifier, MolangOption } from "../shared_types";
 export interface IClientEntity {
     format_version: FormatVersion;
     ['minecraft:client_entity']: {

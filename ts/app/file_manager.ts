@@ -4,14 +4,13 @@ import { globSync } from 'glob';
 import { chalk } from './utils';
 import { exec } from "child_process";
 import * as archiver from 'archiver';
-import { fileURLToPath } from 'url';
 
 export type File = {filePath: string, fileContents: string, handleExisting? : 'overwrite' | 'overwrite_silent'};
 
 export class Directories {
     private static behavior_path = '**/behavior_packs/*bp/';
     private static resource_path = '**/resource_packs/*rp/';
-    private static source_path = path.join(path.resolve(path.dirname(fileURLToPath(import.meta.url))), 'src');
+    private static source_path = path.join(path.resolve(__dirname), 'src');
 
     public static get SOURCE_PATH() : string {
         return this.source_path;

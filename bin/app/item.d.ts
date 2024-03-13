@@ -1,4 +1,4 @@
-import { nameObject } from './utils.js';
+import { nameObject } from './utils';
 export declare enum itemType {
     basic = "basic",
     attachable = "attachable",

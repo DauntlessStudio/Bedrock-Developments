@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion } from "../base";
 import { program_entity } from "./entity";
 import { File, getFiles, getStringFromTemporaryFile, setFiles } from "../../file_manager";
-import { ServerEntity } from "../../types/index";
+import { ServerEntity } from "../../types";
 import { chalk } from "../../utils";
 
 program_entity.command('group')
