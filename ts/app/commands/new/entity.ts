@@ -35,7 +35,7 @@ function triggerCreateNewEntity(names: string[], options: OptionValues) {
     }
 
     if (client && geo) {
-      files.push(ClientGeometry.createFromTemplate(nameData).toFile());
+      files.push(ClientGeometry.createFromTemplate(new NameData(`entity/${nameData.directory}${nameData.shortname}`)).toFile());
     }
 
     if (client && texture) {

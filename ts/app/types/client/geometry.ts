@@ -127,6 +127,6 @@ export class ClientGeometry extends MinecraftDataType implements IClientGeometry
     }
     
     public static createFilePath(nameData: NameData): string {
-        return this.DirectoryPath + nameData.directory + nameData.shortname + ".geometry.json";
+        return this.DirectoryPath + nameData.directory + nameData.shortname + ".geo.json";
     }
 }
