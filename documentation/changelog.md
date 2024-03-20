@@ -1,22 +1,36 @@
 # Changelog
-## [2.2.5] - 3/6/2024
+# [3.0.0] - 3/20/2024
+Major Refactor
+## Changed
+- The project has been updated from `commonJS` to `ES2020`.
+- Types inheriting from `MinecraftDataType` have been created for all major JSON file types in a Minecraft project. This provide methods for reading and writing files and helpful functions unique to each object type like `ServerEntity`'s `setComponents` method.
+- The `pkg` command has been removed.
+- The vanilla files have been added as a git submodule, packaging them locally with this module, this removes uneccesary web calls to download vanilla files from GitHub.
+- The `entity property event` and `entity property add` commands have been combined into the single command `entity property` which provided options for generating events alongside created properties.
+- The `sound format` command has been removed. The `sound_definitions.json` file is now automatically formatted whenever a new sound is added with `new sound`. In the future a new `format` subcommand may be created to provide options for updating a project to addon format and other formatting tasks.
+- The `entity group`, `entity component`, and `entity sensor` commands now contain optional arguments for the group, component, and sensor respectively. If the argument is not provided, Notepad will be opened and the contents of notepad will be used as the group, component, or sensor string. This does not require escaping the `"` character which it much simpler to paste in JSON.
+- The `world` commands now work correctly with Minecraft 1.20.70+ which uses a different NBT buffer.
+- The `world packs` and `world new` commands now have an optional `--local` flag which will use the packs in your local workspace instead of needing to provide names with the `--bpback <name>` and `--rpack <name>` arguments.
+- The `world packs` and `world export` now have an optional `--world <name|index>` argument that specifies what world should be targeted. If the argument is not provided the command will list your local worlds for selection. This avoids the need to call `world list` to get the right index before calling `world packs` or `world export`.
+---
+# [2.2.5] - 3/6/2024
 Fixed Attachable Creation
 ## Changed
 - Attachable items now create the entry `v.<name> = v.is_paperdoll ? 0 :(q.is_item_name_any('slot.weapon.mainhand', 0, '<name>');` instead of `v.<name> = (q.get_equipped_item_name == '<name>');`
 ---
-## [2.2.3] - 12/13/2023
+# [2.2.3] - 12/13/2023
 File Generation Update
 ## Changed
 - Items now generate with format version 1.20.30.
 - BP item files now use the `minecraft:icon` and `minecraft:display_name` properties. The RP item file is no longer generated.
 - Armor Items are now generated with the 1.20.30 format verison and properties as opposed to the experimental **Holidy Creator** options.
 ---
-## [2.2.2] - 8/23/2023
+# [2.2.2] - 8/23/2023
 Bug Fixes
 ## Fixed
 - Fixed issue where `bed new item --type [armor_set | chestplate]` would generate with an incorrect enchantment slot for chestpieces.
 ---
-## [2.2.1] - 8/6/2023
+# [2.2.1] - 8/6/2023
 Bug Fixes, New Arguments, New Command
 ## Changes
 - The `bed new sound` command now performs the same formatting process as the new command `bed sounds format` after adding new sounds.
@@ -29,7 +43,7 @@ Bug Fixes, New Arguments, New Command
 ## Fixed
 - Fixed issue where `bed new item --type [armor_set | helmet | chestplate | leggings | boots]` would generate with some undesired values.
 ---
-## [2.1.1] - 5/4/2023
+# [2.1.1] - 5/4/2023
 Bug Fixes, Argument Change.
 ## Changed
 - The `bed entity --type` argument has been changed from accepting a single string for \<family type\> to instead accept an array of strings \<family type...\>. For an entity to be selected by this filter it must include **all** of the provided family types.
@@ -37,7 +51,7 @@ Bug Fixes, Argument Change.
 - Fixed issue where `bed entity --type` would not work for most entity commands.
 - Fixed issue where `bed entity group` would fail if used on an entity without an event property.
 ---
-## [2.1.0] - 4/12/2023
+# [2.1.0] - 4/12/2023
 New Command, Bug Fixes.
 ## Added
 - The `bed new sound` command has been added, allowing quick creation of sound definitions.
@@ -47,7 +61,7 @@ New Command, Bug Fixes.
 - Fixed issue where `bed new vanilla` no longer worked after a GitHub API update.
 - Fixed issue where `bed new vanilla *.json` would only grab about 20 entities.
 ---
-## [2.0.0] - 3/7/2023
+# [2.0.0] - 3/7/2023
 Major refactoring, bug fixes, and improvements across the board.
 ## Added
 - The `bed new entity --type projectile` option has been added. This will automatically create an entity that can be fired as a projectle.
@@ -68,7 +82,7 @@ Major refactoring, bug fixes, and improvements across the board.
 - Fixed issue where worlds created with `bed new world` always had a seed of 0.
 - Fixed issue where temporary folders created with `bed new world` weren't properly cleaned up.
 ---
-## [1.3.0] - 3/7/2023
+# [1.3.0] - 3/7/2023
 Added world subcommands, bug fixes.
 ## Added
 - The `bed world list` command.
@@ -79,36 +93,36 @@ Added world subcommands, bug fixes.
 ## Fixed
 - Fixed issue where `bed entity group` used with the `$` decorator when the source file didn't have the decorated component would result in th `$` still being used in the group name i.e. `$minecraft:type_family`.
 ---
-## [1.2.1] - 3/7/2023
+# [1.2.1] - 3/7/2023
 Bug Fixes.
 ## Fixed
 - Fixed issue where `bed entity group` an `bed entity component` would fail to parse `.`, so components like `minecraft:behavior.anything` would fail.
 ---
-## [1.2.0] - 3/7/2023
+# [1.2.0] - 3/7/2023
 Added decorator to `bed entity group` command.
 ## Changed
 - Creating a new component group with the `bed entity group` command now supports merging components from the source file. `bed entity group {new_group:{$minecraft:type_family:{family:[\"test\"]}}} --file` for example will create a new component group called `new_group` and will copy the existing family type from the file and append `test` to the end. You can specify a component should **merge** rather than overwrite by putting the `$` decorator in front of the component name.
 ---
-## [1.1.3] - 3/7/2023
+# [1.1.3] - 3/7/2023
 Bug fixes.
 ## Fixed
 - Fixed issue where `bed new item --type attachable` would fail to add a transition back to the `no_item` state after adding multiple attachables.
 
 ---
-## [1.1.2] - 3/3/2023
+# [1.1.2] - 3/3/2023
 Bug fixes.
 ## Fixed
 - Fixed issue where `bed pkg import` always wrote lang file changes to `en_US.lang` instead of the file on the package.
 
 ---
-## [1.1.1] - 3/2/2023
+# [1.1.1] - 3/2/2023
 Bug fixes.
 ## Fixed
 - The version check was still checking the old CLI tool. Now it correctly checks your version for this project.
 - The `bin` was not specified for this project, so it could not be run with `bed`.
 
 ---
-## [1.1.0] - 3/2/2023
+# [1.1.0] - 3/2/2023
 This version deprecates the standalone [CLI Tool](https://github.com/DauntlessStudio/Bedrock-Development-CLI) in favor of folding the CLI directly into this project.
 ## Added
 - The CLI tool in its entirety, ported from [here](https://github.com/DauntlessStudio/Bedrock-Development-CLI).
