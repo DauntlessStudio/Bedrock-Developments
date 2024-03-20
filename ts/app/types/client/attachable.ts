@@ -64,22 +64,26 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
         });
     }
 
-    addInitializeVariable(...variable: string[]) {
+    addInitializeVariable(...variables: string[]) {
         this["minecraft:attachable"].description.scripts = this["minecraft:attachable"].description.scripts ?? {};
         this["minecraft:attachable"].description.scripts.initialize = this["minecraft:attachable"].description.scripts.initialize ?? [];
 
-        this["minecraft:attachable"].description.scripts.initialize.push(...variable);
+        variables.forEach(variable => {
+            if (!this["minecraft:attachable"].description.scripts!.initialize?.includes(variable)) {
+                this["minecraft:attachable"].description.scripts!.initialize?.push(variable);
+            }
+        });
     }
 
-    addParentVariables() {
-        this.addPreAnimationVariable("v.is_first_person = c.is_first_person;", "v.attack_time = c.owning_entity->v.attack_time;");
-    }
-
-    addPreAnimationVariable(...variable: string[]) {
+    addPreAnimationVariable(...variables: string[]) {
         this["minecraft:attachable"].description.scripts = this["minecraft:attachable"].description.scripts ?? {};
         this["minecraft:attachable"].description.scripts.pre_animation = this["minecraft:attachable"].description.scripts.pre_animation ?? [];
 
-        this["minecraft:attachable"].description.scripts.pre_animation.push(...variable);
+        variables.forEach(variable => {
+            if (!this["minecraft:attachable"].description.scripts!.initialize?.includes(variable)) {
+                this["minecraft:attachable"].description.scripts!.initialize?.push(variable);
+            }
+        });
     }
 
     addMaterials(...materials: {name: string, reference: string}[]) {
@@ -98,6 +102,28 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
 
     addRenderController(...render_controllers: MolangOption[]) {
         this["minecraft:attachable"].description.render_controllers = this["minecraft:attachable"].description.render_controllers ?? [];
-        this["minecraft:attachable"].description.render_controllers?.push(...render_controllers);
+        
+        render_controllers.forEach(render_controller => {
+            if (!this["minecraft:attachable"].description.render_controllers?.includes(render_controller)) {
+                this["minecraft:attachable"].description.render_controllers?.push(render_controller);
+            }
+        });
+    }
+
+    addAnimation(...animations: {name: string, reference: string}[]) {
+        this["minecraft:attachable"].description.animations = this["minecraft:attachable"].description.animations ?? {};
+        animations.forEach(animation => {
+            this["minecraft:attachable"].description.animations![animation.name] = animation.reference;
+        });
+    }
+
+    addAnimateScript(...animations: ({[key: string]: string}|string)[]) {
+        this["minecraft:attachable"].description.scripts = this["minecraft:attachable"].description.scripts ?? {};
+        this["minecraft:attachable"].description.scripts!.animate = this["minecraft:attachable"].description.scripts!.animate ?? [];
+        animations.forEach(animation => {
+            if (!this["minecraft:attachable"].description.scripts!.animate?.includes(animation)) {
+                this["minecraft:attachable"].description.scripts!.animate?.push(animation);
+            }
+        });
     }
 }

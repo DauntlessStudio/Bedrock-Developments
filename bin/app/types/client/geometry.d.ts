@@ -30,11 +30,12 @@ export interface IClientGeometryOld {
 export interface IClientGeometryBone {
     name?: string;
     pivot?: MolangTripleArray;
+    parent?: string;
     locators?: Record<string, {
         offset: MolangTripleArray;
         rotation: MolangTripleArray;
         ignore_inherited_scale: boolean;
-    }>;
+    } | MolangTripleArray>;
     binding?: string;
     inflate?: number;
     mirror?: boolean;
@@ -73,6 +74,11 @@ export declare class ClientGeometry extends MinecraftDataType implements IClient
     [key: GeometryName]: IClientGeometryOld;
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientGeometry);
+    static createFromTemplate(nameData: NameData): ClientGeometry;
+    static createFilePath(nameData: NameData): string;
+}
+export declare class ClientGeometryAttachable extends ClientGeometry {
+    static get DirectoryPath(): string;
     static createFromTemplate(nameData: NameData): ClientGeometry;
     static createFilePath(nameData: NameData): string;
 }

@@ -56,8 +56,8 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
     static createFromTemplate(nameData: NameData): ClientEntity;
     static createFilePath(nameData: NameData): string;
     upgradeFormatVersion(): void;
-    addInitializeVariable(...variable: string[]): void;
-    addPreAnimationVariable(...variable: string[]): void;
+    addInitializeVariable(...variables: string[]): void;
+    addPreAnimationVariable(...variables: string[]): void;
     addMaterials(...materials: {
         name: string;
         reference: string;
@@ -67,4 +67,12 @@ export declare class ClientEntity extends MinecraftDataType implements IClientEn
         reference: ClientEntityGeometryReference;
     }[]): void;
     addRenderController(...render_controllers: MolangOption[]): void;
+    addAnimation(...animations: {
+        name: string;
+        reference: string;
+    }[]): void;
+    addAnimateScript(...animations: ({
+        [key: string]: string;
+    } | string)[]): void;
+    addPublicVariable(...variables: string[]): void;
 }

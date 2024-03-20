@@ -21,9 +21,8 @@ export declare class ClientAttachable extends MinecraftDataType implements IClie
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientAttachable);
     static createFromTemplate(nameData: NameData): ClientAttachable;
-    addInitializeVariable(...variable: string[]): void;
-    addParentVariables(): void;
-    addPreAnimationVariable(...variable: string[]): void;
+    addInitializeVariable(...variables: string[]): void;
+    addPreAnimationVariable(...variables: string[]): void;
     addMaterials(...materials: {
         name: string;
         reference: string;
@@ -33,4 +32,11 @@ export declare class ClientAttachable extends MinecraftDataType implements IClie
         reference: ClientEntityGeometryReference;
     }[]): void;
     addRenderController(...render_controllers: MolangOption[]): void;
+    addAnimation(...animations: {
+        name: string;
+        reference: string;
+    }[]): void;
+    addAnimateScript(...animations: ({
+        [key: string]: string;
+    } | string)[]): void;
 }

@@ -21,8 +21,8 @@ export interface IClientAC {
 
 export interface IClientACState {
     on_entry?: string[];
-    animations?: string[];
-    transitions?: {[key:string]: string};
+    animations?: (string|{[key:string]: string})[];
+    transitions?: {[key:string]: string}[];
     on_exit?: string[];
     blend_transition?: number;
     blend_via_shortest_path?: boolean;

@@ -61,8 +61,10 @@ export declare function setFiles(files: File[]): void;
  * @remarks Copies a source file from this module to a destination.
  * @param sourceFile The filepath to a source file within this module's src.
  * @param targetPath The filepath to the destination the file should be copied to.
+ * @param handleExisting How to handle existing files. Undefined will not overwrite, 'overwite' replaces the file with this object,
+ * 'overwrite_silent' does the same with no terminal log.
  */
-export declare function copySourceFile(sourceFile: string, targetPath: string): void;
+export declare function copySourceFile(sourceFile: string, targetPath: string, handleExisting?: 'overwrite' | 'overwrite_silent'): void;
 /**
  * @remarks Copies a source directory from this module to a destination.
  * @param src The path to a source directory within this module's src.

@@ -10,10 +10,10 @@ export interface IClientAnimation {
     };
 }
 export interface IClientAnimationAnim {
-    animation_length: number;
+    animation_length?: number;
     anim_time_update?: string;
     blend_weight?: string;
-    loop?: boolean;
+    loop?: boolean | "hold_on_last_frame";
     loop_delay?: string;
     start_delay?: string;
     override_previous_animation?: boolean;

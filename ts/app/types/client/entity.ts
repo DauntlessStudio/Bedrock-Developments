@@ -114,18 +114,26 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
         }
     }
 
-    addInitializeVariable(...variable: string[]) {
+    addInitializeVariable(...variables: string[]) {
         this["minecraft:client_entity"].description.scripts = this["minecraft:client_entity"].description.scripts ?? {};
         this["minecraft:client_entity"].description.scripts.initialize = this["minecraft:client_entity"].description.scripts.initialize ?? [];
 
-        this["minecraft:client_entity"].description.scripts.initialize.push(...variable);
+        variables.forEach(variable => {
+            if (!this["minecraft:client_entity"].description.scripts!.initialize?.includes(variable)) {
+                this["minecraft:client_entity"].description.scripts!.initialize?.push(variable);
+            }
+        });
     }
 
-    addPreAnimationVariable(...variable: string[]) {
+    addPreAnimationVariable(...variables: string[]) {
         this["minecraft:client_entity"].description.scripts = this["minecraft:client_entity"].description.scripts ?? {};
         this["minecraft:client_entity"].description.scripts.pre_animation = this["minecraft:client_entity"].description.scripts.pre_animation ?? [];
 
-        this["minecraft:client_entity"].description.scripts.pre_animation.push(...variable);
+        variables.forEach(variable => {
+            if (!this["minecraft:client_entity"].description.scripts!.pre_animation?.includes(variable)) {
+                this["minecraft:client_entity"].description.scripts!.pre_animation?.push(variable);
+            }
+        });
     }
 
     addMaterials(...materials: {name: string, reference: string}[]) {
@@ -144,6 +152,39 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
 
     addRenderController(...render_controllers: MolangOption[]) {
         this["minecraft:client_entity"].description.render_controllers = this["minecraft:client_entity"].description.render_controllers ?? [];
-        this["minecraft:client_entity"].description.render_controllers?.push(...render_controllers);
+        
+        render_controllers.forEach(render_controller => {
+            if (!this["minecraft:client_entity"].description.render_controllers?.includes(render_controller)) {
+                this["minecraft:client_entity"].description.render_controllers?.push(render_controller);
+            }
+        });
+    }
+
+    addAnimation(...animations: {name: string, reference: string}[]) {
+        this.upgradeFormatVersion();
+        this["minecraft:client_entity"].description.animations = this["minecraft:client_entity"].description.animations ?? {};
+        animations.forEach(animation => {
+            this["minecraft:client_entity"].description.animations![animation.name] = animation.reference;
+        });
+    }
+
+    addAnimateScript(...animations: ({[key: string]: string}|string)[]) {
+        this.upgradeFormatVersion();
+        this["minecraft:client_entity"].description.scripts = this["minecraft:client_entity"].description.scripts ?? {};
+        this["minecraft:client_entity"].description.scripts!.animate = this["minecraft:client_entity"].description.scripts!.animate ?? [];
+        animations.forEach(animation => {
+            if (!this["minecraft:client_entity"].description.scripts!.animate?.includes(animation)) {
+                this["minecraft:client_entity"].description.scripts!.animate?.push(animation);
+            }
+        });
+    }
+
+    addPublicVariable(...variables: string[]) {
+        this.upgradeFormatVersion();
+        this["minecraft:client_entity"].description.scripts = this["minecraft:client_entity"].description.scripts ?? {};
+        this["minecraft:client_entity"].description.scripts!.variables = this["minecraft:client_entity"].description.scripts!.variables ?? {};
+        variables.forEach(variable => {
+            this["minecraft:client_entity"].description.scripts!.variables![variable] = "public";
+        });
     }
 }

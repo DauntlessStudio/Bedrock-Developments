@@ -129,11 +129,28 @@ export function setFiles(files: File[]) {
  * @remarks Copies a source file from this module to a destination.
  * @param sourceFile The filepath to a source file within this module's src.
  * @param targetPath The filepath to the destination the file should be copied to.
+ * @param handleExisting How to handle existing files. Undefined will not overwrite, 'overwite' replaces the file with this object, 
+ * 'overwrite_silent' does the same with no terminal log.
  */
-export function copySourceFile(sourceFile: string, targetPath: string) {
+export function copySourceFile(sourceFile: string, targetPath: string, handleExisting? : 'overwrite' | 'overwrite_silent') {
     if (!fs.existsSync(path.dirname(targetPath))) {
         fs.mkdirSync(path.dirname(targetPath), {recursive: true});
         console.log(`${chalk.green(`Creating directory at ${path.dirname(targetPath)}`)}`);
+    }
+
+    if (fs.existsSync(targetPath)) {
+        switch (handleExisting) {
+            case 'overwrite':
+                console.log(`${chalk.green(`Overwriting file at ${targetPath}`)}`);
+                fs.copyFileSync(path.join(Directories.SOURCE_PATH, sourceFile), targetPath);
+                return;
+            case 'overwrite_silent':
+                fs.copyFileSync(path.join(Directories.SOURCE_PATH, sourceFile), targetPath);
+                return;
+            default:
+                console.warn(`${chalk.yellow(`Won't overwrite file at ${targetPath}`)}`);
+                return;
+        }
     }
 
     console.log(`${chalk.green(`Writing file at ${targetPath}`)}`);
