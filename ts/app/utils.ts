@@ -1,17 +1,58 @@
 import {Chalk} from 'chalk';
 import * as path from 'path';
 
+/**
+ * @remarks A globally accessible instance of the {@link Chalk} class that provides colored text in the terminal.
+ */
 export const chalk = new Chalk();
+
+/**
+ * @remarks The format version shared by all Minecraft Types.
+ */
 export const currentFormatVersion = '1.20.50';
 
+/**
+ * @remarks A class for working with name data like identifiers.
+ */
 export class NameData {
-    original: string;
-    fullname: string;
-    namespace: string;
-    shortname: string;
-    display: string;
-    directory: string;
+    /**
+     * @remarks The original source string, i.e. `subfolder/minecraft:test`.
+     */
+    public original: string;
 
+    /**
+     * @remarks The full identifier of the source string, i.e. `minecraft:test`.
+     */
+    public fullname: string;
+
+    /**
+     * @remarks The namespace of the source stirng, i.e. `minecraft:test`.
+     */
+    public namespace: string;
+
+    /**
+     * @remarks The shortname of the source string, i.e. `test` from either `minecraft:test` or `geometry.test`.
+     */
+    public shortname: string;
+
+    /**
+     * @remarks The display name of the source string as used in the lang, i.e. `Test`.
+     */
+    public display: string;
+
+    /**
+     * @remarks The directory name of the source string, i.e. `subfolder/`.
+     */
+    public directory: string;
+
+    /**
+     * @remarks Creates a namedata object from a source string.
+     * @param name The source string to create namedata from.
+     * @example
+     * ```typescript
+     * let name = new NameData("subfolder/minecraft:test");
+     * ```
+     */
     constructor(name: string) {
         this.original = name;
         this.fullname = path.basename(name);
@@ -31,30 +72,46 @@ export class NameData {
         this.display = words.join(' ');
     }
 
-    splitWords(name: string): string[] {
+    private splitWords(name: string): string[] {
         name = name.replace(/_/g, ' ');
         return name.split(' ');
     }
 }
 
-export function isObject(item: any) {
+/**
+ * @remarks Determines if a value is an object or a primitive.
+ * @param item The item to check.
+ * @returns True if the item is an object.
+ */
+export function isObject(item: any): boolean {
   return item && typeof item === "object" && !Array.isArray(item);
 }
 
-export default function mergeDeep(target: any, source: any) {
-  let output = Object.assign({}, target);
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
-        if (!(key in target)) Object.assign(output, { [key]: source[key] });
-        else output[key] = mergeDeep(target[key], source[key]);
-      } else if (Array.isArray(source[key])) {
-        if (!(key in target)) Object.assign(output, { [key]: source[key] });
-        else Object.assign(output, { [key]: target[key].concat(source[key]) });
-      } else {
-        Object.assign(output, { [key]: source[key] });
-      }
-    });
-  }
-  return output;
+/**
+ * @remarks Performs a deep merge between two objects.
+ * @param target The target object to merge with.
+ * @param source The source object to merge with the target.
+ * @returns An object with the properties of the source and target merged deeply.
+ * @example
+ * ```typescript
+ * mergeDeep({subProperty: {targetKey: 1}}, {subProperty: {sourceKey: 2}}); 
+ * // Returns {subProperty: {targetKey: 1, sourceKey: 2}};
+ * ```
+ */
+export function mergeDeep(target: any, source: any) {
+	let output = Object.assign({}, target);
+	if (isObject(target) && isObject(source)) {
+		Object.keys(source).forEach((key) => {
+			if (isObject(source[key])) {
+				if (!(key in target)) Object.assign(output, { [key]: source[key] });
+				else output[key] = mergeDeep(target[key], source[key]);
+			} else if (Array.isArray(source[key])) {
+				if (!(key in target)) Object.assign(output, { [key]: source[key] });
+				else Object.assign(output, { [key]: target[key].concat(source[key]) });
+			} else {
+				Object.assign(output, { [key]: source[key] });
+			}
+		});
+	}
+	return output;
 }
