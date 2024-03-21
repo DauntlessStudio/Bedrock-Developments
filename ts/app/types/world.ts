@@ -199,7 +199,7 @@ export class MinecraftWorld {
         const type = filepath.includes('resource') ? 'resource' : 'behavior';
         const uuid = manifest.header.uuid;
         const directory = path.dirname(filepath);
-        const name = directory.split('\\').pop()!;
+        const name = path.basename(directory);
 
         const pack = {
             directory,
@@ -212,13 +212,16 @@ export class MinecraftWorld {
     }
 
     public addPack(pack: IBehaviorPack|IResourcePack) {
-        const files = getFiles(this.filePath + `/world_${pack.type}_packs.json`);
+        let files = getFiles(this.filePath + `/world_${pack.type}_packs.json`);
         if (!files.length) {
             files.push({filePath: this.filePath + `/world_${pack.type}_packs.json`, fileContents: '[]'});
         }
 
-        files.forEach(file => {
-            if (file.fileContents.includes(pack.uuid)) return;
+        files = files.filter(file => {
+            if (file.fileContents.includes(pack.uuid)) {
+                console.warn(`${chalk.yellow(`${this.Name} already contains pack ${pack.name}`)}`);
+                return false;
+            };
 
             const json = JSON.parse(file.fileContents);
             json.push({
@@ -227,6 +230,8 @@ export class MinecraftWorld {
             });
             file.fileContents = JSON.stringify(json, null, '\t');
             file.handleExisting = 'overwrite';
+
+            return true;
         });
 
         setFiles(files);
