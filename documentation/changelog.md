@@ -1,17 +1,20 @@
 # Changelog
-# [3.0.0] - 3/20/2024
+# [3.0.0] - 4/2/2024
 Major Refactor
 ## Changed
 - The project has been updated from `commonJS` to `ES2020`.
 - Types inheriting from `MinecraftDataType` have been created for all major JSON file types in a Minecraft project. This provide methods for reading and writing files and helpful functions unique to each object type like `ServerEntity`'s `setComponents` method.
 - The `pkg` command has been removed.
-- The vanilla files have been added as a git submodule, packaging them locally with this module, this removes uneccesary web calls to download vanilla files from GitHub.
+- The vanilla files have been added as a git submodule, and packaged locally with this module, this removes uneccesary web calls to download vanilla files from GitHub.
 - The `entity property event` and `entity property add` commands have been combined into the single command `entity property` which provided options for generating events alongside created properties.
-- The `sound format` command has been removed. The `sound_definitions.json` file is now automatically formatted whenever a new sound is added with `new sound`. In the future a new `format` subcommand may be created to provide options for updating a project to addon format and other formatting tasks.
-- The `entity group`, `entity component`, and `entity sensor` commands now contain optional arguments for the group, component, and sensor respectively. If the argument is not provided, Notepad will be opened and the contents of notepad will be used as the group, component, or sensor string. This does not require escaping the `"` character which it much simpler to paste in JSON.
-- The `world` commands now work correctly with Minecraft 1.20.70+ which uses a different NBT buffer.
+- The `sound format` command has been removed. The `sound_definitions.json` file is now automatically formatted whenever a new sound is added with `new sound`. In the future a new `sound` command will be added to the `format` subcommand.
+- The `entity group`, `entity component`, and `entity sensor` commands now contain optional arguments for the group, component, and sensor respectively. If the argument is not provided, Notepad will be opened and the contents of notepad will be used as the group, component, or sensor string. This does not require escaping the `"` character which makes it much simpler to paste in JSON.
+- The `world` commands now work correctly with Minecraft 1.20.70+, which use a different NBT buffer.
 - The `world packs` and `world new` commands now have an optional `--local` flag which will use the packs in your local workspace instead of needing to provide names with the `--bpback <name>` and `--rpack <name>` arguments.
 - The `world packs` and `world export` now have an optional `--world <name|index>` argument that specifies what world should be targeted. If the argument is not provided the command will list your local worlds for selection. This avoids the need to call `world list` to get the right index before calling `world packs` or `world export`.
+- The `format addon` command has been added. This command creates the config file required for addons to work. Eventually it will update an old project format into addon format, but that isn't implemented yet.
+- The `bedrock.config.json` file with the key `addon_namespace` for the project to use the addon format. Alternatively, the `--addon <namespace>` argument can be added to any command. When using a config file or the `--addon` argument, new files should **not** have the namespace prefix included on the command line, the namespaces will be automatically created.
+- The `new item --type attachable` command no longer modifies the `player.entity.json` file.
 ---
 # [2.2.5] - 3/6/2024
 Fixed Attachable Creation
