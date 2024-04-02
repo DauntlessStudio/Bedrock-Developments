@@ -26,5 +26,5 @@ export declare class ServerLootTable extends MinecraftDataType implements IServe
     pools: IServerLootTablePool[];
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IServerLootTable);
-    static createFromTemplate(nameData: NameData): MinecraftDataType;
+    static createFromTemplate(nameData: NameData): ServerLootTable;
 }

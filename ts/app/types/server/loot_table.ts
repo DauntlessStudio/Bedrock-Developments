@@ -41,8 +41,8 @@ export class ServerLootTable extends MinecraftDataType implements IServerLootTab
         this.pools = template.pools;
     }
 
-    public static createFromTemplate(nameData: NameData): MinecraftDataType {
-        return new MinecraftDataType(this.createFilePath(nameData), {
+    public static createFromTemplate(nameData: NameData): ServerLootTable {
+        return new ServerLootTable(this.createFilePath(nameData), {
             pools: [
                 {
                     rolls: 1,
