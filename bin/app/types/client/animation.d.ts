@@ -51,5 +51,6 @@ export declare class ClientAnimation extends MinecraftDataType implements IClien
     };
     static get DirectoryPath(): string;
     constructor(filepath: string, template: IClientAnimation);
+    static createFilePath(nameData: NameData): string;
     static createFromTemplate(nameData: NameData): ClientAnimation;
 }

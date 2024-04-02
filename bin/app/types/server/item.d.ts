@@ -60,6 +60,14 @@ export interface IServerItemComponents {
         value: number;
         slot: string;
     };
+    ["minecraft:use_modifiers"]?: {
+        use_duration: number;
+        movement_modifier: number;
+    };
+    ["minecraft:cooldown"]?: {
+        category: string;
+        duration: number;
+    };
     [key: string]: any;
 }
 export declare class ServerItem extends MinecraftDataType implements IServerItem {
@@ -72,4 +80,7 @@ export declare class ServerItem extends MinecraftDataType implements IServerItem
     setStackSize(stack: number): void;
     setWearable(slot: SlotOptions): void;
     setFood(): void;
+    setCooldown(duration: number, category?: string): void;
+    setModifiers(use_duration?: number, movement_modifier?: number): void;
+    setInteractButton(name: NameData): void;
 }

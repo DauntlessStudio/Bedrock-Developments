@@ -53,7 +53,6 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
                     scripts: {
                         pre_animation: [
                             "v.is_first_person = c.is_first_person;",
-                            "v.attack_time = c.owning_entity->v.attack_time;",
                         ]
                     },
                     render_controllers: [

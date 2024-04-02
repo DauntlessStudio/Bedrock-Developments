@@ -66,6 +66,10 @@ export class ClientAnimation extends MinecraftDataType implements IClientAnimati
         this.animations = template.animations;
     }
 
+    public static createFilePath(nameData: NameData): string {
+        return this.DirectoryPath + nameData.directory + nameData.shortname + ".anim.json";
+    }
+
     public static createFromTemplate(nameData: NameData): ClientAnimation {
         return new ClientAnimation(this.createFilePath(nameData), {
             format_version: currentFormatVersion,

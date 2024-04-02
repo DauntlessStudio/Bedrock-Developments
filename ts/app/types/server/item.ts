@@ -75,6 +75,16 @@ export interface IServerItemComponents {
         slot: string;
     };
 
+    ["minecraft:use_modifiers"]?: {
+        use_duration: number;
+        movement_modifier: number;
+    };
+
+    ["minecraft:cooldown"]?: {
+        category: string;
+        duration: number;
+    };
+
     [key: string]: any;
 }
 
@@ -147,6 +157,24 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
             nutrition: 10,
             saturation_modifier: 10,
         }
+    }
+
+    setCooldown(duration: number, category?: string) {
+        this["minecraft:item"].components["minecraft:cooldown"] = {
+            duration,
+            category: category ? category : new NameData(this["minecraft:item"].description.identifier).shortname,
+        }
+    }
+
+    setModifiers(use_duration: number = 30000, movement_modifier: number = 1) {
+        this["minecraft:item"].components["minecraft:use_modifiers"] = {
+            use_duration: use_duration,
+            movement_modifier: movement_modifier,
+        }
+    }
+
+    setInteractButton(name: NameData) {
+        this["minecraft:item"].components["minecraft:interact_button"] = `action.hint.interact.${name.fullname}`;
     }
 }
 

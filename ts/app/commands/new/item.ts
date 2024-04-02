@@ -8,6 +8,7 @@ import { NameData, currentFormatVersion } from "../../utils.js";
 interface ItemCommandOptions {
     lang: boolean;
     stack: number;
+    cooldown: number|undefined;
 }
 
 enum ServerItemOptions {
@@ -26,6 +27,7 @@ program_new.command("item")
 .argument("<names...>", 'item names as "namespace:item"')
 .option("--no-lang", "do not add lang file")
 .option("-s, --stack <stack_size>", "max stack size", "64")
+.option("-c, --cooldown <cooldown_duration>", "cooldown duration", "3")
 .addOption(
 	new Option("-t, --type <item_type>", "basic").choices(
 		Object.keys(ServerItemOptions)
@@ -34,10 +36,12 @@ program_new.command("item")
 .action(triggerCreateNewItem)
 .hook("postAction", printVersion);
 
+// TODO add cooldown options and use_modifiers for attachables.
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
     const commandOptions = {
         lang: options.lang,
         stack: Number(options.stack),
+        cooldown: options.cooldown
     };
 	const type: ServerItemOptions = options.type ?? ServerItemOptions.basic;
 
@@ -56,6 +60,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
+        if (options.cooldown) item.setCooldown(options.cooldown);
 
         const files: File[] = [item.toFile()];
 
@@ -69,6 +74,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
+        if (options.cooldown) item.setCooldown(options.cooldown);
         item.setWearable("slot.armor.feet");
 
         const files: File[] = [item.toFile()];
@@ -83,6 +89,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
+        if (options.cooldown) item.setCooldown(options.cooldown);
         item.setWearable("slot.armor.legs");
 
         const files: File[] = [item.toFile()];
@@ -97,6 +104,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
+        if (options.cooldown) item.setCooldown(options.cooldown);
         item.setWearable("slot.armor.chest");
 
         const files: File[] = [item.toFile()];
@@ -111,6 +119,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
+        if (options.cooldown) item.setCooldown(options.cooldown);
         item.setWearable("slot.armor.head");
 
         const files: File[] = [item.toFile()];
@@ -149,36 +158,25 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
+        if (options.cooldown) item.setCooldown(options.cooldown);
+        item.setInteractButton(nameData);
 
         const files: File[] = [item.toFile()];
 
         if (options.lang) {
-            files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
+            const langs = new LangFile('*.lang');
+            langs.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
+            langs.addToCategory('item use interactions', `action.hint.interact.${nameData.fullname}`);
+            files.push(...langs.files);
         }
 
         copySourceFile('images/uv_medium_texture.png', Directories.RESOURCE_PATH + 'textures/' + 'attachables/' + nameData.directory + nameData.shortname + '.png');
-
-        // player.entity.json
-        copySourceFile('vanilla/resource_pack/entity/player.entity.json', Directories.RESOURCE_PATH + 'entity/player.entity.json');
-        const playerEntity = ClientEntity.fromPathOrTemplate(ClientEntity, Directories.RESOURCE_PATH + 'entity/player.entity.json');
-        playerEntity.addInitializeVariable("variable.attack_time = 0;");
-        playerEntity.addPreAnimationVariable(`v.${nameData.shortname} = v.is_paperdoll ? 0 : (q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}'));`);
-        playerEntity.addPublicVariable("variable.attack_time");
-        playerEntity.addAnimation(
-            {name: `ctrl.${nameData.shortname}`, reference: `controller.animation.player.custom_items.${nameData.shortname}`},
-            {name: `${nameData.shortname}.idle.first_person`, reference: `animation.player.${nameData.shortname}.idle.first_person`},
-            {name: `${nameData.shortname}.idle.third_person`, reference: `animation.player.${nameData.shortname}.idle.third_person`},
-            {name: `${nameData.shortname}.attack.first_person`, reference: `animation.player.${nameData.shortname}.attack.first_person`},
-            {name: `${nameData.shortname}.attack.third_person`, reference: `animation.player.${nameData.shortname}.attack.third_person`}
-        );
-        playerEntity.addAnimateScript({[`ctrl.${nameData.shortname}`]: `v.${nameData.shortname}`});
-        files.push(playerEntity.toFile('overwrite'));
 
         // animation controller
         const controller = new ClientAnimationController(ClientAnimationController.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animation_controllers: {
-                [`controller.animation.player.custom_items.${nameData.shortname}`]: {
+                [`controller.animation.item.custom_items.${nameData.shortname}`]: {
                     initial_state: 'idle',
                     states: {
                         idle: {
@@ -192,7 +190,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
                             ],
                             transitions: [
                                 {
-                                    attack: "v.attack_time > 0"
+                                    attack: "query.is_using_item"
                                 }
                             ],
                             blend_transition: 0.2
@@ -208,7 +206,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
                             ],
                             transitions: [
                                 {
-                                    idle: "q.any_animation_finished"
+                                    idle: "q.any_animation_finished && !query.is_using_item"
                                 }
                             ],
                             blend_transition: 0.2
@@ -223,14 +221,16 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const animation = new ClientAnimation(ClientAnimation.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animations: {
-                [`animation.player.${nameData.shortname}.idle.first_person` as ClientAnimationName]: { loop: true, bones: { rightArm: { rotation: [ -90, 0, 0 ] } } },
-                [`animation.player.${nameData.shortname}.idle.third_person` as ClientAnimationName]: { loop: true, bones: { rightArm: { rotation: [ -30, 0, 0 ] } } },
-                [`animation.player.${nameData.shortname}.attack.first_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.5, bones: { rightArm: { rotation: { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] }, position: { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } },
-                [`animation.player.${nameData.shortname}.attack.third_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.3, bones : { rightArm: { rotation: { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } },
+                [`animation.${nameData.shortname}.first_person_fix` as ClientAnimationName]: { loop: true, bones: { [nameData.shortname]: { rotation: [72.69456, 61.41896, -28.98545], position: [-3, 0, 1] } } },
+                [`animation.${nameData.shortname}.blockbench_fix` as ClientAnimationName]: { loop: true, bones: { root: { rotation: [0, 0, 0], position: [7, -15, 1] } } },
+                [`animation.player.${nameData.shortname}.idle.first_person` as ClientAnimationName]: { loop: true, blend_weight: `v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`, bones: { rightArm: { rotation: [ 0, 0, 0 ] } } },
+                [`animation.player.${nameData.shortname}.idle.third_person` as ClientAnimationName]: { loop: true, blend_weight: `!v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`, bones: { rightArm: { rotation: [ -30, 0, 0 ] } } },
+                [`animation.player.${nameData.shortname}.attack.first_person` as ClientAnimationName]: { loop: "hold_on_last_frame", blend_weight: "v.is_first_person", animation_length: 0.5, timeline: { 0.0: "v.playing_custom_attack = 1;", 0.5: "v.playing_custom_attack = 0;" }, bones: { rightArm: { rotation: { "0.0": [ 0, 0, 0 ], "0.1": [ -10, 20, 0 ], "0.2": [ -10, -20, 0 ], "0.3": [ 0, 0, 0 ] }, position: { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } },
+                [`animation.player.${nameData.shortname}.attack.third_person` as ClientAnimationName]: { loop: "hold_on_last_frame", blend_weight: "!v.is_first_person", animation_length: 0.3, timeline: { 0.0: "v.playing_custom_attack = 1;", 0.3: "v.playing_custom_attack = 0;" }, bones : { rightArm: { rotation: { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } },
                 [`animation.item.${nameData.shortname}.idle.first_person` as ClientAnimationName]: {},
                 [`animation.item.${nameData.shortname}.idle.third_person` as ClientAnimationName]: {},
-                [`animation.item.${nameData.shortname}.attack.first_person` as ClientAnimationName]: {},
-                [`animation.item.${nameData.shortname}.attack.third_person` as ClientAnimationName]: {},
+                [`animation.item.${nameData.shortname}.attack.first_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.5, bones: { [nameData.shortname]: { scale: { 0.0: [1.2, 1.2, 1.2] } } } },
+                [`animation.item.${nameData.shortname}.attack.third_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.3, bones: { [nameData.shortname]: { scale: { 0.0: [1.2, 1.2, 1.2] } } } },
             }
         });
         files.push(animation.toFile());
@@ -238,14 +238,14 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         // attachable
         const attachable = ClientAttachable.createFromTemplate(nameData);
         attachable.addAnimation(
-            {name: `ctrl.${nameData.shortname}`, reference: `controller.animation.player.custom_items.${nameData.shortname}`},
-            {name: `${nameData.shortname}.idle.first_person`, reference: `animation.player.${nameData.shortname}.idle.first_person`},
-            {name: `${nameData.shortname}.idle.third_person`, reference: `animation.player.${nameData.shortname}.idle.third_person`},
-            {name: `${nameData.shortname}.attack.first_person`, reference: `animation.player.${nameData.shortname}.attack.first_person`},
-            {name: `${nameData.shortname}.attack.third_person`, reference: `animation.player.${nameData.shortname}.attack.third_person`}
+            {name: `ctrl.${nameData.shortname}`, reference: `controller.animation.item.custom_items.${nameData.shortname}`},
+            {name: `${nameData.shortname}.first_person_fix`, reference: `animation.item.${nameData.shortname}.idle.first_person`},
+            {name: `${nameData.shortname}.idle.first_person`, reference: `animation.item.${nameData.shortname}.idle.first_person`},
+            {name: `${nameData.shortname}.idle.third_person`, reference: `animation.item.${nameData.shortname}.idle.third_person`},
+            {name: `${nameData.shortname}.attack.first_person`, reference: `animation.item.${nameData.shortname}.attack.first_person`},
+            {name: `${nameData.shortname}.attack.third_person`, reference: `animation.item.${nameData.shortname}.attack.third_person`}
         );
-        attachable.addInitializeVariable("variable.attack_time = 0;");
-        attachable.addAnimateScript(`ctrl.${nameData.shortname}`);
+        attachable.addAnimateScript({[`${nameData.shortname}.first_person_fix`]: "c.is_first_person"}, `ctrl.${nameData.shortname}`);
         files.push(attachable.toFile());
 
         // geometry
@@ -258,6 +258,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
+        if (options.cooldown) item.setCooldown(options.cooldown);
         item.setFood();
 
         const files: File[] = [item.toFile()];
