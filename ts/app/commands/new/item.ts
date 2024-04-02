@@ -36,7 +36,6 @@ program_new.command("item")
 .action(triggerCreateNewItem)
 .hook("postAction", printVersion);
 
-// TODO add cooldown options and use_modifiers for attachables.
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
     const commandOptions = {
         lang: options.lang,
