@@ -1,5 +1,6 @@
 import {Chalk} from 'chalk';
 import * as path from 'path';
+import { Directories, getFiles } from './file_manager';
 
 /**
  * @remarks A globally accessible instance of the {@link Chalk} class that provides colored text in the terminal.
@@ -15,6 +16,9 @@ export const currentFormatVersion = '1.20.50';
  * @remarks A class for working with name data like identifiers.
  */
 export class NameData {
+    private static teamName: string = '';
+    private static projectName: string = '';
+
     /**
      * @remarks The original source string, i.e. `subfolder/minecraft:test`.
      */
@@ -44,7 +48,21 @@ export class NameData {
      * @remarks The directory name of the source string, i.e. `subfolder/`.
      */
     public directory: string;
-
+    
+    /**
+     * @remarks The name of the development team.
+     */
+    public static get TeamName() : string {
+        return NameData.teamName;
+    }
+    
+    /**
+     * @remarks The name of the Project
+     */
+    public static get ProjectName() : string {
+        return NameData.projectName;
+    }
+    
     /**
      * @remarks Creates a namedata object from a source string.
      * @param name The source string to create namedata from.
@@ -75,6 +93,11 @@ export class NameData {
     private splitWords(name: string): string[] {
         name = name.replace(/_/g, ' ');
         return name.split(' ');
+    }
+
+    public static setAddonNamespace(namespace: string) {
+        NameData.teamName = namespace.split(/\.|:/).shift() ?? '';
+        NameData.projectName = namespace.split(/\.|:/).pop() ?? '';
     }
 }
 
@@ -114,4 +137,31 @@ export function mergeDeep(target: any, source: any) {
 		});
 	}
 	return output;
+}
+
+/**
+ * @remarks The format of the bedrock.config.json file.
+ */
+export interface IConfigData {
+    addon_namespace: string;
+}
+
+/**
+ * @remarks Gets the config data from the working directory.
+ */
+export function getConfig() {
+  getFiles("bedrock.config.json").forEach(config => {
+    const config_JSON: IConfigData = JSON.parse(config.fileContents) as any;
+    setAddonName(config_JSON.addon_namespace);
+    console.log(`${chalk.green(`Set addon namespace to ${config_JSON.addon_namespace} from config file`)}`);
+  });
+}
+
+/**
+ * @remarks Sets the global addon data from the addon namespace.
+ * @param addon The addon name as <team_name>_<project_name>.
+ */
+export function setAddonName(addon: string) {
+    Directories.ADDON_PATH = addon.replace(/_/, '/');
+    NameData.setAddonNamespace(addon);
 }

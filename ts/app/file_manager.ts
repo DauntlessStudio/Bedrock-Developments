@@ -17,6 +17,7 @@ export type File = {filePath: string, fileContents: string, handleExisting? : 'o
 export class Directories {
     private static behavior_path = '**/behavior_packs/*bp/';
     private static resource_path = '**/resource_packs/*rp/';
+    private static addon_path = '';
     private static source_path = path.join(path.resolve(path.dirname(fileURLToPath(import.meta.url))), 'src');
 
     /**
@@ -54,6 +55,13 @@ export class Directories {
         return globSync(this.resource_path)[0].replace(/\/|\\+/g, '/') + '/';
     }
 
+    /**
+     * @remarks The addon subpath <team>/<project> or an empty string if unspecified.
+     */
+    public static get ADDON_PATH() : string {
+        return Directories.addon_path;
+    }
+
     public static set BEHAVIOR_PATH(v: string) {
         if (globSync(v).every(path => fs.existsSync(path))) {
             this.behavior_path = v;
@@ -68,6 +76,10 @@ export class Directories {
         } else {
             console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to resource path`)}`);
         }
+    }
+    
+    public static set ADDON_PATH(v : string) {
+        Directories.addon_path = v;
     }
 }
 

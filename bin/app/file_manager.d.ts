@@ -12,6 +12,7 @@ export type File = {
 export declare class Directories {
     private static behavior_path;
     private static resource_path;
+    private static addon_path;
     private static source_path;
     /**
      * @remarks The source path to the module itself.
@@ -33,8 +34,13 @@ export declare class Directories {
      * @remarks The resource pack in the workspace.
      */
     static get RESOURCE_PATH(): string;
+    /**
+     * @remarks The addon subpath <team>/<project> or an empty string if unspecified.
+     */
+    static get ADDON_PATH(): string;
     static set BEHAVIOR_PATH(v: string);
     static set RESOURCE_PATH(v: string);
+    static set ADDON_PATH(v: string);
 }
 /**
  * @remarks Gets files matching a glob pattern.

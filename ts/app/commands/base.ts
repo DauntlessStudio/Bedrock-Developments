@@ -1,18 +1,21 @@
-import {Argument, Command, Option, OptionValues} from 'commander';
+import { Command } from 'commander';
 import { Directories } from '../file_manager.js';
 import axios from 'axios';
-import { chalk } from '../utils.js';
+import { chalk, getConfig, setAddonName } from '../utils.js';
 
 const version = '3.0.0';
+getConfig();
 export const program = new Command();
 
 program
 .name('bed')
 .description('CLI to assist Minecraft Bedrock development')
-.option('--rpath <rp>', 'Path to Resource Pack')
+.option('--rpath <rp>', 'path to resource pack')
 .on('option:rpath', setResourcePath)
-.option('--bpath <bp>', 'Path to Behavior Pack')
+.option('--bpath <bp>', 'path to behavior pack')
 .on('option:bpath', setBehaviorPath)
+.option('--addon <addon namespace>', 'namespace for addon content as <team_name>_<project_name>')
+.on('option:addon', setAddonName)
 .version(version, '-V, --version')
 .action(printVersion);
 

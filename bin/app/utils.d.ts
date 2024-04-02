@@ -10,6 +10,8 @@ export declare const currentFormatVersion = "1.20.50";
  * @remarks A class for working with name data like identifiers.
  */
 export declare class NameData {
+    private static teamName;
+    private static projectName;
     /**
      * @remarks The original source string, i.e. `subfolder/minecraft:test`.
      */
@@ -35,6 +37,14 @@ export declare class NameData {
      */
     directory: string;
     /**
+     * @remarks The name of the development team.
+     */
+    static get TeamName(): string;
+    /**
+     * @remarks The name of the Project
+     */
+    static get ProjectName(): string;
+    /**
      * @remarks Creates a namedata object from a source string.
      * @param name The source string to create namedata from.
      * @example
@@ -44,6 +54,7 @@ export declare class NameData {
      */
     constructor(name: string);
     private splitWords;
+    static setAddonNamespace(namespace: string): void;
 }
 /**
  * @remarks Determines if a value is an object or a primitive.
@@ -63,3 +74,18 @@ export declare function isObject(item: any): boolean;
  * ```
  */
 export declare function mergeDeep(target: any, source: any): any;
+/**
+ * @remarks The format of the bedrock.config.json file.
+ */
+export interface IConfigData {
+    addon_namespace: string;
+}
+/**
+ * @remarks Gets the config data from the working directory.
+ */
+export declare function getConfig(): void;
+/**
+ * @remarks Sets the global addon data from the addon namespace.
+ * @param addon The addon name as <team_name>_<project_name>.
+ */
+export declare function setAddonName(addon: string): void;
