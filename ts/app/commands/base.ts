@@ -1,10 +1,9 @@
 import { Command } from 'commander';
 import { Directories } from '../file_manager.js';
 import axios from 'axios';
-import { chalk, getConfig, setAddonName } from '../utils.js';
+import { chalk, setAddonName } from '../utils.js';
 
 const version = '3.0.0';
-getConfig();
 export const program = new Command();
 
 program

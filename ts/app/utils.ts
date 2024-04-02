@@ -1,6 +1,6 @@
 import {Chalk} from 'chalk';
 import * as path from 'path';
-import { Directories, getFiles } from './file_manager';
+import { Directories, getFiles, setFiles } from './file_manager.js';
 
 /**
  * @remarks A globally accessible instance of the {@link Chalk} class that provides colored text in the terminal.
@@ -74,7 +74,7 @@ export class NameData {
     constructor(name: string) {
         this.original = name;
         this.fullname = path.basename(name);
-        this.namespace = this.fullname.split(/\.|:/).shift() ?? `${NameData.teamName}_${NameData.ProjectName}`;
+        this.namespace = this.fullname.split(/\.|:/)[1] ?? `${NameData.teamName}_${NameData.ProjectName}`;
         this.shortname = this.fullname.split(/\.|:/).pop() ?? '';
 
         if (!this.fullname.includes(this.namespace)) {
@@ -100,8 +100,8 @@ export class NameData {
     }
 
     public static setAddonNamespace(namespace: string) {
-        NameData.teamName = namespace.split(/\.|:/).shift() ?? '';
-        NameData.projectName = namespace.split(/\.|:/).pop() ?? '';
+        NameData.teamName = namespace.split(/_/).shift() ?? '';
+        NameData.projectName = namespace.split(/_/).pop() ?? '';
     }
 }
 
@@ -153,12 +153,37 @@ export interface IConfigData {
 /**
  * @remarks Gets the config data from the working directory.
  */
-export function getConfig() {
-  getFiles("bedrock.config.json").forEach(config => {
-    const config_JSON: IConfigData = JSON.parse(config.fileContents) as any;
-    setAddonName(config_JSON.addon_namespace);
-    console.log(`${chalk.green(`Set addon namespace to ${config_JSON.addon_namespace} from config file`)}`);
-  });
+export function getConfig(): IConfigData|undefined {
+    const config = getFiles('bedrock.config.json')[0];
+    if (config) {
+      return JSON.parse(config.fileContents) as any;
+    }
+}
+
+export function implementConfig() {
+    const config = getConfig();
+    if (config) {
+        setAddonName(config.addon_namespace);
+        console.log(`${chalk.green(`Got addon namespace (${config.addon_namespace}) from config file`)}`);
+    }
+}
+
+/**
+ * @remarks Sets the bedrock.config.json file contents.
+ * @param config The config data to write.
+ */
+export function setConfig(config: IConfigData) {
+    const files = getFiles('bedrock.config.json');
+    if (!files.length) {
+        files.push({filePath: 'bedrock.config.json', fileContents: ''});
+    }
+
+    files.forEach(file => {
+        file.fileContents = JSON.stringify(config, null, '\t');
+        file.handleExisting = 'overwrite';
+    });
+
+    setFiles(files);
 }
 
 /**

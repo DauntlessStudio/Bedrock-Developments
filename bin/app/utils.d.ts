@@ -83,7 +83,13 @@ export interface IConfigData {
 /**
  * @remarks Gets the config data from the working directory.
  */
-export declare function getConfig(): void;
+export declare function getConfig(): IConfigData | undefined;
+export declare function implementConfig(): void;
+/**
+ * @remarks Sets the bedrock.config.json file contents.
+ * @param config The config data to write.
+ */
+export declare function setConfig(config: IConfigData): void;
 /**
  * @remarks Sets the global addon data from the addon namespace.
  * @param addon The addon name as <team_name>_<project_name>.
