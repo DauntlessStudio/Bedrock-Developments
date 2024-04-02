@@ -102,7 +102,7 @@ export class ClientGeometry extends MinecraftDataType implements IClientGeometry
             "minecraft:geometry": [
               {
                 description: {
-                  identifier: `geometry.${nameData.shortname}`,
+                  identifier: `geometry.${nameData.namespace}.${nameData.shortname}`,
                   texture_width: 64,
                   texture_height: 64,
                   visible_bounds_width: 2,

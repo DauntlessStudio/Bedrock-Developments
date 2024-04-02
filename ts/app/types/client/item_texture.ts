@@ -1,4 +1,5 @@
 import { Directories, File } from "../../file_manager.js";
+import { NameData } from "../../utils.js";
 import { MinecraftDataType } from "../minecraft.js";
 
 export interface IClientItemTexture {
@@ -54,6 +55,7 @@ export class ClientItemTexture extends MinecraftDataType implements IClientItemT
     }
 
     addTexture(name: string, textures: string) {
+        if (!name.includes(NameData.ProjectName)) name = `${NameData.TeamName}_${NameData.ProjectName}:${name}`;
         this.texture_data[name] = {
             textures
         }

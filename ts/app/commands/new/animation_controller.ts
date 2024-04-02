@@ -28,12 +28,12 @@ async function triggerCreateNewController(names: string[], options: OptionValues
     const files: File[] = [];
 
     const controller = ServerAnimationController.createFromTemplate(nameData);
-    controller.addState(`controller.animation.${nameData.shortname}`, "default", {
+    controller.addState(`controller.animation.${nameData.namespace}.${nameData.shortname}`, "default", {
         transitions: [
             { [nameData.shortname]: query }
         ]
     });
-    controller.addState(`controller.animation.${nameData.shortname}`, nameData.shortname, {
+    controller.addState(`controller.animation.${nameData.namespace}.${nameData.shortname}`, nameData.shortname, {
         on_entry,
         animations,
         transitions: transition ? [

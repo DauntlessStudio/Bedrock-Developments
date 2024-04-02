@@ -44,11 +44,11 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
                         enchanted: "entity_alphatest_glint",
                     },
                     textures: {
-                        default: `textures/attachables/${nameData.shortname}`,
+                        default: `textures/${Directories.ADDON_PATH}attachables/${nameData.shortname}`,
                         enchanted: "textures/misc/enchanted_item_glint",
                     },
                     geometry: {
-                        default: `geometry.player.${nameData.shortname}`,
+                        default: `geometry.${nameData.namespace}.player.${nameData.shortname}`,
                     },
                     scripts: {
                         pre_animation: [

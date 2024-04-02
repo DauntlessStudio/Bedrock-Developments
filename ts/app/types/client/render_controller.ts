@@ -62,7 +62,7 @@ export class ClientRenderController extends MinecraftDataType implements IClient
         return new ClientRenderController(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
             render_controllers: {
-                [`controller.render.${nameData.shortname}`]: {
+                [`controller.render.${nameData.namespace}.${nameData.shortname}`]: {
                     geometry: "geometry.default",
                     materials: [ { "*": "Material.default" } ],
                     textures: [ "texture.default" ],

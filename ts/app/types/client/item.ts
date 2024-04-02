@@ -45,7 +45,7 @@ export class ClientItem extends MinecraftDataType implements IClientItem {
                     identifier: nameData.fullname as Identifier,
                 },
                 components: {
-                    "minecraft:icon": nameData.shortname,
+                    "minecraft:icon": nameData.fullname,
                 }
             }
         });
@@ -53,6 +53,6 @@ export class ClientItem extends MinecraftDataType implements IClientItem {
 
     setDisplayData(name: NameData) {
         this["minecraft:item"].description.identifier = name.fullname as Identifier;
-        this["minecraft:item"].components["minecraft:icon"] = name.shortname;
+        this["minecraft:item"].components["minecraft:icon"] = name.fullname;
     }
 }

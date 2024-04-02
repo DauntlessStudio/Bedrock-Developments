@@ -107,7 +107,7 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
             format_version: currentFormatVersion,
             "minecraft:item": {
                 description: {
-                    identifier: 'placeholder:placeholder'
+                    identifier: nameData.fullname as Identifier
                 },
                 components: {}
             },
@@ -120,7 +120,7 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
             value: `item.${name.fullname}.name`
         };
         this["minecraft:item"].components["minecraft:icon"] = {
-            texture: name.shortname
+            texture: name.fullname
         };
     }
 

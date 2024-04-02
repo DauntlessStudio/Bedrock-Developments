@@ -41,7 +41,7 @@ export class ServerAnimation extends MinecraftDataType implements IServerAnimati
         return new ServerAnimation(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animations: {
-                [`animation.${nameData.shortname}` as ServerAnimationName]: {
+                [`animation.${nameData.namespace}.${nameData.shortname}` as ServerAnimationName]: {
                     animation_length: 1,
                     timeline: {}
                 }

@@ -74,8 +74,12 @@ export class NameData {
     constructor(name: string) {
         this.original = name;
         this.fullname = path.basename(name);
-        this.namespace = this.fullname.split(/\.|:/).shift() ?? '';
+        this.namespace = this.fullname.split(/\.|:/).shift() ?? `${NameData.teamName}_${NameData.ProjectName}`;
         this.shortname = this.fullname.split(/\.|:/).pop() ?? '';
+
+        if (!this.fullname.includes(this.namespace)) {
+            this.fullname = this.namespace + ':' + this.shortname;
+        }
         
         this.directory = path.dirname(name) + '/';
         if (this.directory === './') {

@@ -74,7 +74,7 @@ export class ClientAnimation extends MinecraftDataType implements IClientAnimati
         return new ClientAnimation(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animations: {
-                [`animation.${nameData.shortname}` as ClientAnimationName]: {
+                [`animation.${nameData.namespace}.${nameData.shortname}` as ClientAnimationName]: {
                     animation_length: 1,
                     timeline: {}
                 }

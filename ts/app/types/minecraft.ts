@@ -206,7 +206,7 @@ export class MCFunction {
      * @param filepattern The filepattern used to find or create mcfunction files.
      */
     constructor(filepattern: string) {
-        this.files = getFiles(Directories.BEHAVIOR_PATH + 'functions/' + filepattern);
+        this.files = getFiles(Directories.BEHAVIOR_PATH + 'functions/' + Directories.ADDON_PATH + filepattern);
         if (!this.files.length) {
             this.files = [{filePath: Directories.BEHAVIOR_PATH + 'functions/' + filepattern, fileContents: ""}];
         }

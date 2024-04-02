@@ -97,6 +97,7 @@ export class ClientSoundDefinitions extends MinecraftDataType implements IClient
     }
 
     addSound(name: string, sound: IClientSoundDefinition) {
+        if (!name.includes(NameData.ProjectName)) name = `${NameData.TeamName}_${NameData.ProjectName}:${name}`;
         this.sound_definitions[name] = sound;
     }
 

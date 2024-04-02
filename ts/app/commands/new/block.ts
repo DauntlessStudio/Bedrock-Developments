@@ -35,7 +35,7 @@ function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO
     }
 
     if (table) {
-        block.setLootTable(`loot_tables/blocks/${nameData.directory}${nameData.shortname}.json`);
+        block.setLootTable(`loot_tables/${Directories.ADDON_PATH}blocks/${nameData.directory}${nameData.shortname}.json`);
         files.push(ServerLootTable.createFromTemplate(nameData).toFile());
     } else {
         block.setLootTable();
@@ -46,15 +46,15 @@ function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO
     }
 
     if (geo) {
-        copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + 'blocks/' + nameData.shortname + '.png');
+        copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + nameData.directory + 'blocks/' + nameData.shortname + '.png');
         files.push(ClientGeometry.createFromTemplate(nameData).toFile());
     } else {
-        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + nameData.directory + 'blocks/' + nameData.shortname + '.png');
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + nameData.directory + 'blocks/' + nameData.shortname + '.png');
     }
 
     files.push(block.toFile());
     files.push(ClientBlocks.fileWithAddedBlock(nameData.fullname as Identifier, {sound: "stone", textures: nameData.shortname}));
-    files.push(ClientTerrainTexture.fileWithAddedTexture(nameData.shortname, 'textures/' + nameData.directory + 'blocks/' + nameData.shortname));
+    files.push(ClientTerrainTexture.fileWithAddedTexture(nameData.shortname, 'textures/' + Directories.ADDON_PATH + nameData.directory + 'blocks/' + nameData.shortname));
     setFiles(files);
   });
 }

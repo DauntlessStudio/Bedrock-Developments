@@ -24,7 +24,7 @@ function triggerCreateNewAnimation(names: string[], options: OptionValues) {
     const files: File[] = [];
 
     const animation = ServerAnimation.createFromTemplate(nameData);
-    animation.animations[`animation.${nameData.shortname}`] = {
+    animation.animations[`animation.${nameData.namespace}.${nameData.shortname}`] = {
         animation_length,
         loop,
         timeline: {

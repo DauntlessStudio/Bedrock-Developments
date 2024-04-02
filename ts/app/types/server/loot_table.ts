@@ -33,7 +33,7 @@ export class ServerLootTable extends MinecraftDataType implements IServerLootTab
     pools: IServerLootTablePool[];
 
     public static get DirectoryPath(): string {
-        return Directories.BEHAVIOR_PATH + 'loot_tables/';
+        return Directories.BEHAVIOR_PATH + 'loot_tables/' + Directories.ADDON_PATH;
     }
     
     constructor(filepath: string, template: IServerLootTable) {

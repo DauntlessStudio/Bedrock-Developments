@@ -69,7 +69,7 @@ export class ClientAnimationController extends MinecraftDataType implements ICli
         return new ClientAnimationController(this.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animation_controllers: {
-                [`controller.animation.${nameData.shortname}` as ClientACName]: {
+                [`controller.animation.${nameData.namespace}.${nameData.shortname}` as ClientACName]: {
                     initial_state: 'default',
                     states: {
                         'default': {}

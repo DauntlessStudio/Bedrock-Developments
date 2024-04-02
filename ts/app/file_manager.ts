@@ -79,7 +79,7 @@ export class Directories {
     }
     
     public static set ADDON_PATH(v : string) {
-        Directories.addon_path = v;
+        Directories.addon_path = v + "/";
     }
 }
 
