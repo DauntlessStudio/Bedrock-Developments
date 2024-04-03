@@ -1,104 +1,91 @@
-export declare class jsonFile {
-    json: any;
-    file: string;
-    constructor(json: any, file: string);
+/**
+ * @remarks File Representation, contains the file path, file contents, and how to handle existing files.
+ */
+export type File = {
+    filePath: string;
+    fileContents: string;
+    handleExisting?: 'overwrite' | 'overwrite_silent';
+};
+/**
+ * @remarks A global class for getting and setting workspace paths.
+ */
+export declare class Directories {
+    private static behavior_path;
+    private static resource_path;
+    private static addon_path;
+    private static source_path;
+    /**
+     * @remarks The source path to the module itself.
+     */
+    static get SOURCE_PATH(): string;
+    /**
+     * @remarks The path to the vanilla behavior pack samples packaged with the module.
+     */
+    static get VANILLA_BEHAVIOR_PATH(): string;
+    /**
+     * @remarks The path to the vanilla resource pack samples packaged with the module.
+     */
+    static get VANILLA_RESOURCE_PATH(): string;
+    /**
+     * @remarks The behavior pack in the workspace.
+     */
+    static get BEHAVIOR_PATH(): string;
+    /**
+     * @remarks The resource pack in the workspace.
+     */
+    static get RESOURCE_PATH(): string;
+    /**
+     * @remarks The addon subpath <team>/<project> or an empty string if unspecified.
+     */
+    static get ADDON_PATH(): string;
+    static set BEHAVIOR_PATH(v: string);
+    static set RESOURCE_PATH(v: string);
+    static set ADDON_PATH(v: string);
 }
-interface pathOptions {
-    source_path: string;
-    default_path?: string;
-    target_path: string;
-}
-export declare function getFilesFromGlob(path: string): Promise<string[]>;
 /**
- * @remarks gets json files from a blob pattern
- * @param path the path to the source file
- * @param default_path the path to the default source file if path is invalid
- * @returns a list of files matching the glob
+ * @remarks Gets files matching a glob pattern.
+ * @param globPattern The glob pattern to use to find files.
+ * @returns An array of {@link File}s matching the pattern.
+ * @example
+ * ```typescript
+ * let files = getFiles(Directories.RESOURCE_PATH + 'texts/*.lang');
+ * ```
  */
-export declare function readJSONFromGlob(path: string, default_path?: string): Promise<jsonFile[]>;
+export declare function getFiles(globPattern: string): File[];
 /**
- * @remarkds gets a json file from a direct string
- * @param path the path to the source file
- * @param default_path the path to the default source file if path is invalid
- * @returns the json file
+ * @remarks Writes an array of files.
+ * @param files The array of {@link File}s to write.
+ * @example
+ * ```typescript
+ * let files = getFiles(Directories.RESOURCE_PATH + 'texts/*.lang');
+ * files.forEach(file => file.fileContents = ':)');
+ * setFiles(files);
+ * ```
  */
-export declare function readJSONFromPath(path: string, default_path?: string): Promise<jsonFile>;
+export declare function setFiles(files: File[]): void;
 /**
- * @remarks writes a json object to disk
- * @param path the path to write the file to
- * @param json the json object to write
- * @param overwrite should the target file be overwritten
+ * @remarks Copies a source file from this module to a destination.
+ * @param sourceFile The filepath to a source file within this module's src.
+ * @param targetPath The filepath to the destination the file should be copied to.
+ * @param handleExisting How to handle existing files. Undefined will not overwrite, 'overwite' replaces the file with this object,
+ * 'overwrite_silent' does the same with no terminal log.
  */
-export declare function writeFileFromJSON(path: string, json: any, overwrite?: boolean, log_exists?: boolean, customWrite?: boolean): void;
+export declare function copySourceFile(sourceFile: string, targetPath: string, handleExisting?: 'overwrite' | 'overwrite_silent'): void;
 /**
- * @remarks reads a json file, modifies it with the callback, and writes it to the target path
- * @param path_options the source and target paths
- * @param callback a callback to modify the json before writing
- * @param write_options additional options for how the file should be written
+ * @remarks Copies a source directory from this module to a destination.
+ * @param src The path to a source directory within this module's src.
+ * @param dest The filepath to the destination where the directory should be copied to.
  */
-export declare function modifyAndWriteFile(path_options: pathOptions, callback: Function, write_options?: {
-    overwrite?: boolean;
-    log_exists?: boolean;
-    custom_write?: boolean;
-}): Promise<void>;
+export declare function copySourceDirectory(src: string, dest: string): void;
 /**
- * @remarks reads a json file, modifies it with the callback, and writes it to the target path
- * @param path_options the source and target paths
- * @param callback a callback to modify the json before writing
- * @param write_options additional options for how the file should be written
+ * @remarks Archives a directory, compressing to a .zip or .mcworld for example.
+ * @param dir The directory to archive.
+ * @param zipPath The path the directory should be archived to.
+ * @param callback A callback to run when the directory finishes archiving.
  */
-export declare function modifyAndWriteGlob(source_path: string, callback: Function, write_options?: {
-    overwrite?: boolean;
-    log_exists?: boolean;
-}): Promise<boolean>;
+export declare function archiveDirectory(dir: string, zipPath: string, callback: Function): void;
 /**
- *
- * @param source the file to be copied
- * @param target the path to copy the file to
+ * @remarks Creates a temporary file, opening it in Notepad. The contents of the file will be returned when Notepad is closed.
+ * @returns A promise to a string.
  */
-export declare function copyFile(source: string, target: string): void;
-/**
- * @remarks reads a local source file as a string
- * @param path path to a local src file, not a glob
- * @returns the string contents of the file
- */
-export declare function readSourceFile(path: string): string;
-/**
- * @remarks writes a line of text to the en_US.lang file
- * @param entry the line to add to the lang file
- * @param category the category the entry should be added to
- */
-export declare function writeToLang(entry: string, category: string, path?: string): void;
-/**
- * @remarks writes a string of text to a file
- * @param path the path to write the file too
- * @param data the string that should be written
- * @param overwrite should an existing file at that path be overwritten
- */
-export declare function writeFileFromString(path: string, data: string, overwrite?: boolean): void;
-/**
- * @remarks writes a string to a data buffer to a file
- * @param path the path to write the file too
- * @param data the string that should be written
- * @param overwrite should an existing file at that path be overwritten
- */
-export declare function writeBufferFileFromString(path: string, data: string, overwrite?: boolean): void;
-/**
- * @remarks deletes a file at a given path
- * @param path the path to delete the file from
- */
-export declare function deleteFile(path: string): void;
-/**
- * @remarks copies directory from source to destination recursively
- * @param src the source directory
- * @param dest the target directory
- */
-export declare function copyDirectory(src: string, dest: string): void;
-/**
- * @remarks compresses a directory to a zip-like file
- * @param dir the directory to compress
- * @param zipPath the path the compressed directory should be written to
- * @param callback the callback to run when the compression finishes
- */
-export declare function archiveDirToZip(dir: string, zipPath: string, callback: Function): void;
-export {};
+export declare function getStringFromTemporaryFile(): Promise<string>;

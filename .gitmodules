@@ -1,0 +1,3 @@
+[submodule "bin/app/src/vanilla"]
+	path = bin/app/src/vanilla
+	url = https://github.com/Mojang/bedrock-samples.git

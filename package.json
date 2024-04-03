@@ -1,17 +1,18 @@
 {
   "name": "bedrock-development",
-  "version": "2.2.5",
+  "version": "3.0.0",
   "description": "APIs for creating and editing files related to Minecraft Bedrock development.",
   "main": "bin/index.js",
   "types": "bin/index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/DauntlessStudio/Bedrock-Developments.git"
   },
   "scripts": {
     "build": "npx tsc -w",
-    "prepare": "node update_version.js && npx tsc",
-    "clear": "rm ./behavior_packs/** -rf && rm ./resource_packs/** -rf"
+    "clear": "rm ./behavior_packs/test_bp/** -rf && rm ./resource_packs/test_rp/** -rf",
+    "docs": "npx typedoc --plugin typedoc-plugin-markdown ts/app/index.ts --out docs/api"
   },
   "bin": {
     "bed": "./bin/index.js"
@@ -25,12 +26,11 @@
   "dependencies": {
     "archiver": "^5.3.1",
     "axios": "^1.2.3",
-    "chalk": "^4.1.0",
+    "chalk": "^5.3.0",
     "commander": "^10.0.0",
     "comment-json": "^4.2.3",
-    "glob": "^8.1.0",
-    "octokit": "^2.0.13",
-    "prismarine-nbt": "^2.2.1",
+    "deepslate": "^0.19.2",
+    "glob": "^10.3.10",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -38,6 +38,8 @@
     "@types/glob": "^8.0.1",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.1",
+    "typedoc": "^0.25.12",
+    "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^4.9.4"
   }
 }
