@@ -68,6 +68,7 @@ export interface IServerItemComponents {
     ["minecraft:wearable"]?: {
         dispensable?: boolean;
         slot: SlotOptions;
+        protection?: number
     };
 
     ["minecraft:enchantable"]?: {
@@ -130,10 +131,11 @@ export class ServerItem extends MinecraftDataType implements IServerItem {
         };
     }
 
-    setWearable(slot: SlotOptions) {
+    setWearable(slot: SlotOptions, protectionPoints: number) {
         this["minecraft:item"].components["minecraft:wearable"] = {
             slot: slot,
             dispensable: true,
+            protection: Math.trunc(protectionPoints),
         };
         this["minecraft:item"].components["minecraft:repairable"] = {
             repair_items: [
