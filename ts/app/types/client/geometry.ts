@@ -143,7 +143,7 @@ export class ClientGeometryAttachable extends ClientGeometry {
             "minecraft:geometry": [
               {
                 description: {
-                  identifier: `geometry.player.${nameData.shortname}`,
+                  identifier: `geometry.${nameData.namespace}.player.${nameData.shortname}`,
                   texture_width: 32,
                   texture_height: 32,
                   visible_bounds_width: 3,

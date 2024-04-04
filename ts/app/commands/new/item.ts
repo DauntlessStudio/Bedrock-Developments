@@ -27,7 +27,7 @@ program_new.command("item")
 .argument("<names...>", 'item names as "namespace:item"')
 .option("--no-lang", "do not add lang file")
 .option("-s, --stack <stack_size>", "max stack size", "64")
-.option("-c, --cooldown <cooldown_duration>", "cooldown duration", "3")
+.option("-c, --cooldown <cooldown_duration>", "cooldown duration")
 .addOption(
 	new Option("-t, --type <item_type>", "basic").choices(
 		Object.keys(ServerItemOptions)
@@ -40,7 +40,7 @@ async function triggerCreateNewItem(names: string[], options: OptionValues) {
     const commandOptions = {
         lang: options.lang,
         stack: Number(options.stack),
-        cooldown: options.cooldown
+        cooldown: Number(options.cooldown)
     };
 	const type: ServerItemOptions = options.type ?? ServerItemOptions.basic;
 
@@ -165,7 +165,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         if (options.lang) {
             const langs = new LangFile('*.lang');
             langs.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            langs.addToCategory('item use interactions', `action.hint.interact.${nameData.fullname}`);
+            langs.addToCategory('item use interactions', `action.hint.interact.${nameData.fullname}=Use ${nameData.display}`);
             files.push(...langs.files);
         }
 
