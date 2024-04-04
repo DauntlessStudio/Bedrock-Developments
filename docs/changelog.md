@@ -1,4 +1,11 @@
 # Changelog
+# [3.0.1] - 4/4/2024
+Fixes
+## Fixed
+- Fixed issue where items were generated with an invalid cooldown object.
+- Fixed issue where geometry files created from template didn't include the namespace.
+- Fixed issue where attachable items interact text weren't generating a lang entry correctly.
+---
 # [3.0.0] - 4/2/2024
 Major Refactor
 ## Changed
