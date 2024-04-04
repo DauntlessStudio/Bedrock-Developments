@@ -3,7 +3,7 @@ import { Directories } from '../file_manager.js';
 import axios from 'axios';
 import { chalk, setAddonName } from '../utils.js';
 
-const version = '3.0.1';
+const version = '3.0.2';
 export const program = new Command();
 
 program

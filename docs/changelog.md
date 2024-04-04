@@ -1,4 +1,9 @@
 # Changelog
+# [3.0.2] - 4/4/2024
+Fixes
+## Fixed
+- Fixed issue where attachable items were being generated without the `minecraft:use_modifiers` component.
+---
 # [3.0.1] - 4/4/2024
 Fixes
 ## Fixed

@@ -159,6 +159,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setStackSize(options.stack);
         if (options.cooldown) item.setCooldown(options.cooldown);
         item.setInteractButton(nameData);
+        item.setModifiers();
 
         const files: File[] = [item.toFile()];
 
