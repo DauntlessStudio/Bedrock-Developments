@@ -68,7 +68,7 @@ export interface IServerItemComponents {
     ["minecraft:wearable"]?: {
         dispensable?: boolean;
         slot: SlotOptions;
-        protection?: number
+        protection: number
     };
 
     ["minecraft:enchantable"]?: {
