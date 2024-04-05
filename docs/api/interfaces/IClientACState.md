@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:24](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L24)
+[ts/app/types/client/animation_controller.ts:24](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L24)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:27](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L27)
+[ts/app/types/client/animation_controller.ts:27](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L27)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:28](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L28)
+[ts/app/types/client/animation_controller.ts:28](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L28)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L23)
+[ts/app/types/client/animation_controller.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L23)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L26)
+[ts/app/types/client/animation_controller.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L26)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:29](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L29)
+[ts/app/types/client/animation_controller.ts:29](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L29)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L30)
+[ts/app/types/client/animation_controller.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L30)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L25)
+[ts/app/types/client/animation_controller.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L25)
 
 ___
 
@@ -108,4 +108,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:31](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L31)
+[ts/app/types/client/animation_controller.ts:31](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L31)

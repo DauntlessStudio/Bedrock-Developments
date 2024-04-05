@@ -55,6 +55,7 @@ export interface IServerItemComponents {
     ["minecraft:wearable"]?: {
         dispensable?: boolean;
         slot: SlotOptions;
+        protection: number;
     };
     ["minecraft:enchantable"]?: {
         value: number;
@@ -78,7 +79,7 @@ export declare class ServerItem extends MinecraftDataType implements IServerItem
     static createFromTemplate(nameData: NameData): ServerItem;
     setDisplayData(name: NameData): void;
     setStackSize(stack: number): void;
-    setWearable(slot: SlotOptions): void;
+    setWearable(slot: SlotOptions, protectionPoints: number): void;
     setFood(): void;
     setCooldown(duration: number, category?: string): void;
     setModifiers(use_duration?: number, movement_modifier?: number): void;

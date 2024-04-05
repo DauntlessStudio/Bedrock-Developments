@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[ts/app/types/server/blocks.ts:96](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/blocks.ts#L96)
+[ts/app/types/server/blocks.ts:96](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/blocks.ts#L96)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/blocks.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/blocks.ts#L95)
+[ts/app/types/server/blocks.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/blocks.ts#L95)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/blocks.ts:94](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/blocks.ts#L94)
+[ts/app/types/server/blocks.ts:94](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/blocks.ts#L94)
 
 ___
 
@@ -49,4 +49,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/blocks.ts:93](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/blocks.ts#L93)
+[ts/app/types/server/blocks.ts:93](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/blocks.ts#L93)

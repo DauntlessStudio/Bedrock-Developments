@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[ts/app/types/client/terrain_texture.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/terrain_texture.ts#L6)
+[ts/app/types/client/terrain_texture.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/terrain_texture.ts#L6)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/terrain_texture.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/terrain_texture.ts#L7)
+[ts/app/types/client/terrain_texture.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/terrain_texture.ts#L7)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/terrain_texture.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/terrain_texture.ts#L8)
+[ts/app/types/client/terrain_texture.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/terrain_texture.ts#L8)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/terrain_texture.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/terrain_texture.ts#L10)
+[ts/app/types/client/terrain_texture.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/terrain_texture.ts#L10)
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/terrain_texture.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/terrain_texture.ts#L9)
+[ts/app/types/client/terrain_texture.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/terrain_texture.ts#L9)

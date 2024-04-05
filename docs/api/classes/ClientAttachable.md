@@ -73,7 +73,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L30)
+[ts/app/types/client/attachable.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L30)
 
 ## Properties
 
@@ -87,7 +87,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L23)
+[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L23)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:21](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L21)
+[ts/app/types/client/attachable.ts:21](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L21)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:22](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L22)
+[ts/app/types/client/attachable.ts:22](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L22)
 
 ## Accessors
 
@@ -143,7 +143,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L26)
+[ts/app/types/client/attachable.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L26)
 
 ## Methods
 
@@ -163,7 +163,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:119](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L119)
+[ts/app/types/client/attachable.ts:119](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L119)
 
 ___
 
@@ -183,7 +183,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:112](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L112)
+[ts/app/types/client/attachable.ts:112](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L112)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L95)
+[ts/app/types/client/attachable.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L95)
 
 ___
 
@@ -223,7 +223,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:66](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L66)
+[ts/app/types/client/attachable.ts:66](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L66)
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:88](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L88)
+[ts/app/types/client/attachable.ts:88](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L88)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:77](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L77)
+[ts/app/types/client/attachable.ts:77](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L77)
 
 ___
 
@@ -283,7 +283,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:102](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L102)
+[ts/app/types/client/attachable.ts:102](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L102)
 
 ___
 
@@ -308,7 +308,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L72)
+[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L72)
 
 ___
 
@@ -332,7 +332,7 @@ Serializes this object to a string.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L63)
+[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L63)
 
 ___
 
@@ -362,7 +362,7 @@ Creates a [File](../modules.md#file) object from this MinecraftDataType.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L98)
+[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L98)
 
 ___
 
@@ -392,7 +392,7 @@ Creates a filepath for this object type from a [NameData](NameData.md).
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L46)
+[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L46)
 
 ___
 
@@ -422,7 +422,7 @@ Creates a new instance of the data type using reasonable defaults from a [NameDa
 
 #### Defined in
 
-[ts/app/types/client/attachable.ts:36](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/attachable.ts#L36)
+[ts/app/types/client/attachable.ts:36](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/attachable.ts#L36)
 
 ___
 
@@ -460,7 +460,7 @@ Creates an instace of a MinecraftDataType child from a source string, used in [f
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L83)
+[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L83)
 
 ___
 
@@ -497,7 +497,7 @@ Crates an instance of a MinecraftDataTypeChild from a [File](../modules.md#file)
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L108)
+[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L108)
 
 ___
 
@@ -534,4 +534,4 @@ Creates a MinecraftDataType object from a filepath, or a template if that filepa
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L118)
+[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L118)

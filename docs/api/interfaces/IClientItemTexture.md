@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[ts/app/types/client/item_texture.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/item_texture.ts#L6)
+[ts/app/types/client/item_texture.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/item_texture.ts#L6)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/item_texture.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/item_texture.ts#L8)
+[ts/app/types/client/item_texture.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/item_texture.ts#L8)
 
 ___
 
@@ -46,4 +46,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/item_texture.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/item_texture.ts#L7)
+[ts/app/types/client/item_texture.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/item_texture.ts#L7)

@@ -67,7 +67,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:62](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L62)
+[ts/app/types/client/animation_controller.ts:62](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L62)
 
 ## Properties
 
@@ -85,7 +85,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:54](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L54)
+[ts/app/types/client/animation_controller.ts:54](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L54)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L23)
+[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L23)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L53)
+[ts/app/types/client/animation_controller.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L53)
 
 ## Accessors
 
@@ -135,7 +135,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:58](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L58)
+[ts/app/types/client/animation_controller.ts:58](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L58)
 
 ## Methods
 
@@ -156,7 +156,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:82](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L82)
+[ts/app/types/client/animation_controller.ts:82](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L82)
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L72)
+[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L72)
 
 ___
 
@@ -205,7 +205,7 @@ Serializes this object to a string.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L63)
+[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L63)
 
 ___
 
@@ -235,7 +235,7 @@ Creates a [File](../modules.md#file) object from this MinecraftDataType.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L98)
+[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L98)
 
 ___
 
@@ -265,7 +265,7 @@ Creates a filepath for this object type from a [NameData](NameData.md).
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L46)
+[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L46)
 
 ___
 
@@ -295,7 +295,7 @@ Creates a new instance of the data type using reasonable defaults from a [NameDa
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:68](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L68)
+[ts/app/types/client/animation_controller.ts:68](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L68)
 
 ___
 
@@ -333,7 +333,7 @@ Creates an instace of a MinecraftDataType child from a source string, used in [f
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L83)
+[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L83)
 
 ___
 
@@ -370,7 +370,7 @@ Crates an instance of a MinecraftDataTypeChild from a [File](../modules.md#file)
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L108)
+[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L108)
 
 ___
 
@@ -407,4 +407,4 @@ Creates a MinecraftDataType object from a filepath, or a template if that filepa
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L118)
+[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L118)

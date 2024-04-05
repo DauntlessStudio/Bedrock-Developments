@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:41](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L41)
+[ts/app/types/client/geometry.ts:41](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L41)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:56](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L56)
+[ts/app/types/client/geometry.ts:56](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L56)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:42](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L42)
+[ts/app/types/client/geometry.ts:42](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L42)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L40)
+[ts/app/types/client/geometry.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L40)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L43)
+[ts/app/types/client/geometry.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L43)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:37](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L37)
+[ts/app/types/client/geometry.ts:37](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L37)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L44)
+[ts/app/types/client/geometry.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L44)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:39](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L39)
+[ts/app/types/client/geometry.ts:39](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L39)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:38](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L38)
+[ts/app/types/client/geometry.ts:38](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L38)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:45](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L45)
+[ts/app/types/client/geometry.ts:45](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L45)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L46)
+[ts/app/types/client/geometry.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L46)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:47](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L47)
+[ts/app/types/client/geometry.ts:47](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L47)
 
 ___
 
@@ -148,4 +148,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:48](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L48)
+[ts/app/types/client/geometry.ts:48](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L48)

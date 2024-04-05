@@ -42,7 +42,7 @@ Creates a list of files from the filepattern. Note that if no files match the fi
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:208](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L208)
+[ts/app/types/minecraft.ts:208](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L208)
 
 ## Properties
 
@@ -56,7 +56,7 @@ The mcfunction files handled by this class instance, as an array of [File](../mo
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:202](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L202)
+[ts/app/types/minecraft.ts:202](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L202)
 
 ## Methods
 
@@ -84,4 +84,4 @@ Adds commands and optional comments.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:222](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L222)
+[ts/app/types/minecraft.ts:222](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L222)

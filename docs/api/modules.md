@@ -165,7 +165,7 @@
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L6)
+[ts/app/types/client/animation_controller.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L6)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation.ts#L7)
+[ts/app/types/client/animation.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation.ts#L7)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/entity.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/entity.ts#L14)
+[ts/app/types/client/entity.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/entity.ts#L14)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/entity.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/entity.ts#L13)
+[ts/app/types/client/entity.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/entity.ts#L13)
 
 ___
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L6)
+[ts/app/types/client/sound_definitions.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L6)
 
 ___
 
@@ -215,7 +215,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L9)
+[ts/app/types/server/entity.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L9)
 
 ___
 
@@ -225,7 +225,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L7)
+[ts/app/types/shared_types.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L7)
 
 ___
 
@@ -247,7 +247,7 @@ File Representation, contains the file path, file contents, and how to handle ex
 
 #### Defined in
 
-[ts/app/file_manager.ts:12](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L12)
+[ts/app/file_manager.ts:12](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L12)
 
 ___
 
@@ -257,7 +257,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:1](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L1)
+[ts/app/types/shared_types.ts:1](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L1)
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L6)
+[ts/app/types/client/geometry.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L6)
 
 ___
 
@@ -277,7 +277,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:2](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L2)
+[ts/app/types/shared_types.ts:2](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L2)
 
 ___
 
@@ -287,7 +287,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:4](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L4)
+[ts/app/types/shared_types.ts:4](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L4)
 
 ___
 
@@ -297,7 +297,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L3)
+[ts/app/types/shared_types.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L3)
 
 ___
 
@@ -307,7 +307,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:5](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L5)
+[ts/app/types/shared_types.ts:5](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L5)
 
 ___
 
@@ -317,7 +317,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L10)
+[ts/app/types/server/entity.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L10)
 
 ___
 
@@ -327,7 +327,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/animation_controller.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/animation_controller.ts#L6)
+[ts/app/types/server/animation_controller.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/animation_controller.ts#L6)
 
 ___
 
@@ -337,7 +337,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/animation.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/animation.ts#L6)
+[ts/app/types/server/animation.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/animation.ts#L6)
 
 ___
 
@@ -347,7 +347,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L11)
+[ts/app/types/server/entity.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L11)
 
 ___
 
@@ -357,7 +357,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L6)
+[ts/app/types/shared_types.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L6)
 
 ## Variables
 
@@ -367,7 +367,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L11)
+[ts/app/types/world.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L11)
 
 ___
 
@@ -381,7 +381,7 @@ The format version shared by all Minecraft Types.
 
 #### Defined in
 
-[ts/app/utils.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L13)
+[ts/app/utils.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L13)
 
 ___
 
@@ -391,7 +391,7 @@ ___
 
 #### Defined in
 
-[ts/app/commands/entity/entity.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/commands/entity/entity.ts#L3)
+[ts/app/commands/entity/entity.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/commands/entity/entity.ts#L3)
 
 ___
 
@@ -401,7 +401,7 @@ ___
 
 #### Defined in
 
-[ts/app/commands/format/format.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/commands/format/format.ts#L3)
+[ts/app/commands/format/format.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/commands/format/format.ts#L3)
 
 ___
 
@@ -411,7 +411,7 @@ ___
 
 #### Defined in
 
-[ts/app/commands/new/new.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/commands/new/new.ts#L3)
+[ts/app/commands/new/new.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/commands/new/new.ts#L3)
 
 ___
 
@@ -421,7 +421,7 @@ ___
 
 #### Defined in
 
-[ts/app/commands/world/world.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/commands/world/world.ts#L3)
+[ts/app/commands/world/world.ts:3](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/commands/world/world.ts#L3)
 
 ## Functions
 
@@ -447,7 +447,7 @@ Archives a directory, compressing to a .zip or .mcworld for example.
 
 #### Defined in
 
-[ts/app/file_manager.ts:196](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L196)
+[ts/app/file_manager.ts:196](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L196)
 
 ___
 
@@ -469,7 +469,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L14)
+[ts/app/types/world.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L14)
 
 ___
 
@@ -493,7 +493,7 @@ A globally accessible instance of the Chalk class that provides colored text in 
 
 #### Defined in
 
-[ts/app/utils.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L8)
+[ts/app/utils.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L8)
 
 ___
 
@@ -518,7 +518,7 @@ Copies a source directory from this module to a destination.
 
 #### Defined in
 
-[ts/app/file_manager.ts:177](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L177)
+[ts/app/file_manager.ts:177](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L177)
 
 ___
 
@@ -544,7 +544,7 @@ Copies a source file from this module to a destination.
 
 #### Defined in
 
-[ts/app/file_manager.ts:147](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L147)
+[ts/app/file_manager.ts:147](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L147)
 
 ___
 
@@ -562,7 +562,7 @@ Gets the config data from the working directory.
 
 #### Defined in
 
-[ts/app/utils.ts:156](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L156)
+[ts/app/utils.ts:156](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L156)
 
 ___
 
@@ -594,7 +594,7 @@ let files = getFiles(Directories.RESOURCE_PATH + 'texts/*.lang');
 
 #### Defined in
 
-[ts/app/file_manager.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L95)
+[ts/app/file_manager.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L95)
 
 ___
 
@@ -614,7 +614,7 @@ Creates a temporary file, opening it in Notepad. The contents of the file will b
 
 #### Defined in
 
-[ts/app/file_manager.ts:214](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L214)
+[ts/app/file_manager.ts:214](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L214)
 
 ___
 
@@ -628,7 +628,7 @@ ___
 
 #### Defined in
 
-[ts/app/utils.ts:163](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L163)
+[ts/app/utils.ts:163](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L163)
 
 ___
 
@@ -654,7 +654,7 @@ Determines if a value is an object or a primitive.
 
 #### Defined in
 
-[ts/app/utils.ts:113](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L113)
+[ts/app/utils.ts:113](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L113)
 
 ___
 
@@ -688,7 +688,7 @@ mergeDeep({subProperty: {targetKey: 1}}, {subProperty: {sourceKey: 2}});
 
 #### Defined in
 
-[ts/app/utils.ts:128](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L128)
+[ts/app/utils.ts:128](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L128)
 
 ___
 
@@ -709,7 +709,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L6)
+[ts/app/types/minecraft.ts:6](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L6)
 
 ___
 
@@ -723,7 +723,7 @@ ___
 
 #### Defined in
 
-[ts/app/commands/index.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/commands/index.ts#L7)
+[ts/app/commands/index.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/commands/index.ts#L7)
 
 ___
 
@@ -747,7 +747,7 @@ Sets the global addon data from the addon namespace.
 
 #### Defined in
 
-[ts/app/utils.ts:193](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L193)
+[ts/app/utils.ts:193](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L193)
 
 ___
 
@@ -771,7 +771,7 @@ Sets the bedrock.config.json file contents.
 
 #### Defined in
 
-[ts/app/utils.ts:175](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L175)
+[ts/app/utils.ts:175](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L175)
 
 ___
 
@@ -803,4 +803,4 @@ setFiles(files);
 
 #### Defined in
 
-[ts/app/file_manager.ts:113](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L113)
+[ts/app/file_manager.ts:113](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L113)

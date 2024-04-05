@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:178](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L178)
+[ts/app/types/server/entity.ts:178](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L178)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:177](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L177)
+[ts/app/types/server/entity.ts:177](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L177)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:176](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L176)
+[ts/app/types/server/entity.ts:176](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L176)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:175](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L175)
+[ts/app/types/server/entity.ts:175](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L175)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/entity.ts:179](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/entity.ts#L179)
+[ts/app/types/server/entity.ts:179](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/entity.ts#L179)

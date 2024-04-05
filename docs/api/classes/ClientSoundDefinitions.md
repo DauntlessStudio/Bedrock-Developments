@@ -69,7 +69,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L43)
+[ts/app/types/client/sound_definitions.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L43)
 
 ## Properties
 
@@ -83,7 +83,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L23)
+[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L23)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:34](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L34)
+[ts/app/types/client/sound_definitions.ts:34](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L34)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L35)
+[ts/app/types/client/sound_definitions.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L35)
 
 ## Accessors
 
@@ -137,7 +137,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:39](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L39)
+[ts/app/types/client/sound_definitions.ts:39](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L39)
 
 ## Methods
 
@@ -158,7 +158,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:99](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L99)
+[ts/app/types/client/sound_definitions.ts:99](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L99)
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:104](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L104)
+[ts/app/types/client/sound_definitions.ts:104](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L104)
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:71](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L71)
+[ts/app/types/client/sound_definitions.ts:71](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L71)
 
 ___
 
@@ -221,7 +221,7 @@ Serializes this object to a string.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L63)
+[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L63)
 
 ___
 
@@ -245,7 +245,7 @@ Creates a [File](../modules.md#file) object from this MinecraftDataType.
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:67](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L67)
+[ts/app/types/client/sound_definitions.ts:67](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L67)
 
 ___
 
@@ -269,7 +269,7 @@ Creates a filepath for this object type from a [NameData](NameData.md).
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:49](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L49)
+[ts/app/types/client/sound_definitions.ts:49](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L49)
 
 ___
 
@@ -293,7 +293,7 @@ Creates a new instance of the data type using reasonable defaults from a [NameDa
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L53)
+[ts/app/types/client/sound_definitions.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L53)
 
 ___
 
@@ -331,7 +331,7 @@ Creates an instace of a MinecraftDataType child from a source string, used in [f
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L83)
+[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L83)
 
 ___
 
@@ -352,7 +352,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:60](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L60)
+[ts/app/types/client/sound_definitions.ts:60](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L60)
 
 ___
 
@@ -389,7 +389,7 @@ Crates an instance of a MinecraftDataTypeChild from a [File](../modules.md#file)
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L108)
+[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L108)
 
 ___
 
@@ -426,4 +426,4 @@ Creates a MinecraftDataType object from a filepath, or a template if that filepa
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L118)
+[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L118)

@@ -61,7 +61,7 @@ let name = new NameData("subfolder/minecraft:test");
 
 #### Defined in
 
-[ts/app/utils.ts:74](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L74)
+[ts/app/utils.ts:74](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L74)
 
 ## Properties
 
@@ -75,7 +75,7 @@ The directory name of the source string, i.e. `subfolder/`.
 
 #### Defined in
 
-[ts/app/utils.ts:50](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L50)
+[ts/app/utils.ts:50](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L50)
 
 ___
 
@@ -89,7 +89,7 @@ The display name of the source string as used in the lang, i.e. `Test`.
 
 #### Defined in
 
-[ts/app/utils.ts:45](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L45)
+[ts/app/utils.ts:45](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L45)
 
 ___
 
@@ -103,7 +103,7 @@ The full identifier of the source string, i.e. `minecraft:test`.
 
 #### Defined in
 
-[ts/app/utils.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L30)
+[ts/app/utils.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L30)
 
 ___
 
@@ -117,7 +117,7 @@ The namespace of the source stirng, i.e. `minecraft:test`.
 
 #### Defined in
 
-[ts/app/utils.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L35)
+[ts/app/utils.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L35)
 
 ___
 
@@ -131,7 +131,7 @@ The original source string, i.e. `subfolder/minecraft:test`.
 
 #### Defined in
 
-[ts/app/utils.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L25)
+[ts/app/utils.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L25)
 
 ___
 
@@ -145,7 +145,7 @@ The shortname of the source string, i.e. `test` from either `minecraft:test` or 
 
 #### Defined in
 
-[ts/app/utils.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L40)
+[ts/app/utils.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L40)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[ts/app/utils.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L20)
+[ts/app/utils.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L20)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[ts/app/utils.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L19)
+[ts/app/utils.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L19)
 
 ## Accessors
 
@@ -183,7 +183,7 @@ The name of the Project
 
 #### Defined in
 
-[ts/app/utils.ts:62](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L62)
+[ts/app/utils.ts:62](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L62)
 
 ___
 
@@ -201,7 +201,7 @@ The name of the development team.
 
 #### Defined in
 
-[ts/app/utils.ts:55](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L55)
+[ts/app/utils.ts:55](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L55)
 
 ## Methods
 
@@ -221,7 +221,7 @@ The name of the development team.
 
 #### Defined in
 
-[ts/app/utils.ts:97](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L97)
+[ts/app/utils.ts:97](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L97)
 
 ___
 
@@ -241,4 +241,4 @@ ___
 
 #### Defined in
 
-[ts/app/utils.ts:102](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L102)
+[ts/app/utils.ts:102](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L102)

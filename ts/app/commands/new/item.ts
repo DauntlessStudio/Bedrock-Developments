@@ -74,7 +74,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(1);
         if (options.cooldown) item.setCooldown(options.cooldown);
-        item.setWearable("slot.armor.feet");
+        item.setWearable("slot.armor.feet", 3);
 
         const files: File[] = [item.toFile()];
 
@@ -89,7 +89,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(1);
         if (options.cooldown) item.setCooldown(options.cooldown);
-        item.setWearable("slot.armor.legs");
+        item.setWearable("slot.armor.legs", 6);
 
         const files: File[] = [item.toFile()];
 
@@ -104,7 +104,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(1);
         if (options.cooldown) item.setCooldown(options.cooldown);
-        item.setWearable("slot.armor.chest");
+        item.setWearable("slot.armor.chest", 8);
 
         const files: File[] = [item.toFile()];
 
@@ -119,7 +119,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(1);
         if (options.cooldown) item.setCooldown(options.cooldown);
-        item.setWearable("slot.armor.head");
+        item.setWearable("slot.armor.head", 3);
 
         const files: File[] = [item.toFile()];
 

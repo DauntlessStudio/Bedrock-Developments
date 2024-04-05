@@ -20,4 +20,4 @@
 
 #### Defined in
 
-[ts/app/types/server/loot_table.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/loot_table.ts#L7)
+[ts/app/types/server/loot_table.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/loot_table.ts#L7)
