@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L9)
+[ts/app/types/shared_types.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L9)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L10)
+[ts/app/types/shared_types.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L10)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L11)
+[ts/app/types/shared_types.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L11)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:12](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L12)
+[ts/app/types/shared_types.ts:12](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L12)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L13)
+[ts/app/types/shared_types.ts:13](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L13)

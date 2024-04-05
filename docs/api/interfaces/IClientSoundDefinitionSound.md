@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:28](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L28)
+[ts/app/types/client/sound_definitions.ts:28](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L28)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:27](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L27)
+[ts/app/types/client/sound_definitions.ts:27](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L27)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:24](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L24)
+[ts/app/types/client/sound_definitions.ts:24](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L24)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L26)
+[ts/app/types/client/sound_definitions.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L26)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:29](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L29)
+[ts/app/types/client/sound_definitions.ts:29](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L29)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L25)
+[ts/app/types/client/sound_definitions.ts:25](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L25)
 
 ___
 
@@ -82,4 +82,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L30)
+[ts/app/types/client/sound_definitions.ts:30](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L30)

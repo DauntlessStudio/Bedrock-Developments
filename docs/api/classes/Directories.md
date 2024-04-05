@@ -46,7 +46,7 @@ A global class for getting and setting workspace paths.
 
 #### Defined in
 
-[ts/app/file_manager.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L20)
+[ts/app/file_manager.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L20)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[ts/app/file_manager.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L18)
+[ts/app/file_manager.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L18)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[ts/app/file_manager.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L19)
+[ts/app/file_manager.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L19)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[ts/app/file_manager.ts:21](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L21)
+[ts/app/file_manager.ts:21](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L21)
 
 ## Accessors
 
@@ -94,7 +94,7 @@ The addon subpath <team>/<project> or an empty string if unspecified.
 
 #### Defined in
 
-[ts/app/file_manager.ts:61](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L61)
+[ts/app/file_manager.ts:61](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L61)
 
 • `set` **ADDON_PATH**(`v`): `void`
 
@@ -110,7 +110,7 @@ The addon subpath <team>/<project> or an empty string if unspecified.
 
 #### Defined in
 
-[ts/app/file_manager.ts:81](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L81)
+[ts/app/file_manager.ts:81](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L81)
 
 ___
 
@@ -128,7 +128,7 @@ The behavior pack in the workspace.
 
 #### Defined in
 
-[ts/app/file_manager.ts:47](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L47)
+[ts/app/file_manager.ts:47](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L47)
 
 • `set` **BEHAVIOR_PATH**(`v`): `void`
 
@@ -144,7 +144,7 @@ The behavior pack in the workspace.
 
 #### Defined in
 
-[ts/app/file_manager.ts:65](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L65)
+[ts/app/file_manager.ts:65](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L65)
 
 ___
 
@@ -162,7 +162,7 @@ The resource pack in the workspace.
 
 #### Defined in
 
-[ts/app/file_manager.ts:54](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L54)
+[ts/app/file_manager.ts:54](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L54)
 
 • `set` **RESOURCE_PATH**(`v`): `void`
 
@@ -178,7 +178,7 @@ The resource pack in the workspace.
 
 #### Defined in
 
-[ts/app/file_manager.ts:73](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L73)
+[ts/app/file_manager.ts:73](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L73)
 
 ___
 
@@ -196,7 +196,7 @@ The source path to the module itself.
 
 #### Defined in
 
-[ts/app/file_manager.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L26)
+[ts/app/file_manager.ts:26](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L26)
 
 ___
 
@@ -214,7 +214,7 @@ The path to the vanilla behavior pack samples packaged with the module.
 
 #### Defined in
 
-[ts/app/file_manager.ts:33](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L33)
+[ts/app/file_manager.ts:33](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L33)
 
 ___
 
@@ -232,4 +232,4 @@ The path to the vanilla resource pack samples packaged with the module.
 
 #### Defined in
 
-[ts/app/file_manager.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/file_manager.ts#L40)
+[ts/app/file_manager.ts:40](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/file_manager.ts#L40)

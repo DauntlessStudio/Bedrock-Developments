@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L9)
+[ts/app/types/client/geometry.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L9)
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/geometry.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/geometry.ts#L10)
+[ts/app/types/client/geometry.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/geometry.ts#L10)

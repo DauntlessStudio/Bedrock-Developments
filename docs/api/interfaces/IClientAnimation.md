@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[ts/app/types/client/animation.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation.ts#L11)
+[ts/app/types/client/animation.ts:11](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation.ts#L11)
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/animation.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation.ts#L10)
+[ts/app/types/client/animation.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation.ts#L10)

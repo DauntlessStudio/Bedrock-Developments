@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L18)
+[ts/app/types/client/sound_definitions.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L18)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L16)
+[ts/app/types/client/sound_definitions.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L16)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L20)
+[ts/app/types/client/sound_definitions.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L20)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L19)
+[ts/app/types/client/sound_definitions.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L19)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/client/sound_definitions.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/sound_definitions.ts#L17)
+[ts/app/types/client/sound_definitions.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/sound_definitions.ts#L17)

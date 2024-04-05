@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L16)
+[ts/app/types/shared_types.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L16)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/shared_types.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/shared_types.ts#L17)
+[ts/app/types/shared_types.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/shared_types.ts#L17)

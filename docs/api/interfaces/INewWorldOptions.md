@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[ts/app/types/world.ts:34](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L34)
+[ts/app/types/world.ts:34](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L34)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:37](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L37)
+[ts/app/types/world.ts:37](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L37)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:36](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L36)
+[ts/app/types/world.ts:36](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L36)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L35)
+[ts/app/types/world.ts:35](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L35)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:38](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L38)
+[ts/app/types/world.ts:38](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L38)

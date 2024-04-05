@@ -16,4 +16,4 @@
 
 #### Defined in
 
-[ts/app/types/client/animation_controller.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/client/animation_controller.ts#L44)
+[ts/app/types/client/animation_controller.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/client/animation_controller.ts#L44)

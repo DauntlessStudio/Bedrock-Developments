@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L19)
+[ts/app/types/server/dialogue.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L19)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L14)
+[ts/app/types/server/dialogue.ts:14](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L14)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L17)
+[ts/app/types/server/dialogue.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L17)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L16)
+[ts/app/types/server/dialogue.ts:16](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L16)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:15](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L15)
+[ts/app/types/server/dialogue.ts:15](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L15)
 
 ___
 
@@ -71,4 +71,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/dialogue.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/dialogue.ts#L18)
+[ts/app/types/server/dialogue.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/dialogue.ts#L18)

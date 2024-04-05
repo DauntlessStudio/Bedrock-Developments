@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[ts/app/types/server/item.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L7)
+[ts/app/types/server/item.ts:7](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L7)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L8)
+[ts/app/types/server/item.ts:8](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L8)

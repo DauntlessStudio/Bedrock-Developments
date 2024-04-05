@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[ts/app/types/world.ts:80](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L80)
+[ts/app/types/world.ts:80](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L80)
 
 ## Properties
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[ts/app/types/world.ts:57](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L57)
+[ts/app/types/world.ts:57](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L57)
 
 ## Accessors
 
@@ -72,7 +72,7 @@
 
 #### Defined in
 
-[ts/app/types/world.ts:60](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L60)
+[ts/app/types/world.ts:60](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L60)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:74](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L74)
+[ts/app/types/world.ts:74](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L74)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:70](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L70)
+[ts/app/types/world.ts:70](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L70)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:65](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L65)
+[ts/app/types/world.ts:65](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L65)
 
 ## Methods
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:240](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L240)
+[ts/app/types/world.ts:240](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L240)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:214](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L214)
+[ts/app/types/world.ts:214](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L214)
 
 ___
 
@@ -169,7 +169,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:143](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L143)
+[ts/app/types/world.ts:143](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L143)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:180](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L180)
+[ts/app/types/world.ts:180](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L180)
 
 ___
 
@@ -215,7 +215,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:274](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L274)
+[ts/app/types/world.ts:274](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L274)
 
 ___
 
@@ -236,7 +236,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:84](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L84)
+[ts/app/types/world.ts:84](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L84)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:132](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L132)
+[ts/app/types/world.ts:132](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L132)
 
 ___
 
@@ -270,4 +270,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/world.ts:197](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L197)
+[ts/app/types/world.ts:197](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L197)

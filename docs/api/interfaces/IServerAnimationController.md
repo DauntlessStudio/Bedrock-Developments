@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[ts/app/types/server/animation_controller.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/animation_controller.ts#L10)
+[ts/app/types/server/animation_controller.ts:10](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/animation_controller.ts#L10)
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/animation_controller.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/animation_controller.ts#L9)
+[ts/app/types/server/animation_controller.ts:9](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/animation_controller.ts#L9)

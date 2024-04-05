@@ -29,7 +29,7 @@ IMinecraftPack.directory
 
 #### Defined in
 
-[ts/app/types/world.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L43)
+[ts/app/types/world.ts:43](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L43)
 
 ___
 
@@ -43,7 +43,7 @@ IMinecraftPack.name
 
 #### Defined in
 
-[ts/app/types/world.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L44)
+[ts/app/types/world.ts:44](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L44)
 
 ___
 
@@ -57,7 +57,7 @@ IMinecraftPack.type
 
 #### Defined in
 
-[ts/app/types/world.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L53)
+[ts/app/types/world.ts:53](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L53)
 
 ___
 
@@ -71,4 +71,4 @@ IMinecraftPack.uuid
 
 #### Defined in
 
-[ts/app/types/world.ts:42](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/world.ts#L42)
+[ts/app/types/world.ts:42](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/world.ts#L42)

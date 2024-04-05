@@ -20,4 +20,4 @@ The format of the bedrock.config.json file.
 
 #### Defined in
 
-[ts/app/utils.ts:150](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/utils.ts#L150)
+[ts/app/utils.ts:150](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/utils.ts#L150)

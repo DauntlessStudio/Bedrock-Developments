@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[ts/app/types/server/loot_table.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/loot_table.ts#L20)
+[ts/app/types/server/loot_table.ts:20](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/loot_table.ts#L20)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/loot_table.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/loot_table.ts#L18)
+[ts/app/types/server/loot_table.ts:18](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/loot_table.ts#L18)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/loot_table.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/loot_table.ts#L17)
+[ts/app/types/server/loot_table.ts:17](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/loot_table.ts#L17)
 
 ___
 
@@ -49,4 +49,4 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/loot_table.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/loot_table.ts#L19)
+[ts/app/types/server/loot_table.ts:19](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/loot_table.ts#L19)

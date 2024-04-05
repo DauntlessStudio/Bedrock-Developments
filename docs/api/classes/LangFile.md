@@ -43,7 +43,7 @@ Gets a list of files from a glob pattern. Note that any valid pattern will work 
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:143](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L143)
+[ts/app/types/minecraft.ts:143](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L143)
 
 ## Properties
 
@@ -57,7 +57,7 @@ The lang files handled by this class instance, as an array of [File](../modules.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:137](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L137)
+[ts/app/types/minecraft.ts:137](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L137)
 
 ## Methods
 
@@ -82,7 +82,7 @@ Adds an entry to all the `.lang` file in this object's [files](LangFile.md#files
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:169](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L169)
+[ts/app/types/minecraft.ts:169](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L169)
 
 ___
 
@@ -109,4 +109,4 @@ Adds a lang file entry to every `.lang` file in `RP/texts`.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:158](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L158)
+[ts/app/types/minecraft.ts:158](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L158)

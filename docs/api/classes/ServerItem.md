@@ -73,7 +73,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/server/item.ts:99](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L99)
+[ts/app/types/server/item.ts:100](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L100)
 
 ## Properties
 
@@ -87,7 +87,7 @@ The parent class for all Minecraft data types, i.e. MinecraftServerClient.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L23)
+[ts/app/types/minecraft.ts:23](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L23)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:92](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L92)
+[ts/app/types/server/item.ts:93](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L93)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:93](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L93)
+[ts/app/types/server/item.ts:94](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L94)
 
 ## Accessors
 
@@ -137,7 +137,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/server/item.ts:95](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L95)
+[ts/app/types/server/item.ts:96](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L96)
 
 ## Methods
 
@@ -162,7 +162,7 @@ MinecraftDataType.DirectoryPath
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L72)
+[ts/app/types/minecraft.ts:72](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L72)
 
 ___
 
@@ -186,7 +186,7 @@ Serializes this object to a string.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L63)
+[ts/app/types/minecraft.ts:63](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L63)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:162](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L162)
+[ts/app/types/server/item.ts:164](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L164)
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:117](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L117)
+[ts/app/types/server/item.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L118)
 
 ___
 
@@ -241,7 +241,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:154](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L154)
+[ts/app/types/server/item.ts:156](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L156)
 
 ___
 
@@ -261,7 +261,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:176](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L176)
+[ts/app/types/server/item.ts:178](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L178)
 
 ___
 
@@ -282,7 +282,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:169](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L169)
+[ts/app/types/server/item.ts:171](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L171)
 
 ___
 
@@ -302,19 +302,20 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:127](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L127)
+[ts/app/types/server/item.ts:128](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L128)
 
 ___
 
 ### setWearable
 
-▸ **setWearable**(`slot`): `void`
+▸ **setWearable**(`slot`, `protectionPoints`): `void`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `slot` | [`SlotOptions`](../modules.md#slotoptions) |
+| `protectionPoints` | `number` |
 
 #### Returns
 
@@ -322,7 +323,7 @@ ___
 
 #### Defined in
 
-[ts/app/types/server/item.ts:133](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L133)
+[ts/app/types/server/item.ts:134](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L134)
 
 ___
 
@@ -352,7 +353,7 @@ Creates a [File](../modules.md#file) object from this MinecraftDataType.
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L98)
+[ts/app/types/minecraft.ts:98](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L98)
 
 ___
 
@@ -382,7 +383,7 @@ Creates a filepath for this object type from a [NameData](NameData.md).
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L46)
+[ts/app/types/minecraft.ts:46](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L46)
 
 ___
 
@@ -412,7 +413,7 @@ Creates a new instance of the data type using reasonable defaults from a [NameDa
 
 #### Defined in
 
-[ts/app/types/server/item.ts:105](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/server/item.ts#L105)
+[ts/app/types/server/item.ts:106](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/server/item.ts#L106)
 
 ___
 
@@ -450,7 +451,7 @@ Creates an instace of a MinecraftDataType child from a source string, used in [f
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L83)
+[ts/app/types/minecraft.ts:83](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L83)
 
 ___
 
@@ -487,7 +488,7 @@ Crates an instance of a MinecraftDataTypeChild from a [File](../modules.md#file)
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L108)
+[ts/app/types/minecraft.ts:108](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L108)
 
 ___
 
@@ -524,4 +525,4 @@ Creates a MinecraftDataType object from a filepath, or a template if that filepa
 
 #### Defined in
 
-[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/c7d1542/ts/app/types/minecraft.ts#L118)
+[ts/app/types/minecraft.ts:118](https://github.com/DauntlessStudio/Bedrock-Developments/blob/9a78313/ts/app/types/minecraft.ts#L118)
