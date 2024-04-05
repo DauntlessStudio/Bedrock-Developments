@@ -1,4 +1,9 @@
 # Changelog
+# [3.0.3] - 4/5/2024
+Fixes
+## Fixed
+- Fixed issue where exports where not provided to the api.
+---
 # [3.0.2] - 4/4/2024
 Fixes
 ## Fixed
