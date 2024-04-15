@@ -239,7 +239,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const attachable = ClientAttachable.createFromTemplate(nameData);
         attachable.addAnimation(
             {name: `ctrl.${nameData.shortname}`, reference: `controller.animation.${nameData.namespace}.item.custom_items.${nameData.shortname}`},
-            {name: `${nameData.shortname}.first_person_fix`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.idle.first_person`},
+            {name: `${nameData.shortname}.first_person_fix`, reference: `animation.${nameData.namespace}.${nameData.shortname}.first_person_fix`},
             {name: `${nameData.shortname}.idle.first_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.idle.first_person`},
             {name: `${nameData.shortname}.idle.third_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.idle.third_person`},
             {name: `${nameData.shortname}.attack.first_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.attack.first_person`},
