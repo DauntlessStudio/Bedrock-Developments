@@ -19,9 +19,14 @@ export class Directories {
     private static resource_path = '**/resource_packs/*rp/';
     private static addon_path = '';
     private static source_path = path.join(path.resolve(path.dirname(fileURLToPath(import.meta.url))), 'src');
-
+    private static package_path = path.join(path.resolve(path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))))), 'package.json');
+    
+    public static get PACKAGE_PATH() : string {
+        return this.package_path;
+    }
+    
     /**
-     * @remarks The source path to the module itself.
+     * @remarks The path to the module's /src
      */
     public static get SOURCE_PATH() : string {
         return this.source_path + '/';

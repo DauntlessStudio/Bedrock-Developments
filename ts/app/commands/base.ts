@@ -3,7 +3,7 @@ import { Directories, getFiles } from '../file_manager.js';
 import axios from 'axios';
 import { chalk, setAddonName } from '../utils.js';
 
-const version = JSON.parse(getFiles(Directories.ADDON_PATH + "package.json")[0].fileContents).version;
+const version = JSON.parse(getFiles(Directories.PACKAGE_PATH)[0].fileContents).version;
 export const program = new Command();
 
 program
