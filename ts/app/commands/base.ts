@@ -1,9 +1,9 @@
 import { Command } from 'commander';
-import { Directories } from '../file_manager.js';
+import { Directories, getFiles } from '../file_manager.js';
 import axios from 'axios';
 import { chalk, setAddonName } from '../utils.js';
 
-const version = '3.0.6';
+const version = JSON.parse(getFiles(Directories.ADDON_PATH + "package.json")[0].fileContents).version;
 export const program = new Command();
 
 program
@@ -27,8 +27,8 @@ function setBehaviorPath(bp: string) {
 }
 
 export async function printVersion() {
-  let result = await axios.get('https://registry.npmjs.org/bedrock-development/latest');
-  let latest_version = result.data.version;
+  const result = await axios.get('https://registry.npmjs.org/bedrock-development/latest');
+  const latest_version = result.data.version;
   if (version !== latest_version) {
     console.log(`${chalk.yellow(`A new release of bed is available:`)} ${chalk.cyan(`${version} → ${latest_version}`)}`);
     console.log(`${chalk.yellow('npm i bedrock-development@latest -g')}`);
