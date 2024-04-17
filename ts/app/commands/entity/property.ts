@@ -3,6 +3,7 @@ import { printVersion } from "../base.js";
 import { program_entity } from "./entity.js";
 import { File, getFiles, setFiles } from "../../file_manager.js";
 import { Identifier, ServerEntity } from "../../types/index.js";
+import { implementConfig } from "../../utils.js";
 
 
 program_entity.command('property')
@@ -19,6 +20,7 @@ program_entity.command('property')
 .hook('postAction', printVersion);
 
 function triggerEntityAddProperty(names: string[], options: OptionValues) {
+  implementConfig();
   const family: string[] = options.type ?? [];
   const file: string = options.file;
   const property: "bool"|"enum"|"float"|"int" = options.property;

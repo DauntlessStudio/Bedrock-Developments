@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion } from "../base.js";
 import { program_entity } from "./entity.js";
 import { Directories, File, copySourceFile, getFiles, setFiles } from "../../file_manager.js";
-import { NameData } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 import { ServerAnimation, ServerAnimationController, ServerEntity } from "../../types/index.js";
 
 program_entity.command('anim')
@@ -16,6 +16,7 @@ program_entity.command('anim')
 .hook('postAction', printVersion);
 
 function triggerEntityAddAnim(names: string[], options: OptionValues) {
+  implementConfig();
   const family: string[] = options.type ?? [];
   const file: string = options.file;
   const script: boolean = options.script;

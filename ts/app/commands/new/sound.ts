@@ -3,7 +3,7 @@ import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
 import { Directories, File, setFiles } from "../../file_manager.js";
 import { ClientSoundCategory, ClientSoundDefinitions } from "../../types/index.js";
-import { chalk } from "../../utils.js";
+import { chalk, implementConfig } from "../../utils.js";
 
 const categories: string[] = ['ambient', 'block', 'bottle', 'bucket', 'hostile', 'music', 'neutral', 'player', 'record', 'ui', 'weather'];
 
@@ -17,6 +17,7 @@ program_new.command('sound')
 .hook('postAction', printVersion);
 
 function triggerCreateNewSoundDefinition(names: string[], options: OptionValues) {
+  implementConfig();
   const category: string = options.category;
   const vanilla: string|undefined = options.vanilla;
   const filepath: string = options.filepath;

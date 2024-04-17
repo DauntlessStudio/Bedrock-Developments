@@ -1,4 +1,9 @@
 # Changelog
+# [3.0.8] - 4/17/2024
+Added Command
+## Added
+- Added command `bed new project` which generates a new project in the `Content/world_template` format.
+---
 # [3.0.7] - 4/17/2024
 Changes, Actions
 ## Changes

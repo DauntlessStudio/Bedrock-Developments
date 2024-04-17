@@ -2,7 +2,7 @@ import { OptionValues, Option } from "commander";
 import { printVersion, } from "../base.js";
 import { program_new } from "./new.js";
 import { setFiles, File } from "../../file_manager.js";
-import { NameData } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 import { ServerAnimationController } from "../../types/index.js";
 
 program_new.command('ctrl')
@@ -17,6 +17,7 @@ program_new.command('ctrl')
 .hook('postAction', printVersion);
 
 async function triggerCreateNewController(names: string[], options: OptionValues) {
+  implementConfig();
   const on_entry: string[] = options.entry;
   const on_exit: string[] = options.exit;
   const animations: string[] = options.anim;
