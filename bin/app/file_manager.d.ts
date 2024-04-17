@@ -14,8 +14,10 @@ export declare class Directories {
     private static resource_path;
     private static addon_path;
     private static source_path;
+    private static package_path;
+    static get PACKAGE_PATH(): string;
     /**
-     * @remarks The source path to the module itself.
+     * @remarks The path to the module's /src
      */
     static get SOURCE_PATH(): string;
     /**

@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  discord-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
+        with:
+          args: '@Marketplace Developer Bedrock Developments {{EVENT_PAYLOAD.release.tag_name}} is released. {{EVENT_PAYLOAD.release.body}}'
