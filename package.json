@@ -14,7 +14,7 @@
     "build-watch": "npx tsc -w",
     "clean-dir": "rm -rf ./behavior_packs && rm -rf ./resource_packs && mkdir -p behavior_packs/test_bp && mkdir -p resource_packs/test_rp",
     "clear": "rm ./behavior_packs/test_bp/** -rf && rm ./resource_packs/test_rp/** -rf",
-    "docs": "npx typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme ts/app/index.ts --out docs/api --readme none",
+    "docs": "npx typedoc --plugin typedoc-plugin-markdown --plugin typedoc-github-wiki-theme ts/app/index.ts --out docs/api --entryDocument API.md",
     "test": "npm run clean-dir && npm run build && node . new entity -c test && node . new item -t attachable test && node . new block test"
   },
   "bin": {
