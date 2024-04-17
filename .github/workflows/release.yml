@@ -14,10 +14,6 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -28,4 +24,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
         with:
-          args: '<@&1074729163409346650> Bedrock Developments {{EVENT_PAYLOAD.release.tag_name}} is released. {{EVENT_PAYLOAD.release.body}}'
+          args: '<@&1074729163409346650> Bedrock Developments {{EVENT_PAYLOAD.release.tag_name}} is released.\n{{EVENT_PAYLOAD.release.body}}'
