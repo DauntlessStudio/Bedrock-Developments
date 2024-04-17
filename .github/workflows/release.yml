@@ -28,4 +28,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
         with:
-          args: '@Marketplace Developer Bedrock Developments {{EVENT_PAYLOAD.release.tag_name}} is released. {{EVENT_PAYLOAD.release.body}}'
+          args: '<@&1074729163409346650> Bedrock Developments {{EVENT_PAYLOAD.release.tag_name}} is released. {{EVENT_PAYLOAD.release.body}}'
