@@ -1,4 +1,14 @@
 # Changelog
+# [3.0.7] - 4/17/2024
+Changes, Actions
+## Changes
+- Player animations generated with `bed new item --type attachable` now set `override_previous_animation` to true.
+- The docs folder has been removed in favor of using the wiki, the changelog path has been moved to the root in accordance with this change.
+## Actions
+- Added merge checks ensuring typescript compiles successfully and several commands still work without error.
+- Added automatic documentation publishing.
+- Added a notification pass to Discord on release.
+---
 # [3.0.5] - 4/15/2024
 Fixes
 ## Fixed
