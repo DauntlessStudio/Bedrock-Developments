@@ -4,4 +4,8 @@ import { implementConfig } from './app/utils.js';
 export * from './app/index.js';
 
 implementConfig();
-runProgram();
+try {
+    runProgram();
+} catch (error) {
+    console.error("Command Failed", error);
+}

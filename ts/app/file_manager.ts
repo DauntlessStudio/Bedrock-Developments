@@ -50,14 +50,22 @@ export class Directories {
      * @remarks The behavior pack in the workspace.
      */
     public static get BEHAVIOR_PATH() : string {
-        return globSync(this.behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
+        try {
+            return globSync(this.behavior_path)[0].replace(/\/|\\+/g, '/') + '/';
+        } catch (error) {
+            throw chalk.red("Cannot Find Behavior Path");
+        }
     }
     
     /**
      * @remarks The resource pack in the workspace.
      */
     public static get RESOURCE_PATH() : string {
-        return globSync(this.resource_path)[0].replace(/\/|\\+/g, '/') + '/';
+        try {
+            return globSync(this.resource_path)[0].replace(/\/|\\+/g, '/') + '/';
+        } catch (error) {
+            throw chalk.red("Cannot Find Resource Path");
+        }
     }
 
     /**
@@ -100,7 +108,7 @@ export class Directories {
 export function getFiles(globPattern: string): File[] {
     globPattern = globPattern.replace(/\/|\\+/g, '/');
 
-    return globSync(globPattern).map(file => {
+    return globSync(globPattern).filter(file => fs.lstatSync(file).isFile()).map(file => {
         return {filePath: file, fileContents: String(fs.readFileSync(file))}
     });
 }
