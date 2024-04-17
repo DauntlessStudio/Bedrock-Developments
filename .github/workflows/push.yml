@@ -16,4 +16,4 @@ jobs:
       - run: npm run build && npm run docs
       - uses: Andrew-Chen-Wang/github-wiki-action@v4
         with:
-          path: "docs/api"
+          path: "docs"
