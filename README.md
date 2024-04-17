@@ -58,8 +58,8 @@ Check that it has installed with:
 bed --version
 ```
 
-**Make sure you are in the root of your project when using the CLI**. You can view the full list of available commands [here](docs/commands/commands.md).
+**Make sure you are in the root of your project when using the CLI**. You can view the full list of available commands [here](https://github.com/DauntlessStudio/Bedrock-Developments/wiki/commands).
 
 ## Changelog
 
-View the changelog [here](docs/changelog.md).
+View the changelog [here](changelog.md).
