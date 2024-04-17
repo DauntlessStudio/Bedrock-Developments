@@ -1,7 +1,7 @@
 import { OptionValues } from "commander";
 import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
-import { NameData } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
 import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types/index.js";
 import { LangFile } from "../../types/index.js";
@@ -17,6 +17,7 @@ program_new.command('block')
 .hook('postAction', printVersion);
 
 function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO: Add template file creators to types files, add textures to item/terrain texture
+    implementConfig();
   const lang: boolean = options.lang;
   const emissive: number|undefined = options.emissive;
   const table: boolean = options.table;

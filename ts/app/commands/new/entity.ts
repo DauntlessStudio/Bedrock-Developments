@@ -2,7 +2,7 @@ import { OptionValues } from "commander";
 import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
-import { NameData } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 import { ClientEntity, ClientGeometry, ServerEntity } from "../../types/index.js";
 import { LangFile } from "../../types/index.js";
 
@@ -17,6 +17,7 @@ program_new.command('entity')
 .hook('postAction', printVersion);
 
 function triggerCreateNewEntity(names: string[], options: OptionValues) {
+  implementConfig();
   const type = options.type;
   const lang: boolean = options.lang;
   const geo: boolean = options.geo;

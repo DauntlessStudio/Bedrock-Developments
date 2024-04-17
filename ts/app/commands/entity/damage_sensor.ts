@@ -3,7 +3,7 @@ import { printVersion } from "../base.js";
 import { program_entity } from "./entity.js";
 import { File, getFiles, getStringFromTemporaryFile, setFiles } from "../../file_manager.js";
 import { ServerEntity } from "../../types/index.js";
-import { chalk } from "../../utils.js";
+import { chalk, implementConfig } from "../../utils.js";
 
 program_entity.command('sensor')
 .description('adds a damage sensor to entities')
@@ -15,6 +15,7 @@ program_entity.command('sensor')
 .hook('postAction', printVersion);
 
 async function triggerEntityAddDamageSensor(options: OptionValues) {
+  implementConfig();
   const family: string[] = options.type ?? [];
   const file: string = options.file;
   const start: boolean = options.start;

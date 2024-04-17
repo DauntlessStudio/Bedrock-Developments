@@ -3,6 +3,7 @@ import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
 import { setFiles } from "../../file_manager.js";
 import {  MCFunction } from "../../types/index.js";
+import { implementConfig } from "../../utils.js";
 
 program_new.command('function')
 .description('creates new bedrock functions')
@@ -16,6 +17,7 @@ program_new.command('function')
 .hook('postAction', printVersion);
 
 function triggerCreateNewFunction(names: string[], options: OptionValues) {
+  implementConfig();
   const commands: string[] = options.commands;
   const description: string = options.description;
   const source: string = options.source;

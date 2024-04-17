@@ -3,7 +3,7 @@ import { printVersion, } from "../base.js";
 import { program_new } from "./new.js";
 import { setFiles, File } from "../../file_manager.js";
 import { ServerAnimation } from "../../types/index.js";
-import { NameData } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 
 program_new.command('anim')
 .description('creates new bedrock behavior animations')
@@ -15,6 +15,7 @@ program_new.command('anim')
 .hook('postAction', printVersion);
 
 function triggerCreateNewAnimation(names: string[], options: OptionValues) {
+  implementConfig();
   const loop: boolean = Boolean(options.loop);
   const commands: string[] = options.commands;
   const animation_length: number = options.time;

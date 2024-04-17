@@ -76,18 +76,22 @@ export class Directories {
     }
 
     public static set BEHAVIOR_PATH(v: string) {
-        if (globSync(v).every(path => fs.existsSync(path))) {
+        if (fs.existsSync(v)) {
             this.behavior_path = v;
         } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to behavior path`)}`);
+            console.warn(`${chalk.yellow(`Created directory ${v} and assigned to behavior path`)}`);
+            fs.mkdirSync(v, {recursive: true});
+            this.behavior_path = v;
         }
     }
     
     public static set RESOURCE_PATH(v: string) {
-        if (globSync(v).every(path => fs.existsSync(path))) {
+        if (fs.existsSync(v)) {
             this.resource_path = v;
         } else {
-            console.error(`${chalk.red(`Failed to resolve glob pattern ${v}. Cannot assign to resource path`)}`);
+            console.warn(`${chalk.yellow(`Created directory ${v} and assigned to resource path`)}`);
+            fs.mkdirSync(v, {recursive: true});
+            this.resource_path = v;
         }
     }
     

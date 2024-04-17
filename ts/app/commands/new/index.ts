@@ -6,3 +6,4 @@ export * from './animation.js';
 export * from './animation_controller.js';
 export * from './function.js';
 export * from './sound.js';
+export * from './project.js';

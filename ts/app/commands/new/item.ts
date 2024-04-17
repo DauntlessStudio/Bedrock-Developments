@@ -3,7 +3,7 @@ import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
 import { ClientItemTexture, ServerItem, LangFile, ClientEntity, ClientAnimationController, ClientAnimation, ClientAnimationName, ClientAttachable, ClientGeometryAttachable } from "../../types/index.js";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
-import { NameData, currentFormatVersion } from "../../utils.js";
+import { NameData, currentFormatVersion, implementConfig } from "../../utils.js";
 
 interface ItemCommandOptions {
     lang: boolean;
@@ -37,6 +37,7 @@ program_new.command("item")
 .hook("postAction", printVersion);
 
 async function triggerCreateNewItem(names: string[], options: OptionValues) {
+    implementConfig();
     const commandOptions = {
         lang: options.lang,
         stack: Number(options.stack),
