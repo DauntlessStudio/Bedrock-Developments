@@ -10,12 +10,14 @@ program_new.command('project')
 .description('creates a minecraft development project')
 .addArgument(new Argument('<name>', 'the project name, folders will be output as "behavior_packs/<name>_bp" and "behavior_packs/<name>_rp"'))
 .option("-d, --display <display name>", "A display name to be used in your lang file, if different from your folder names")
+.option("-a, --author <author name>", "The credits name as a team or individual")
 .action(triggerCreateNewProject)
 .hook('postAction', printVersion);
 
 async function triggerCreateNewProject(name: string, options: OptionValues) {
     const bpFiles: File[] = [];
     const rpFiles: File[] = [];
+    const rootFiles: File[] = [];
 
     const bpUUID = v4();
     const rpUUID = v4();
@@ -24,6 +26,7 @@ async function triggerCreateNewProject(name: string, options: OptionValues) {
     Directories.RESOURCE_PATH = `Content/world_template/resource_packs/${name}_rp`;
 
     const displayName: string = options.display ?? name;
+    const author: string = options.author;
 
     // Create Default Behavior Pack Files
     const bpManifest = {
@@ -107,6 +110,40 @@ async function triggerCreateNewProject(name: string, options: OptionValues) {
     );
     setFiles(rpFiles);
     copySourceFile('images/pack_icon.png', Directories.RESOURCE_PATH + 'pack_icon.png');
+
+    // Create General Files
+    const rootManifest = {
+        format_version: 2,
+        header: {
+            name: "pack.name",
+            description: "pack.description",
+            uuid: v4(),
+            lock_template_options: true,
+            version: [1, 0, 0],
+            base_game_version: [1, 20, 71]
+        },
+        modules: [
+            {
+                type: "world_template",
+                uuid: v4(),
+                version: [1, 0, 0]
+            }
+        ],
+        metadata: {
+            authors: [
+                author
+            ]
+        }
+    };
+
+    rootFiles.push(
+        {filePath: `Content/world_template/manifest.json`, fileContents: JSON.stringify(rootManifest, null, '\t')},
+        {filePath: `Content/world_template/world_behavior_packs.json`, fileContents: JSON.stringify([{pack_id: bpUUID, version: [1, 0, 0]}], null, '\t')},
+        {filePath: `Content/world_template/world_resource_packs.json`, fileContents: JSON.stringify([{pack_id: rpUUID, version: [1, 0, 0]}], null, '\t')},
+        {filePath: `Content/world_template/texts/languages.json`, fileContents: JSON.stringify(["en_US"], null, '\t')},
+        {filePath: `Content/world_template/texts/en_US.lang`, fileContents: `pack.name=${displayName}\npack.description=By ${author}`},
+    );
+    setFiles(rootFiles);
 }
 
 async function getnpmLatestVersion(pack: string) {

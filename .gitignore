@@ -1,5 +1,6 @@
 node_modules/
 behavior_packs/
 resource_packs/
+Content/
 bin/**/*.js
 bedrock.config.json
