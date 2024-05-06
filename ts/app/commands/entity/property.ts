@@ -3,7 +3,7 @@ import { printVersion } from "../base.js";
 import { program_entity } from "./entity.js";
 import { File, getFiles, setFiles } from "../../file_manager.js";
 import { Identifier, ServerEntity } from "../../types/index.js";
-import { implementConfig } from "../../utils.js";
+import { NameData, implementConfig } from "../../utils.js";
 
 
 program_entity.command('property')
@@ -36,7 +36,7 @@ function triggerEntityAddProperty(names: string[], options: OptionValues) {
   entities.forEach(entity => {
     names.forEach(name => {
         entity.setProperties({
-            [name as Identifier]: {
+            [new NameData(name).fullname as Identifier]: {
                 type: property,
                 client_sync,
                 default: default_value,
