@@ -1,4 +1,10 @@
 # Changelog
+# [3.0.9] - 5/6/2024
+Updates
+## Updates
+- Updated `bed new item -t attachable` to use adjusted file generation in accordance with artist's feedback.
+- Updated `bed new item -t attachable` to stop using the interact button component for more consistent item interaction behaviors.
+---
 # [3.0.8] - 4/17/2024
 Added Command
 ## Added
