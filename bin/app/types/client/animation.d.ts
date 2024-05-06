@@ -18,7 +18,7 @@ export interface IClientAnimationAnim {
     start_delay?: string;
     override_previous_animation?: boolean;
     timeline?: {
-        [key: `${number}`]: string[];
+        [key: `${number}`]: string[] | string;
     };
     particle_effects?: {
         [key: `${number}`]: IClientACParticleEffects;
@@ -32,13 +32,25 @@ export interface IClientAnimationAnim {
 }
 export interface IClientAnimationBone {
     rotation?: MolangTripleArray | {
-        [key: `${number}`]: MolangTripleArray;
+        [key: `${number}`]: MolangTripleArray | {
+            pre?: MolangTripleArray;
+            post?: MolangTripleArray;
+            lerp_mode?: string;
+        };
     };
     position?: MolangTripleArray | {
-        [key: `${number}`]: MolangTripleArray;
+        [key: `${number}`]: MolangTripleArray | {
+            pre?: MolangTripleArray;
+            post?: MolangTripleArray;
+            lerp_mode?: string;
+        };
     };
     scale?: MolangTripleArray | {
-        [key: `${number}`]: MolangTripleArray;
+        [key: `${number}`]: MolangTripleArray | {
+            pre?: MolangTripleArray;
+            post?: MolangTripleArray;
+            lerp_mode?: string;
+        };
     };
     relative_to?: {
         rotation: string;
