@@ -40,7 +40,7 @@ function triggerCreateNewEntity(names: string[], options: OptionValues) {
     }
 
     if (client && texture) {
-      copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + nameData.directory + 'entity/' + nameData.shortname + '/default.png');
+      copySourceFile('images/uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'entity/' + nameData.directory + nameData.shortname + '/default.png');
     }
 
     if (lang) {
