@@ -159,7 +159,6 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
         if (options.cooldown) item.setCooldown(options.cooldown);
-        item.setInteractButton(nameData);
         item.setModifiers();
 
         const files: File[] = [item.toFile()];
@@ -167,7 +166,6 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         if (options.lang) {
             const langs = new LangFile('*.lang');
             langs.addToCategory('item names', `item.${nameData.fullname}.name=${nameData.display}`);
-            langs.addToCategory('item use interactions', `action.hint.interact.${nameData.fullname}=Use ${nameData.display}`);
             files.push(...langs.files);
         }
 
@@ -222,16 +220,15 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const animation = new ClientAnimation(ClientAnimation.createFilePath(nameData), {
             format_version: currentFormatVersion,
             animations: {
-                [`animation.${nameData.namespace}.${nameData.shortname}.first_person_fix` as ClientAnimationName]: { loop: true, bones: { [nameData.shortname]: { rotation: [72.69456, 61.41896, -28.98545], position: [-3, 0, 1] } } },
                 [`animation.${nameData.namespace}.${nameData.shortname}.blockbench_fix` as ClientAnimationName]: { loop: true, bones: { root: { rotation: [0, 0, 0], position: [7, -15, 1] } } },
-                [`animation.${nameData.namespace}.player.${nameData.shortname}.idle.first_person` as ClientAnimationName]: { loop: true, override_previous_animation: true, blend_weight: `v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`, bones: { rightArm: { rotation: [ 0, 0, 0 ] } } },
-                [`animation.${nameData.namespace}.player.${nameData.shortname}.idle.third_person` as ClientAnimationName]: { loop: true, override_previous_animation: true, blend_weight: `!v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`, bones: { rightArm: { rotation: [ -30, 0, 0 ] } } },
-                [`animation.${nameData.namespace}.player.${nameData.shortname}.attack.first_person` as ClientAnimationName]: { loop: "hold_on_last_frame", override_previous_animation: true, blend_weight: "v.is_first_person", animation_length: 0.5, timeline: { 0.0: "v.playing_custom_attack = 1;", 0.5: "v.playing_custom_attack = 0;" }, bones: { rightArm: { rotation: { "0.0": [ 0, 0, 0 ], "0.1": [ -10, 20, 0 ], "0.2": [ -10, -20, 0 ], "0.3": [ 0, 0, 0 ] }, position: { "0.0": [0, 0, 0], "0.2": [10, 0, 0], "0.3": [0, 0, 0] } } } },
-                [`animation.${nameData.namespace}.player.${nameData.shortname}.attack.third_person` as ClientAnimationName]: { loop: "hold_on_last_frame", override_previous_animation: true, blend_weight: "!v.is_first_person", animation_length: 0.3, timeline: { 0.0: "v.playing_custom_attack = 1;", 0.3: "v.playing_custom_attack = 0;" }, bones : { rightArm: { rotation: { "0.0": [ -90, 0, 0 ], "0.1": [ -100, 20, 0 ], "0.2": [ -100, -20, 0 ], "0.3": [ -90, 0, 0 ] } } } },
-                [`animation.${nameData.namespace}.item.${nameData.shortname}.idle.first_person` as ClientAnimationName]: {},
+                [`animation.${nameData.namespace}.player.${nameData.shortname}.idle.first_person` as ClientAnimationName]: {loop:true,override_previous_animation:true,blend_weight:`v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`,bones:{first_person_fix:{rotation:[-40,60,-40],position:[-3,0,0]}}},
+                [`animation.${nameData.namespace}.player.${nameData.shortname}.idle.third_person` as ClientAnimationName]: {loop:true,override_previous_animation:true,blend_weight:`!v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`,bones:{rightArm:{rotation:[-30,0,0]}}},
+                [`animation.${nameData.namespace}.player.${nameData.shortname}.attack.first_person` as ClientAnimationName]: {loop:"hold_on_last_frame",animation_length:0.5,override_previous_animation:true,blend_weight:`v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`,bones:{first_person_fix:{rotation:[-40,60,-40],position:[-3,0,0]},[nameData.shortname]:{rotation:{0.0:{post:[0,0,0],lerp_mode:"catmullrom"},0.1:{post:[-50,-40,60],lerp_mode:"catmullrom"},0.2:[0,0,-10],0.3:[11.2376,4.58608,-83.35255],0.4:[0,0,-80],0.5:{pre:[0,0,0],post:[0,0,0],lerp_mode:"catmullrom"}},position:{0.0:{post:[0,0,0],lerp_mode:"catmullrom"},0.1:{post:[-7,1,-11],lerp_mode:"catmullrom"},0.2:[20,-10,10],0.3:[23.43926,-13.01119,15.34095],0.4:[20,-10,10],0.5:{pre:[0,0,0],post:[0,0,0],lerp_mode:"catmullrom"}}}},timeline:{0.0:"v.playing_custom_attack = 1;",0.5:"v.playing_custom_attack = 0;"}},
+                [`animation.${nameData.namespace}.player.${nameData.shortname}.attack.third_person` as ClientAnimationName]: {loop:"hold_on_last_frame",override_previous_animation:true,blend_weight:`!v.is_first_person && q.is_item_name_any('slot.weapon.mainhand', 0, '${nameData.fullname}')`,animation_length:0.3,timeline:{"0":"v.playing_custom_attack = 1;",0.3:"v.playing_custom_attack = 0;"},bones:{rightArm:{rotation:{0.0:[-90,0,0],0.1:[-100,20,0],0.2:[-100,-20,0],0.3:[-90,0,0]}}}},
+                [`animation.${nameData.namespace}.item.${nameData.shortname}.idle.first_person` as ClientAnimationName]: {loop:true,bones:{first_person_fix:{rotation:[-40,60,-40],position:[-3,0,0]}}},
                 [`animation.${nameData.namespace}.item.${nameData.shortname}.idle.third_person` as ClientAnimationName]: {},
-                [`animation.${nameData.namespace}.item.${nameData.shortname}.attack.first_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.5, bones: { [nameData.shortname]: { scale: { 0.0: [1.2, 1.2, 1.2] } } } },
-                [`animation.${nameData.namespace}.item.${nameData.shortname}.attack.third_person` as ClientAnimationName]: { loop: "hold_on_last_frame", animation_length: 0.3, bones: { [nameData.shortname]: { scale: { 0.0: [1.2, 1.2, 1.2] } } } },
+                [`animation.${nameData.namespace}.item.${nameData.shortname}.attack.first_person` as ClientAnimationName]: {loop:"hold_on_last_frame",animation_length:0.5,bones:{first_person_fix:{rotation:[-40,60,-40],position:[-3,0,0]},[nameData.shortname]:{rotation:{0.0:{post:[0,0,0],lerp_mode:"catmullrom"},0.1:{post:[-50,-40,60],lerp_mode:"catmullrom"},0.2:[0,0,-10],0.3:[11.2376,4.58608,-83.35255],0.4:[0,0,-80],0.5:{pre:[0,0,0],post:[0,0,0],lerp_mode:"catmullrom"}},position:{0.0:{post:[0,0,0],lerp_mode:"catmullrom"},0.1:{post:[-7,1,-11],lerp_mode:"catmullrom"},0.2:[20,-10,10],0.3:[23.43926,-13.01119,15.34095],0.4:[20,-10,10],0.5:{pre:[0,0,0],post:[0,0,0],lerp_mode:"catmullrom"}}}},timeline:{0.0:"v.playing_custom_attack = 1;",0.5:"v.playing_custom_attack = 0;"}},
+                [`animation.${nameData.namespace}.item.${nameData.shortname}.attack.third_person` as ClientAnimationName]: {},
             }
         });
         files.push(animation.toFile());
@@ -240,13 +237,12 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const attachable = ClientAttachable.createFromTemplate(nameData);
         attachable.addAnimation(
             {name: `ctrl.${nameData.shortname}`, reference: `controller.animation.${nameData.namespace}.item.custom_items.${nameData.shortname}`},
-            {name: `${nameData.shortname}.first_person_fix`, reference: `animation.${nameData.namespace}.${nameData.shortname}.first_person_fix`},
             {name: `${nameData.shortname}.idle.first_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.idle.first_person`},
             {name: `${nameData.shortname}.idle.third_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.idle.third_person`},
             {name: `${nameData.shortname}.attack.first_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.attack.first_person`},
             {name: `${nameData.shortname}.attack.third_person`, reference: `animation.${nameData.namespace}.item.${nameData.shortname}.attack.third_person`}
         );
-        attachable.addAnimateScript({[`${nameData.shortname}.first_person_fix`]: "c.is_first_person"}, `ctrl.${nameData.shortname}`);
+        attachable.addAnimateScript(`ctrl.${nameData.shortname}`);
         files.push(attachable.toFile());
 
         // geometry

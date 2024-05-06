@@ -82,7 +82,7 @@ export class ClientEntity extends MinecraftDataType implements IClientEntity {
                   default: `geometry.${nameData.namespace}.${nameData.shortname}`,
                 },
                 textures: {
-                  default: `textures/${Directories.ADDON_PATH}entity/${nameData.shortname}/default`,
+                  default: `textures/${Directories.ADDON_PATH}entity/${nameData.directory}${nameData.shortname}/default`,
                 },
                 render_controllers: [
                   "controller.render.default",

@@ -421,7 +421,7 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
         this["minecraft:entity"].description.properties = this["minecraft:entity"].description.properties ?? {};
 
         Object.keys(properties).forEach(key => {
-            const idKey = key as Identifier;
+            const idKey = new NameData(key).fullname as Identifier;
             const property = this["minecraft:entity"].description.properties![idKey];
             if (property) {
                 switch (handleExisting) {

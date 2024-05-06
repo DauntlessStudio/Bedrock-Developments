@@ -1,4 +1,13 @@
 # Changelog
+# [3.0.9] - 5/6/2024
+Updates, Fixes
+## Updates
+- Updated `bed new item -t attachable` to use adjusted file generation in accordance with artist's feedback.
+- Updated `bed new item -t attachable` to stop using the interact button component for more consistent item interaction behaviors.
+## Fixes
+- Fixes issue where entities created in subfolders would be structured incorrectly.
+- Fixes issue where `bed entity property` wouldn't automatically include namespaces in the config file.
+---
 # [3.0.8] - 4/17/2024
 Added Command
 ## Added

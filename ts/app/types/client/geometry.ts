@@ -214,9 +214,14 @@ export class ClientGeometryAttachable extends ClientGeometry {
                         }
                     },
                     {
-                        name: nameData.shortname,
+                        name: "first_person_fix",
                         parent: "rightItem",
-                        pivot: [0, 0, 0],
+                        pivot: [-6, 8, 0]
+                    },
+                    {
+                        name: nameData.shortname,
+                        parent: "first_person_fix",
+                        pivot: [-6, 8, 0],
                         cubes: [
                             {origin: [-10, 4, -4], size: [8, 8, 8], uv: [0, 0]}
                         ]
