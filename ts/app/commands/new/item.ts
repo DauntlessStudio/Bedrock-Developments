@@ -206,6 +206,25 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
                             transitions: [
                                 {
                                     idle: "q.any_animation_finished && !query.is_using_item"
+                                },
+                                {
+                                    escape_attack: "q.any_animation_finished && query.is_using_item"
+                                }
+                            ],
+                            blend_transition: 0.2
+                        },
+                        escape_attack: {
+                            animations: [
+                                {
+                                    [`${nameData.shortname}.idle.first_person`]: "v.is_first_person"
+                                },
+                                {
+                                    [`${nameData.shortname}.idle.third_person`]: "!v.is_first_person"
+                                }
+                            ],
+                            transitions: [
+                                {
+                                    idle: "!query.is_using_item"
                                 }
                             ],
                             blend_transition: 0.2
