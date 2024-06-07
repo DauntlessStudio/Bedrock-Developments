@@ -1,1 +1,1 @@
-export declare const program_project: import("commander").Command;
+export declare const program_project: any;

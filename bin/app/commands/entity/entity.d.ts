@@ -1,1 +1,1 @@
-export declare const program_entity: import("commander").Command;
+export declare const program_entity: any;
