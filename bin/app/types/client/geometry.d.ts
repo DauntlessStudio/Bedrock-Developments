@@ -20,11 +20,11 @@ export interface IClientGeometryNew {
     cape?: string;
 }
 export interface IClientGeometryOld {
-    texturewidth: number;
-    textureheight: number;
-    visible_bounds_width: number;
-    visible_bounds_height: number;
-    visible_bounds_offset: MolangTripleArray;
+    texturewidth?: number;
+    textureheight?: number;
+    visible_bounds_width?: number;
+    visible_bounds_height?: number;
+    visible_bounds_offset?: MolangTripleArray;
     bones: IClientGeometryBone[];
 }
 export interface IClientGeometryBone {
@@ -43,6 +43,7 @@ export interface IClientGeometryBone {
     reset?: boolean;
     rotation?: MolangTripleArray;
     size?: MolangTripleArray;
+    neverRender?: boolean;
     uv?: MolangDoubleArray | {
         up: IClientGeometryPerFaceUV;
         down: IClientGeometryPerFaceUV;
@@ -78,6 +79,11 @@ export declare class ClientGeometry extends MinecraftDataType implements IClient
     static createFilePath(nameData: NameData): string;
 }
 export declare class ClientGeometryAttachable extends ClientGeometry {
+    static get DirectoryPath(): string;
+    static createFromTemplate(nameData: NameData): ClientGeometry;
+    static createFilePath(nameData: NameData): string;
+}
+export declare class ClientGeometryArmor extends ClientGeometry {
     static get DirectoryPath(): string;
     static createFromTemplate(nameData: NameData): ClientGeometry;
     static createFilePath(nameData: NameData): string;

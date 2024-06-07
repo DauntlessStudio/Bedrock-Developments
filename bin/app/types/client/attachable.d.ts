@@ -40,3 +40,22 @@ export declare class ClientAttachable extends MinecraftDataType implements IClie
         [key: string]: string;
     } | string)[]): void;
 }
+declare abstract class ClientAttachableArmor extends ClientAttachable {
+    protected static readonly armorType: string;
+    static get DirectoryPath(): string;
+    static createFromTemplate(nameData: NameData): ClientAttachable;
+    addOwnerFilter(shortname: string, owner: Identifier): void;
+}
+export declare class ClientAttachableArmorHelmet extends ClientAttachableArmor {
+    protected static readonly armorType: string;
+}
+export declare class ClientAttachableArmorChestplate extends ClientAttachableArmor {
+    protected static readonly armorType: string;
+}
+export declare class ClientAttachableArmorLeggings extends ClientAttachableArmor {
+    protected static readonly armorType: string;
+}
+export declare class ClientAttachableArmorBoots extends ClientAttachableArmor {
+    protected static readonly armorType: string;
+}
+export {};

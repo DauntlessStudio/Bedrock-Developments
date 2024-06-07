@@ -1,1 +1,1 @@
-export declare const program_world: any;
+export declare const program_world: import("commander").Command;

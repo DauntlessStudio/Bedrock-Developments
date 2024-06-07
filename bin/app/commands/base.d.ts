@@ -1,2 +1,3 @@
-export declare const program: any;
+import { Command } from 'commander';
+export declare const program: Command;
 export declare function printVersion(): Promise<void>;
