@@ -21,7 +21,10 @@ export declare class ClientItemTexture extends MinecraftDataType implements ICli
     constructor(filepath: string, template: IClientItemTexture);
     static createFilePath(): string;
     static createFromTemplate(): ClientItemTexture;
-    static fileWithAddedTexture(name: string, textures: string): File;
+    static fileWithAddedTextures(...data: {
+        name: string;
+        texture: string;
+    }[]): File;
     toFile(): File;
     addTexture(name: string, textures: string): void;
 }

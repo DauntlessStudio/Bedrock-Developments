@@ -1,7 +1,7 @@
 import { OptionValues, Option } from "commander";
 import { printVersion } from "../base.js";
 import { program_new } from "./new.js";
-import { ClientItemTexture, ServerItem, LangFile, ClientEntity, ClientAnimationController, ClientAnimation, ClientAnimationName, ClientAttachable, ClientGeometryAttachable } from "../../types/index.js";
+import { ClientItemTexture, ServerItem, LangFile, ClientEntity, ClientAnimationController, ClientAnimation, ClientAnimationName, ClientAttachable, ClientGeometryAttachable, ClientAttachableArmorHelmet, ClientGeometryArmor, ClientAttachableArmorBoots, ClientAttachableArmorLeggings, ClientAttachableArmorChestplate } from "../../types/index.js";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
 import { NameData, currentFormatVersion, implementConfig } from "../../utils.js";
 
@@ -48,9 +48,12 @@ async function triggerCreateNewItem(names: string[], options: OptionValues) {
 	names.forEach((name) => {
 		const nameData = new NameData(name);
 		const files: File[] = createFileTemplates[type](nameData, commandOptions);
-        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
 
-        files.push(ClientItemTexture.fileWithAddedTexture(nameData.shortname, 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname));
+        if ([ServerItemOptions.armor_set, ServerItemOptions.helmet, ServerItemOptions.chestplate, ServerItemOptions.leggings, ServerItemOptions.boots].some(itemType => itemType === type)) {
+            files.push(ClientGeometryArmor.createFromTemplate(nameData).toFile());
+            copySourceFile('images/armor_uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'models/armor/' + nameData.directory + nameData.shortname + '.png');
+        }
+
 		setFiles(files);
 	});
 }
@@ -68,6 +71,8 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     boots: function (nameData: NameData, options: ItemCommandOptions) {
@@ -83,6 +88,10 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        files.push(ClientAttachableArmorBoots.createFromTemplate(nameData).toFile());
+
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     leggings: function (nameData: NameData, options: ItemCommandOptions) {
@@ -98,6 +107,10 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        files.push(ClientAttachableArmorLeggings.createFromTemplate(nameData).toFile());
+
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     chestplate: function (nameData: NameData, options: ItemCommandOptions) {
@@ -113,6 +126,10 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        files.push(ClientAttachableArmorChestplate.createFromTemplate(nameData).toFile());
+
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     helmet: function (nameData: NameData, options: ItemCommandOptions) {
@@ -128,6 +145,10 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        files.push(ClientAttachableArmorHelmet.createFromTemplate(nameData).toFile());
+
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     armor_set: function (nameData: NameData, options: ItemCommandOptions) {
@@ -144,13 +165,20 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         if (originalLang) {
             const lang = new LangFile('*.lang');
             lang.addToCategory('item names', 
-                `item.${nameData.fullname}"_boots.name=${nameData.display} Boots`,
-                `item.${nameData.fullname}"_leggings.name=${nameData.display} Leggings`,
-                `item.${nameData.fullname}"_chestplate.name=${nameData.display} Chestplate`,
-                `item.${nameData.fullname}"_helmet.name=${nameData.display} Helmet`,
+                `item.${nameData.fullname}_boots.name=${nameData.display} Boots`,
+                `item.${nameData.fullname}_leggings.name=${nameData.display} Leggings`,
+                `item.${nameData.fullname}_chestplate.name=${nameData.display} Chestplate`,
+                `item.${nameData.fullname}_helmet.name=${nameData.display} Helmet`,
             );
             files.push(...lang.files);
         }
+
+        files.push(ClientItemTexture.fileWithAddedTextures(
+            {name: nameData.shortname + "_boots", texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + "_boots"},
+            {name: nameData.shortname + "_leggings", texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + "_leggings"},
+            {name: nameData.shortname + "_chestplate", texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + "_chestplate"},
+            {name: nameData.shortname + "_helmet", texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + "_helmet"},
+        ));
 
         return files;
     },
@@ -268,6 +296,8 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         const geometry = ClientGeometryAttachable.createFromTemplate(nameData);
         files.push(geometry.toFile());
 
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
     food: function (nameData: NameData, options: ItemCommandOptions) {
@@ -283,6 +313,8 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
             files.push(...LangFile.addToAllLangs('item names', `item.${nameData.fullname}.name=${nameData.display}`).files);
         }
 
+        copySourceFile('images/sprite.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname + '.png');
+        files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     }
  }

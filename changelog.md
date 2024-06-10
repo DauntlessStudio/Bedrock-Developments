@@ -1,4 +1,11 @@
 # Changelog
+## [3.0.11] - 6/10/2024
+Updates, Added Command
+### Updates
+- Updated `bed new item -t armor_set|helmet|chestplate|leggings|boots` to properly add the attachable, texture, and geometry files required to render armor in game. And fixed bugs related to the `armor_set` failing to generate textures and lang entries for the subtypes.
+### Additions
+- Added `bed project install` which creates a symlink (`Junction`) between your project packs and Minecraft's development behavior and resource pack folders, keeping your project in sync. Note that if you sync projects this way, changing branches via Git *can* unlink your folders so double-check that the link is preserved before testing in-game.
+---
 ## [3.0.10] - 5/22/2024
 Updates
 ### Updates

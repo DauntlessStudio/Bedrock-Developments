@@ -44,9 +44,9 @@ export class ClientItemTexture extends MinecraftDataType implements IClientItemT
         });
     }
 
-    public static fileWithAddedTexture(name: string, textures: string): File {
+    public static fileWithAddedTextures(...data: {name: string, texture: string}[]): File {
         const items = ClientItemTexture.fromPathOrTemplate(ClientItemTexture, ClientItemTexture.createFilePath());
-        items.addTexture(name, textures);
+        data.forEach(data => items.addTexture(data.name, data.texture));
         return items.toFile();
     }
 

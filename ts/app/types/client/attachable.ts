@@ -126,3 +126,70 @@ export class ClientAttachable extends MinecraftDataType implements IClientAttach
         });
     }
 }
+
+abstract class ClientAttachableArmor extends ClientAttachable {
+    protected static readonly armorType: string = "";
+
+    public static get DirectoryPath(): string {
+        return Directories.RESOURCE_PATH + 'attachables/player/';
+    }
+
+    public static createFromTemplate(nameData: NameData): ClientAttachable {
+        return new ClientAttachable(this.createFilePath(nameData), {
+            format_version: currentFormatVersion,
+            "minecraft:attachable": {
+                description: {
+                    identifier: nameData.fullname as Identifier,
+                    materials: {
+                        default: "armor",
+                        enchanted: "armor_enchanted",
+                    },
+                    textures: {
+                        default: `textures/${Directories.ADDON_PATH}models/armor/${nameData.shortname.replace(`_${this.armorType}`, "")}`,
+                        enchanted: "textures/misc/enchanted_item_glint",
+                    },
+                    geometry: {
+                        default: `geometry.${nameData.namespace}.player.${nameData.shortname.replace(`_${this.armorType}`, "")}.armor.${this.armorType}`,
+                    },
+                    scripts: {
+                        initialize: [
+                            "variable.is_first_person = 0.0;"
+                        ],
+                        pre_animation: [
+                            "v.is_first_person = c.owning_entity->v.is_first_person;",
+                            "v.is_paperdoll = c.owning_entity->v.is_paperdoll;"
+                        ],
+                        parent_setup: `variable.${this.armorType}_layer_visible = 0.0;`,
+                    },
+                    render_controllers: [
+                        "controller.render.armor"
+                    ]
+                }
+            }
+        });
+    }
+
+    public addOwnerFilter(shortname: string, owner: Identifier) {
+        const originalIdentifier = this["minecraft:attachable"].description.identifier;
+        this["minecraft:attachable"].description.identifier += `.${shortname}`;
+        this["minecraft:attachable"].description.item = {
+            [originalIdentifier]: `query.owner_identifier == '${owner}'`,
+        }
+    }
+}
+
+export class ClientAttachableArmorHelmet extends ClientAttachableArmor {
+    protected static readonly armorType: string = "helmet";
+}
+
+export class ClientAttachableArmorChestplate extends ClientAttachableArmor {
+    protected static readonly armorType: string = "chestplate";
+}
+
+export class ClientAttachableArmorLeggings extends ClientAttachableArmor {
+    protected static readonly armorType: string = "leggings";
+}
+
+export class ClientAttachableArmorBoots extends ClientAttachableArmor {
+    protected static readonly armorType: string = "boots";
+}
