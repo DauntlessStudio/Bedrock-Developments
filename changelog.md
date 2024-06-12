@@ -1,4 +1,10 @@
 # Changelog
+## [3.0.12] - 6/12/2024
+Updates, Added Command
+### Updates
+- Updated `bed new item -t attachable` to use nametag attacker checks by default in the animation controller.
+- Updated `bed new item -t attachable` to create first person attack and idle animations that negate the vanilla punch animation.
+---
 ## [3.0.11] - 6/10/2024
 Updates, Added Command
 ### Updates
