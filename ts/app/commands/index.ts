@@ -6,6 +6,8 @@ export * from './world/index.js';
 export * from './format/index.js';
 export * from './project/index.js';
 
-export function runProgram(): void {
+export async function runProgram(): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, 2)); // Wait to parse command until command map copies finished
+    
     CommandMap.getCommandEntry("root")?.command?.parse();
 }

@@ -9,4 +9,5 @@ export declare class CommandMap {
     private static readonly entries;
     static addCommand<Args = any, Options = OptionValues>(name: string, commandEntry: CommandMapEntry<Args, Options>): void;
     static getCommandEntry(name: string): CommandMapEntry<any, OptionValues> | undefined;
+    static copyCommand(name: string, source: string, commandName: string, parent?: Command): Promise<void>;
 }

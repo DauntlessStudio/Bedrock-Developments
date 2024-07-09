@@ -29,4 +29,32 @@ export class CommandMap {
     public static getCommandEntry(name: string): CommandMapEntry<any, OptionValues>|undefined {
         return this.entries[name];
     }
+
+    public static async copyCommand(name: string, source: string, commandName: string, parent?: Command): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 1)); // Wait to perform copy until all the base commands were added
+
+        const sourceEntry = this.getCommandEntry(source);
+        if (sourceEntry) {
+            const entry: CommandMapEntry<any, any> = {
+                command: new Command(),
+                parent: parent,
+                commandOptions: sourceEntry.commandOptions,
+                commandAction: sourceEntry.commandAction,
+            };
+
+            entry.commandOptions(entry.command!);
+            entry.command!.name(commandName);
+            if (entry.commandAction) {
+                entry.command!.action(entry.commandAction);
+                entry.command!.hook('postAction', printVersion);
+            };
+
+            if (parent) {
+                entry.parent = parent;
+                parent.addCommand(entry.command!);
+            }
+
+            this.entries[name] = entry;
+        }
+    }
 }
