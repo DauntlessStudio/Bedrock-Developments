@@ -1,7 +1,6 @@
 import { Argument } from "commander";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
 import { v4 } from "uuid";
-import axios from "axios";
 import { CommandMap } from "../command_map.js";
 import { BehaviorManifest, ResourceManifest, SkinsManifest, WorldManifest } from "../../types/manifest.js";
 
@@ -73,6 +72,20 @@ async function triggerCreateNewProject(name: string, options: NewProjectOptions)
         {filePath: `Content/world_template/world_resource_packs.json`, fileContents: JSON.stringify([{pack_id: rpUUID, version: [1, 0, 0]}], null, '\t')},
         {filePath: `Content/world_template/texts/languages.json`, fileContents: JSON.stringify(["en_US"], null, '\t')},
         {filePath: `Content/world_template/texts/en_US.lang`, fileContents: `pack.name=${displayName}\npack.description=By ${options.author}`},
+        {filePath: `.vscode/launch.json`, fileContents: JSON.stringify({
+            version: "0.3.0",
+            configurations: [
+                {
+                  type: "minecraft-js",
+                  request: "attach",
+                  name: "Debug with Minecraft",
+                  mode: "listen",
+                  targetModuleUuid: bpUUID,
+                  localRoot: `\${workspaceFolder}/Content/world_template/behavior_packs/${name}_bp/scripts/`,
+                  port: 19144
+                }
+            ]
+        }, null, '\t')},
     );
     setFiles(rootFiles);
 

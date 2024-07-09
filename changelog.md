@@ -3,7 +3,7 @@
 Updates, Added Commands
 ### Updates
 - Internal improvements to command registry.
-- `bed new project` now adds a `skin_pack` folder with placeholder entries to `Content`.
+- `bed new project` now adds a `skin_pack` folder with placeholder entries to `Content`, and a `.vscode/launch.json` file.
 ### Aliases
 - `bed project new` is now an alias of `bed new project`.
 - `bed entity new` is now an alias of `bed new entity`.
