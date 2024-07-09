@@ -1,20 +1,28 @@
-import { OptionValues, Argument } from "commander";
-import { printVersion } from "../base.js";
-import { program_new } from "./new.js";
+import { Argument } from "commander";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
 import { v4 } from "uuid";
 import axios from "axios";
-import { LangFile } from "../../types/index.js";
+import { CommandMap } from "../command_map.js";
 
-program_new.command('project')
-.description('creates a minecraft development project')
-.addArgument(new Argument('<name>', 'the project name, folders will be output as "behavior_packs/<name>_bp" and "behavior_packs/<name>_rp"'))
-.option("-d, --display <display name>", "A display name to be used in your lang file, if different from your folder names")
-.option("-a, --author <author name>", "The credits name as a team or individual")
-.action(triggerCreateNewProject)
-.hook('postAction', printVersion);
+export interface NewProjectOptions {
+    display: string;
+    author: string;
+}
 
-async function triggerCreateNewProject(name: string, options: OptionValues) {
+CommandMap.addCommand<string, NewProjectOptions>("root.new.project", {
+    parent: CommandMap.getCommandEntry("root.new")?.command,
+    commandOptions(command) {
+        command
+        .name("project")
+        .description("creates a minecraft development project")
+        .addArgument(new Argument("<name>", 'the project name, folders will be output as "behavior_packs/<name>_bp" and "behavior_packs/<name>_rp"'))
+        .option("-d, --display <display name>", "A display name to be used in your lang file, if different from your folder names")
+        .option("-a, --author <author name>", "The credits name as a team or an individual");
+    },
+    commandAction: triggerCreateNewProject,
+});
+
+async function triggerCreateNewProject(name: string, options: NewProjectOptions) {
     const bpFiles: File[] = [];
     const rpFiles: File[] = [];
     const rootFiles: File[] = [];
