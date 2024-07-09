@@ -1,6 +1,4 @@
 import { OptionValues, Option } from "commander";
-import { printVersion } from "../base.js";
-import { program_new } from "./new.js";
 import { Directories, setFiles } from "../../file_manager.js";
 import { ClientSoundCategory, ClientSoundDefinitions } from "../../types/index.js";
 import { chalk, implementConfig } from "../../utils.js";
