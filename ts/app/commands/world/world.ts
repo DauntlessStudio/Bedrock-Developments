@@ -1,4 +1,10 @@
-import { program } from "../base.js";
+import { CommandMap } from "../command_map.js";
 
-export const program_world = program.command('world')
-.description('tools for working with worlds');
+CommandMap.addCommand("root.world", {
+    parent: CommandMap.getCommandEntry("root")?.command,
+    commandOptions(command) {
+        command
+        .name("world")
+        .description("tools for working with worlds");
+    },
+});

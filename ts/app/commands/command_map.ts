@@ -14,8 +14,10 @@ export class CommandMap {
     public static addCommand<Args = any, Options = OptionValues>(name: string, commandEntry: CommandMapEntry<Args, Options>): void {
         commandEntry.command = commandEntry.command ?? new Command();
         commandEntry.commandOptions(commandEntry.command);
-        commandEntry.command.hook('postAction', printVersion);
-        if (commandEntry.commandAction) commandEntry.command.action(commandEntry.commandAction);
+        if (commandEntry.commandAction) {
+            commandEntry.command.action(commandEntry.commandAction);
+            commandEntry.command.hook('postAction', printVersion);
+        };
 
         if (commandEntry.parent) {
             commandEntry.parent.addCommand(commandEntry.command);
