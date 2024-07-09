@@ -1,65 +1,67 @@
-import { OptionValues, Option } from "commander";
-import { printVersion } from "../base.js";
-import { program_new } from "./new.js";
-import { ClientItemTexture, ServerItem, LangFile, ClientEntity, ClientAnimationController, ClientAnimation, ClientAnimationName, ClientAttachable, ClientGeometryAttachable, ClientAttachableArmorHelmet, ClientGeometryArmor, ClientAttachableArmorBoots, ClientAttachableArmorLeggings, ClientAttachableArmorChestplate } from "../../types/index.js";
+import { Option } from "commander";
+import { ClientItemTexture, ServerItem, LangFile, ClientAnimationController, ClientAnimation, ClientAnimationName, ClientAttachable, ClientGeometryAttachable, ClientAttachableArmorHelmet, ClientGeometryArmor, ClientAttachableArmorBoots, ClientAttachableArmorLeggings, ClientAttachableArmorChestplate } from "../../types/index.js";
 import { Directories, File, copySourceFile, setFiles } from "../../file_manager.js";
 import { NameData, currentFormatVersion, implementConfig } from "../../utils.js";
+import { CommandMap } from "../command_map.js";
 
-interface ItemCommandOptions {
+export interface NewItemOptions {
     lang: boolean;
     stack: number;
     cooldown: number|undefined;
+    override: boolean;
+    type: ServerItemOptions;
 }
 
 enum ServerItemOptions {
-    basic='basic',
-    attachable='attachable',
-    food='food',
-    armor_set='armor_set',
-    helmet='helmet',
-    chestplate='chestplate',
-    leggings='leggings',
-    boots='boots'
+    basic="basic",
+    attachable="attachable",
+    food="food",
+    armor_set="armor_set",
+    helmet="helmet",
+    chestplate="chestplate",
+    leggings="leggings",
+    boots="boots"
 };
 
-program_new.command("item")
-.description("creates new bedrock items")
-.argument("<names...>", 'item names as "namespace:item"')
-.option("--no-lang", "do not add lang file")
-.option("-s, --stack <stack_size>", "max stack size", "64")
-.option("-c, --cooldown <cooldown_duration>", "cooldown duration")
-.addOption(
-	new Option("-t, --type <item_type>", "basic").choices(
-		Object.keys(ServerItemOptions)
-	)
-)
-.action(triggerCreateNewItem)
-.hook("postAction", printVersion);
+CommandMap.addCommand<string[], NewItemOptions>("root.new.item", {
+    parent: CommandMap.getCommandEntry("root.new")?.command,
+    commandOptions(command) {
+        command
+        .name("item")
+        .description("creates new bedrock items")
+        .argument("<names...>", 'item names as "namespace:item"')
+        .option("--no-lang", "do not add lang file")
+        .option("-s, --stack <stack_size>", "max stack size", "64")
+        .option("-c, --cooldown <cooldown_duration>", "cooldown duration")
+        .option("-o, --override")
+        .addOption(
+            new Option("-t, --type <item_type>", "basic").choices(
+                Object.keys(ServerItemOptions)
+            )
+        );
+    },
+    commandAction: triggerCreateNewItem,
+});
 
-async function triggerCreateNewItem(names: string[], options: OptionValues) {
+async function triggerCreateNewItem(names: string[], options: NewItemOptions) {
     implementConfig();
-    const commandOptions = {
-        lang: options.lang,
-        stack: Number(options.stack),
-        cooldown: Number(options.cooldown)
-    };
-	const type: ServerItemOptions = options.type ?? ServerItemOptions.basic;
 
 	names.forEach((name) => {
 		const nameData = new NameData(name);
-		const files: File[] = createFileTemplates[type](nameData, commandOptions);
+		const files: File[] = createFileTemplates[options.type](nameData, options);
 
-        if ([ServerItemOptions.armor_set, ServerItemOptions.helmet, ServerItemOptions.chestplate, ServerItemOptions.leggings, ServerItemOptions.boots].some(itemType => itemType === type)) {
+        if ([ServerItemOptions.armor_set, ServerItemOptions.helmet, ServerItemOptions.chestplate, ServerItemOptions.leggings, ServerItemOptions.boots].some(itemType => itemType === options.type)) {
             files.push(ClientGeometryArmor.createFromTemplate(nameData).toFile());
             copySourceFile('images/armor_uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'models/armor/' + nameData.directory + nameData.shortname + '.png');
         }
 
+        if (options.override) files.forEach(file => file.handleExisting = "overwrite");
 		setFiles(files);
 	});
 }
 
-const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, options: ItemCommandOptions) => File[]> = {
-    basic: function (nameData: NameData, options: ItemCommandOptions) {
+const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, options: NewItemOptions) => File[]> = {
+    basic: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
@@ -75,7 +77,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    boots: function (nameData: NameData, options: ItemCommandOptions) {
+    boots: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
@@ -94,7 +96,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    leggings: function (nameData: NameData, options: ItemCommandOptions) {
+    leggings: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
@@ -113,7 +115,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    chestplate: function (nameData: NameData, options: ItemCommandOptions) {
+    chestplate: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
@@ -132,7 +134,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    helmet: function (nameData: NameData, options: ItemCommandOptions) {
+    helmet: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(1);
@@ -151,7 +153,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    armor_set: function (nameData: NameData, options: ItemCommandOptions) {
+    armor_set: function (nameData: NameData, options: NewItemOptions) {
         const files: File[] = [];
 
         const originalLang = options.lang;
@@ -182,7 +184,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
 
         return files;
     },
-    attachable: function (nameData: NameData, options: ItemCommandOptions) {
+    attachable: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);
@@ -300,7 +302,7 @@ const createFileTemplates: Record<ServerItemOptions, (nameData: NameData, option
         files.push(ClientItemTexture.fileWithAddedTextures({name: nameData.shortname, texture: 'textures/' + Directories.ADDON_PATH + 'items/' + nameData.directory + nameData.shortname}));
         return files;
     },
-    food: function (nameData: NameData, options: ItemCommandOptions) {
+    food: function (nameData: NameData, options: NewItemOptions) {
         const item = ServerItem.createFromTemplate(nameData);
         item.setDisplayData(nameData);
         item.setStackSize(options.stack);

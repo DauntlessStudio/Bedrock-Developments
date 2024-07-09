@@ -1,12 +1,16 @@
-import { printVersion } from "../base.js";
 import { chalk, getConfig, setConfig } from "../../utils.js";
-import { program_format } from "./format.js";
+import { CommandMap } from "../command_map.js";
 
-program_format.command('addon')
-.description('converts a project into addon format')
-.argument('<name>', 'addon namespace as <team_name>_<project_name>')
-.action(triggerAddonFormatting)
-.hook('postAction', printVersion);
+CommandMap.addCommand<string>("root.format.addon", {
+    parent: CommandMap.getCommandEntry("root.format")?.command,
+    commandOptions(command) {
+        command
+        .name("addon")
+        .description("converts a project into addon format")
+        .argument("<name>", "addon namespace as <team_name>_<project_name>");
+    },
+    commandAction: triggerAddonFormatting,
+});
 
 // TODO: Have this function actually update a project to the addon rules.
 async function triggerAddonFormatting(name: string) {

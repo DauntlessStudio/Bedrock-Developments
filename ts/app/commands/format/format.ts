@@ -1,4 +1,10 @@
-import { program } from "../base.js";
+import { CommandMap } from "../command_map.js";
 
-export const program_format = program.command('format')
-.description('project formatting commands');
+CommandMap.addCommand("root.format", {
+    parent: CommandMap.getCommandEntry("root")?.command,
+    commandOptions(command) {
+        command
+        .name("format")
+        .description("project formatting commands");
+    },
+});

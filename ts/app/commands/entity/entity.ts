@@ -1,4 +1,10 @@
-import { program } from "../base.js";
+import { CommandMap } from "../command_map.js";
 
-export const program_entity = program.command('entity')
-.description('modifies bedrock entities');
+CommandMap.addCommand("root.entity", {
+    parent: CommandMap.getCommandEntry("root")?.command,
+    commandOptions(command) {
+        command
+        .name("entity")
+        .description('modifies bedrock entities');
+    },
+});

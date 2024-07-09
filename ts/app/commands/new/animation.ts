@@ -1,39 +1,46 @@
-import { OptionValues, Option } from "commander";
-import { printVersion, } from "../base.js";
-import { program_new } from "./new.js";
+import { Option } from "commander";
 import { setFiles, File } from "../../file_manager.js";
 import { ServerAnimation } from "../../types/index.js";
 import { NameData, implementConfig } from "../../utils.js";
+import { CommandMap } from "../command_map.js";
 
-program_new.command('anim')
-.description('creates new bedrock behavior animations')
-.argument('<names...>', 'animation names names as "entity.anim"')
-.option('-l, --loop', 'should the animation loop')
-.addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
-.addOption(new Option('-t, --time <time>', 'the animation length').default(1.0).argParser(parseFloat))
-.action(triggerCreateNewAnimation)
-.hook('postAction', printVersion);
+export interface NewAnimationOptions {
+    loop: boolean;
+    commands: string[];
+    time: number;
+}
 
-function triggerCreateNewAnimation(names: string[], options: OptionValues) {
-  implementConfig();
-  const loop: boolean = Boolean(options.loop);
-  const commands: string[] = options.commands;
-  const animation_length: number = options.time;
+CommandMap.addCommand<string[], NewAnimationOptions>("root.new.anim", {
+    parent: CommandMap.getCommandEntry("root.new")?.command,
+    commandOptions(command) {
+        command
+        .name("anim")
+        .description('creates new bedrock behavior animations')
+        .argument('<names...>', 'animation names names as "entity.anim"')
+        .option('-l, --loop', 'should the animation loop')
+        .addOption(new Option('-c, --commands <commands...>', 'the commands to play').default(['/say anim_name']))
+        .addOption(new Option('-t, --time <time>', 'the animation length').default(1.0).argParser(parseFloat));
+    },
+    commandAction: triggerCreateNewAnimation,
+});
 
-  names.forEach((name) => {
-    const nameData = new NameData(name);
-    const files: File[] = [];
+function triggerCreateNewAnimation(names: string[], options: NewAnimationOptions) {
+    implementConfig();
 
-    const animation = ServerAnimation.createFromTemplate(nameData);
-    animation.animations[`animation.${nameData.namespace}.${nameData.shortname}`] = {
-        animation_length,
-        loop,
-        timeline: {
-            ["0.0"]: commands.map(string => string.replace('anim_name', nameData.shortname)),
-        }
-    };
+    names.forEach((name) => {
+        const nameData = new NameData(name);
+        const files: File[] = [];
 
-    files.push(animation.toFile());
-    setFiles(files);
-  });
+        const animation = ServerAnimation.createFromTemplate(nameData);
+        animation.animations[`animation.${nameData.namespace}.${nameData.shortname}`] = {
+            animation_length: options.time,
+            loop: options.loop,
+            timeline: {
+                ["0.0"]: options.commands.map(string => string.replace('anim_name', nameData.shortname)),
+            }
+        };
+
+        files.push(animation.toFile());
+        setFiles(files);
+    });
 }

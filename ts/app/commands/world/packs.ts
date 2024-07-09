@@ -1,64 +1,69 @@
-import { printVersion, } from "../base.js";
-import { program_world } from "./world.js";
 import { chalk } from "../../utils.js";
 import { IBehaviorPack, IResourcePack, MOJANG, MinecraftWorld } from "../../types/index.js";
-import { OptionValues, Option } from "commander";
+import { Option } from "commander";
 import { createInterface } from "readline";
-import { Directories, getFiles } from "../../file_manager.js";
+import { Directories } from "../../file_manager.js";
+import { CommandMap } from "../command_map.js";
 
-program_world.command('packs')
-.description('attach packs to world')
-.option('-w --world <name|index>', 'the name or index of the world to add packs to')
-.addOption(new Option('-b, --bpack <folder name>', 'the name of the behavior pack to add'))
-.addOption(new Option('-r, --rpack <folder name>', 'the name of the resource pack to add'))
-.addOption(new Option('-l, --local', 'use the local packs in this workspace'))
-.addOption(new Option('-d, --delete', 'should the packs be removed'))
-.action(triggerWorldsPacks)
-.hook('postAction', printVersion);
+export interface WorldPacksOptions {
+    world?: string;
+    bpack?: string;
+    rpack?: string;
+    local: boolean;
+}
 
-async function triggerWorldsPacks(options: OptionValues) {
-  let behavior_pack: string|undefined = options.bpack;
-  let resource_pack: string|undefined = options.rpack;
-  let world: string|undefined = options.world;
-  const local: boolean = options.local;
-  const del: boolean = options.delete;
+CommandMap.addCommand("root.world.packs", {
+    parent: CommandMap.getCommandEntry("root.world")?.command,
+    commandOptions(command) {
+        command
+        .name("packs")
+        .description("attach packs to world")
+        .option("-w --world <name|index>", "the name or index of the world to add packs to")
+        .addOption(new Option("-b, --bpack <folder name>", "the name of the behavior pack to add"))
+        .addOption(new Option("-r, --rpack <folder name>", "the name of the resource pack to add"))
+        .addOption(new Option("-l, --local", "use the local packs in this workspace"))
+        .addOption(new Option("-d, --delete", "should the packs be removed"))
+    },
+    commandAction: triggerWorldsPacks,
+});
 
-  const worlds = MinecraftWorld.getAllWorlds();
+async function triggerWorldsPacks(options: WorldPacksOptions) {
+    const worlds = MinecraftWorld.getAllWorlds();
 
-  if (!world) {
-    await new Promise<void>(resolve => {
-        const readline = createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-    
-        const worldOptions = worlds.map((world, index) => `[${index}] ${chalk.green(`${world.Name}`)}`)
-          
-        readline.question(`Select World \n${worldOptions.join('\n')}\nIndex or Name: `, (selection) => {
-            world = selection;
-            readline.close();
-            resolve();
-        });
-    })
-  }
-
-  if (local) {
-    behavior_pack = Directories.BEHAVIOR_PATH + 'manifest.json';
-    resource_pack = Directories.RESOURCE_PATH + 'manifest.json';
-  } else {
-    behavior_pack = MOJANG + '/development_behavior_packs/' + behavior_pack + '/manifest.json';
-    resource_pack = MOJANG + '/development_resource_packs/' + resource_pack + '/manifest.json';
-  }
-
-  const selectedWorld = worlds.find((worldOption, index) => index === Number(world) || worldOption.Name === world);
-  if (selectedWorld) {
-    if (behavior_pack) {
-        selectedWorld.addPack(MinecraftWorld.getPackFromManifest(behavior_pack) as IBehaviorPack)
+    if (!options.world) {
+        await new Promise<void>(resolve => {
+            const readline = createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+        
+            const worldOptions = worlds.map((world, index) => `[${index}] ${chalk.green(`${world.Name}`)}`)
+              
+            readline.question(`Select World \n${worldOptions.join('\n')}\nIndex or Name: `, (selection) => {
+                options.world = selection;
+                readline.close();
+                resolve();
+            });
+        })
     }
-    if (resource_pack) {
-        selectedWorld.addPack(MinecraftWorld.getPackFromManifest(resource_pack) as IResourcePack);
+
+    if (options.local) {
+        options.bpack = Directories.BEHAVIOR_PATH + 'manifest.json';
+        options.rpack = Directories.RESOURCE_PATH + 'manifest.json';
+    } else {
+        options.bpack = MOJANG + '/development_behavior_packs/' + options.bpack + '/manifest.json';
+        options.rpack = MOJANG + '/development_resource_packs/' + options.rpack + '/manifest.json';
     }
-  } else {
-    console.error(`${chalk.red(`${world} does not match the any names or indices in the world list`)}`);
-  }
+
+    const selectedWorld = worlds.find((worldOption, index) => index === Number(options.world) || worldOption.Name === options.world);
+    if (selectedWorld) {
+        if (options.bpack) {
+            selectedWorld.addPack(MinecraftWorld.getPackFromManifest(options.bpack) as IBehaviorPack)
+        }
+        if (options.rpack) {
+            selectedWorld.addPack(MinecraftWorld.getPackFromManifest(options.rpack) as IResourcePack);
+        }
+    } else {
+        console.error(`${chalk.red(`${options.world} does not match the any names or indices in the world list`)}`);
+    }
 }
