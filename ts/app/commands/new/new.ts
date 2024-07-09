@@ -1,4 +1,3 @@
-import { program } from "../base.js";
 import { CommandMap } from "../command_map.js";
 
 CommandMap.addCommand("root.new", {
@@ -9,6 +8,3 @@ CommandMap.addCommand("root.new", {
         .description('creates new bedrock files');
     },
 });
-
-export const program_new = program.command('new')
-.description('creates new bedrock files');
