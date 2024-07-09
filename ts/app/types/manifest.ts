@@ -18,10 +18,10 @@ export interface IManifest {
 
 export interface IManifestHeader {
     name: string;
-    description: string;
+    description?: string;
     uuid: string;
-    pack_scope: string;
     version: MolangTripleArray;
+    pack_scope?: string;
     min_engine_version?: MolangTripleArray;
     allow_random_seed?: boolean;
     lock_template_options?: boolean;
@@ -100,6 +100,30 @@ export class WorldManifest extends Manifest {
 
     public addAuthors(authors: string[]) {
         this.metadata?.authors?.push(...authors);
+    }
+}
+
+export class SkinsManifest extends Manifest {
+    public static get DirectoryPath(): string {
+        return `Content/skin_pack/manifest.json`;
+    }
+
+    public static createFromTemplate(): WorldManifest {
+        return new WorldManifest(this.DirectoryPath, {
+            format_version: 1,
+            header: {
+                name: "pack.name",
+                uuid: v4(),
+                version: [1, 0, 0],
+            },
+            modules: [
+                {
+                    type: "skin_pack",
+                    uuid: v4(),
+                    version: [1, 0, 0]
+                }
+            ]
+        });
     }
 }
 

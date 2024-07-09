@@ -11,10 +11,10 @@ export interface IManifest {
 }
 export interface IManifestHeader {
     name: string;
-    description: string;
+    description?: string;
     uuid: string;
-    pack_scope: string;
     version: MolangTripleArray;
+    pack_scope?: string;
     min_engine_version?: MolangTripleArray;
     allow_random_seed?: boolean;
     lock_template_options?: boolean;
@@ -52,6 +52,10 @@ export declare class WorldManifest extends Manifest {
     static get DirectoryPath(): string;
     static createFromTemplate(): WorldManifest;
     addAuthors(authors: string[]): void;
+}
+export declare class SkinsManifest extends Manifest {
+    static get DirectoryPath(): string;
+    static createFromTemplate(): WorldManifest;
 }
 export declare class BehaviorManifest extends Manifest {
     static get DirectoryPath(): string;

@@ -3,7 +3,7 @@ import { Directories, File, copySourceFile, setFiles } from "../../file_manager.
 import { v4 } from "uuid";
 import axios from "axios";
 import { CommandMap } from "../command_map.js";
-import { BehaviorManifest, ResourceManifest, WorldManifest } from "../../types/manifest.js";
+import { BehaviorManifest, ResourceManifest, SkinsManifest, WorldManifest } from "../../types/manifest.js";
 
 export interface NewProjectOptions {
     display: string;
@@ -27,6 +27,7 @@ async function triggerCreateNewProject(name: string, options: NewProjectOptions)
     const bpFiles: File[] = [];
     const rpFiles: File[] = [];
     const rootFiles: File[] = [];
+    const skinFiles: File[] = [];
 
     const bpUUID = v4();
     const rpUUID = v4();
@@ -46,8 +47,8 @@ async function triggerCreateNewProject(name: string, options: NewProjectOptions)
         {filePath: `${Directories.BEHAVIOR_PATH}texts/languages.json`, fileContents: JSON.stringify(["en_US"], null, '\t')},
         {filePath: `${Directories.BEHAVIOR_PATH}texts/en_US.lang`, fileContents: `${`## BEHAVIOR PACK MANIFEST `.padEnd(118, '=')}\npack.name=${displayName}\npack.description=This behavior pack is required for ${displayName} to run properly.`}
     );
-    setFiles(bpFiles);
     copySourceFile('images/pack_icon.png', Directories.BEHAVIOR_PATH + 'pack_icon.png');
+    setFiles(bpFiles);
 
     // Create Default Resource Pack Files
     const rpManifest = ResourceManifest.createFromTemplate();
@@ -59,8 +60,8 @@ async function triggerCreateNewProject(name: string, options: NewProjectOptions)
         {filePath: `${Directories.RESOURCE_PATH}texts/languages.json`, fileContents: JSON.stringify(["en_US"], null, '\t')},
         {filePath: `${Directories.RESOURCE_PATH}texts/en_US.lang`, fileContents: `${`## RESOURCE PACK MANIFEST `.padEnd(118, '=')}\npack.name=${displayName}\npack.description=This resource pack is required for ${displayName} to run properly.`}
     );
-    setFiles(rpFiles);
     copySourceFile('images/pack_icon.png', Directories.RESOURCE_PATH + 'pack_icon.png');
+    setFiles(rpFiles);
 
     // Create General Files
     const rootManifest = WorldManifest.createFromTemplate();
@@ -74,4 +75,22 @@ async function triggerCreateNewProject(name: string, options: NewProjectOptions)
         {filePath: `Content/world_template/texts/en_US.lang`, fileContents: `pack.name=${displayName}\npack.description=By ${options.author}`},
     );
     setFiles(rootFiles);
+
+    // Create Skin Pack Files
+    const skinsManifest = SkinsManifest.createFromTemplate();
+    skinFiles.push(
+        skinsManifest.toFile(),
+        {filePath: `Content/skin_pack/skins.json`, fileContents: JSON.stringify({serialize_name: options.author, localization_name: options.author, skins: [
+            {
+                localization_name: "template",
+                geometry: "geometry.humanoid.custom",
+                texture: "template.png",
+                type: "paid"
+            }
+        ]}, null, '\t')},
+        {filePath: `Content/skin_pack/texts/languages.json`, fileContents: JSON.stringify(["en_US"], null, '\t')},
+        {filePath: `Content/skin_pack/texts/en_US.lang`, fileContents: `skin.${options.author}.template=Template\nskinpack.${options.author}=${options.display}`},
+    );
+    copySourceFile('images/skin.png', 'Content/skin_pack/template.png');
+    setFiles(skinFiles);
 }
