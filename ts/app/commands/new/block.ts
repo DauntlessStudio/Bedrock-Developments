@@ -13,6 +13,7 @@ program_new.command('block')
 .option('-e, --emissive <emission>', 'block emmission level [1-15]')
 .option('-t, --table', 'create a loot table')
 .option('-g, --geo', 'create a custom geo')
+.option("-o, --override")
 .action(triggerCreateNewBlock)
 .hook('postAction', printVersion);
 
@@ -56,6 +57,8 @@ function triggerCreateNewBlock(names: string[], options: OptionValues) { // TODO
     files.push(block.toFile());
     files.push(ClientBlocks.fileWithAddedBlock(nameData.fullname as Identifier, {sound: "stone", textures: nameData.shortname}));
     files.push(ClientTerrainTexture.fileWithAddedTexture(nameData.shortname, 'textures/' + Directories.ADDON_PATH + nameData.directory + 'blocks/' + nameData.shortname));
+    
+    if (options.override) files.forEach(file => file.handleExisting = "overwrite");
     setFiles(files);
   });
 }

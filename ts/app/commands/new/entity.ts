@@ -13,6 +13,7 @@ program_new.command('entity')
 .option('-c, --client', 'create client entity in the resource path. Will also create a default geo and texture for the entity')
 .option('--no-geo', 'do not add geo file')
 .option('--no-texture', 'do not add texture file')
+.option("-o, --override")
 .action(triggerCreateNewEntity)
 .hook('postAction', printVersion);
 
@@ -47,6 +48,7 @@ function triggerCreateNewEntity(names: string[], options: OptionValues) {
       files.push(...LangFile.addToAllLangs('entity names', `entity.${nameData.fullname}.name=${nameData.display}`).files);
     }
 
+    if (options.override) files.forEach(file => file.handleExisting = "overwrite");
     setFiles(files);
   });
 }

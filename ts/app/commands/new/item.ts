@@ -28,6 +28,7 @@ program_new.command("item")
 .option("--no-lang", "do not add lang file")
 .option("-s, --stack <stack_size>", "max stack size", "64")
 .option("-c, --cooldown <cooldown_duration>", "cooldown duration")
+.option("-o, --override")
 .addOption(
 	new Option("-t, --type <item_type>", "basic").choices(
 		Object.keys(ServerItemOptions)
@@ -54,6 +55,7 @@ async function triggerCreateNewItem(names: string[], options: OptionValues) {
             copySourceFile('images/armor_uv_texture.png', Directories.RESOURCE_PATH + 'textures/' + Directories.ADDON_PATH + 'models/armor/' + nameData.directory + nameData.shortname + '.png');
         }
 
+        if (options.override) files.forEach(file => file.handleExisting = "overwrite");
 		setFiles(files);
 	});
 }
