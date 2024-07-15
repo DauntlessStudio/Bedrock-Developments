@@ -21,7 +21,7 @@ CommandMap.addCommand("root.world.new", {
 		.addArgument(new Argument("<name>", "the world name"))
 		.addOption(new Option("-t, --test", "create a test world with pre-configured gamerules"))
 		.addOption(new Option("-f, --flat", "create a flat world"))
-		.addOption(new Option("-m, --mode <gamemode>", "gamemode").choices(["0", "1", "2", "3"]))
+		.addOption(new Option("-m, --mode <gamemode>", "gamemode").choices(["0", "1", "2", "3"]).argParser(parseInt))
 		.addOption(new Option("-l, --local", "use the local packs in this workspace"))
 		.addOption(new Option("-b, --bpack <folder name>", "the name of the behavior pack to add"))
 		.addOption(new Option("-r, --rpack <folder name>", "the name of the resource pack to add"));

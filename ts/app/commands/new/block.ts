@@ -3,6 +3,7 @@ import { Directories, File, copySourceFile, setFiles } from "../../file_manager.
 import { ClientBlocks, ClientGeometry, ClientTerrainTexture, Identifier, ServerAnimation, ServerBlock, ServerLootTable } from "../../types/index.js";
 import { LangFile } from "../../types/index.js";
 import { CommandMap } from "../command_map.js";
+import { Option } from "commander";
 
 export interface NewBlockOptions {
     lang: boolean;
@@ -20,7 +21,7 @@ CommandMap.addCommand<string[], NewBlockOptions>("root.new.block", {
         .description("creates new bedrock blocks")
         .argument("<names...>", 'block names as "namespace:block"')
         .option("--no-lang", "do not add lang file")
-        .option("-e, --emissive <emission>", "block emmission level [1-15]")
+        .addOption(new Option("-e, --emissive <emission>", "block emmission level [1-15]").argParser(parseInt))
         .option("-t, --table", "create a loot table")
         .option("-g, --geo", "create a custom geo")
         .option("-o, --override");
