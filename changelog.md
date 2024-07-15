@@ -1,4 +1,10 @@
 # Changelog
+## [3.1.1] - 7/15/2024
+Fixes
+### Fixes
+- Fixed issue where commands that accepted a number argument were failing to parse the number correctly.
+- Fixed issue where `bed new item` was failing to automatically infer the `basic` type argument.
+---
 ## [3.1.0] - 7/9/2024
 Updates, Added Commands
 ### Updates

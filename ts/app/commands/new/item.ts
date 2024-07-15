@@ -31,13 +31,13 @@ CommandMap.addCommand<string[], NewItemOptions>("root.new.item", {
         .description("creates new bedrock items")
         .argument("<names...>", 'item names as "namespace:item"')
         .option("--no-lang", "do not add lang file")
-        .option("-s, --stack <stack_size>", "max stack size", "64")
+        .addOption(new Option("-s, --stack <stack_size>", "max stack size").default(64).argParser(parseInt))
         .option("-c, --cooldown <cooldown_duration>", "cooldown duration")
-        .option("-o, --override")
+        .option("-o, --override", "override existing files")
         .addOption(
-            new Option("-t, --type <item_type>", "basic").choices(
+            new Option("-t, --type <item_type>", "item type").choices(
                 Object.keys(ServerItemOptions)
-            )
+            ).default("basic")
         );
     },
     commandAction: triggerCreateNewItem,
