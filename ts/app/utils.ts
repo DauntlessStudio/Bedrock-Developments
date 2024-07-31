@@ -74,7 +74,7 @@ export class NameData {
     constructor(name: string) {
         this.original = name;
         this.fullname = path.basename(name);
-        this.namespace = this.fullname.split(/\.|:/)[1] ?? `${NameData.teamName}_${NameData.ProjectName}`;
+        this.namespace = this.fullname.split(/\.|:/)[0] ?? `${NameData.teamName}_${NameData.ProjectName}`;
         this.shortname = this.fullname.split(/\.|:/).pop() ?? '';
 
         if (!this.fullname.includes(this.namespace)) {

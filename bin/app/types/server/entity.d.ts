@@ -202,6 +202,7 @@ export interface IServerEntityEvent {
     };
     queue_command?: {
         command: string | string[];
+        target: ServerEntityTarget;
     };
     set_property?: {
         [key: Identifier]: string | number | boolean;
@@ -209,7 +210,7 @@ export interface IServerEntityEvent {
     trigger?: IServerEntityTrigger | string;
     randomize?: IServerEntityEvent[];
     sequence?: IServerEntityEvent[];
-    wheight?: number;
+    weight?: number;
 }
 export interface IServerEntityComponentGroupOptions {
     addEvent: boolean;
