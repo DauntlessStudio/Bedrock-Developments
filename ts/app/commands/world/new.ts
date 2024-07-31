@@ -36,7 +36,7 @@ async function triggerWorldsNew(name: string, options: WorldNewOptions) {
 	if (options.local) {
 	  behavior_pack_manifest_path = Directories.BEHAVIOR_PATH + 'manifest.json';
 	  resource_pack_manifest_path = Directories.RESOURCE_PATH + 'manifest.json';
-	} else {
+	} else if (options.bpack && options.rpack) {
 	  behavior_pack_manifest_path = MOJANG + '/development_behavior_packs/' + behavior_pack_manifest_path + '/manifest.json';
 	  resource_pack_manifest_path = MOJANG + '/development_resource_packs/' + resource_pack_manifest_path + '/manifest.json';
 	}

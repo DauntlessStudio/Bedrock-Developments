@@ -111,11 +111,7 @@ export interface IServerEntityComponents {
         remove_child_entities?: boolean;
     };
     ["minecraft:interact"]?: {
-        interactions: {
-            interact_text?: string;
-            on_interact?: IServerEntityTrigger;
-            [key: string]: any;
-        };
+        interactions: IServerEntityInteraction | IServerEntityInteraction[];
     };
     ["minecraft:loot"]?: {
         table: string;
@@ -163,6 +159,11 @@ export interface IServerEntityComponents {
     ["minecraft:type_family"]?: {
         family: string[];
     };
+    [key: string]: any;
+}
+export interface IServerEntityInteraction {
+    interact_text?: string;
+    on_interact?: IServerEntityTrigger;
     [key: string]: any;
 }
 export interface IServerEntityFilters {
@@ -223,6 +224,9 @@ export interface IServerEntityAnimationOptions {
 export interface IServerEntityDamageSensorOptions {
     prepend: boolean;
 }
+export interface IServerEntityInteractionOptions {
+    prepend: boolean;
+}
 export declare class ServerEntity extends MinecraftDataType implements IServerEntity {
     format_version: FormatVersion;
     ["minecraft:entity"]: {
@@ -241,6 +245,7 @@ export declare class ServerEntity extends MinecraftDataType implements IServerEn
     setEvents(events: IServerEntityEvents, handleExisting?: 'overwrite' | 'merge' | 'ignore'): void;
     setProperties(properties: IServerEntityProperties, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityPropertiesOptions): void;
     setDamageSensor(sensor: IServerEntityDamageSensor, options?: IServerEntityDamageSensorOptions): void;
+    setInteraction(interaction: IServerEntityInteraction, options?: IServerEntityInteractionOptions): void;
     setAnimations(animations: {
         [key: string]: ServerAnimationName | ServerACName;
     }, handleExisting?: 'overwrite' | 'merge' | 'ignore', options?: IServerEntityAnimationOptions): void;

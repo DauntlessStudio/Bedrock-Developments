@@ -116,11 +116,7 @@ export interface IServerEntityComponents {
         remove_child_entities?: boolean;
     };
     ["minecraft:interact"]?: {
-        interactions: {
-            interact_text?: string;
-            on_interact?: IServerEntityTrigger;
-            [key: string]: any;
-        }
+        interactions: IServerEntityInteraction|IServerEntityInteraction[]
     };
     ["minecraft:loot"]?: {
         table: string;
@@ -168,6 +164,12 @@ export interface IServerEntityComponents {
     ["minecraft:type_family"]?: {
         family: string[];
     };
+    [key: string]: any;
+}
+
+export interface IServerEntityInteraction {
+    interact_text?: string;
+    on_interact?: IServerEntityTrigger;
     [key: string]: any;
 }
 
@@ -235,6 +237,10 @@ export interface IServerEntityAnimationOptions {
 }
 
 export interface IServerEntityDamageSensorOptions {
+    prepend: boolean;
+}
+
+export interface IServerEntityInteractionOptions {
     prepend: boolean;
 }
 
@@ -501,6 +507,21 @@ export class ServerEntity extends MinecraftDataType implements IServerEntity {
             this["minecraft:entity"].components["minecraft:damage_sensor"].triggers.splice(0, 0, sensor);
         } else {
             this["minecraft:entity"].components["minecraft:damage_sensor"].triggers.push(sensor);
+        }
+    }
+
+    setInteraction(interaction: IServerEntityInteraction, options?: IServerEntityInteractionOptions) {
+        this["minecraft:entity"].components["minecraft:interact"] = this["minecraft:entity"].components["minecraft:interact"] ?? {interactions: []};
+
+        if (!Array.isArray(this["minecraft:entity"].components["minecraft:interact"].interactions)) {
+            const ogInteraction = this["minecraft:entity"].components["minecraft:interact"].interactions;
+            this["minecraft:entity"].components["minecraft:interact"].interactions = [ogInteraction];
+        }
+
+        if (options?.prepend) {
+            this["minecraft:entity"].components["minecraft:interact"].interactions.splice(0, 0, interaction);
+        } else {
+            this["minecraft:entity"].components["minecraft:interact"].interactions.push(interaction);
         }
     }
 
