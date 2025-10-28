@@ -1,4 +1,9 @@
 # Changelog
+## [3.2.0] - 10/28/2025
+Changes
+### Changes
+- Updated Mojang path from the Universal Windows Platform (UWP) over to the Game Development Kit (GDK) platform target.
+---
 ## [3.1.1] - 7/15/2024
 Fixes
 ### Fixes

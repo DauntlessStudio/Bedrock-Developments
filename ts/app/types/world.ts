@@ -7,8 +7,8 @@ import { v4 } from 'uuid';
 import { execSync } from "child_process";
 import { NbtFile } from "deepslate";
 
-const APPDATA = (process.env.LOCALAPPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
-export const MOJANG = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
+const APPDATA = (process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")).replace(/\\/g, '/');
+export const MOJANG = `${APPDATA}/Minecraft Bedrock/Users/Shared/games/com.mojang`;
 const DOWNLOAD = `${process.env.USERPROFILE}/Downloads`.replace(/\\/g, '/');
 
 export function cache(target: any, propertyName: string, descriptor: PropertyDescriptor) {
@@ -279,7 +279,7 @@ export class MinecraftWorld {
 }
 
 function findPackPathWithID(id: string, type: 'behavior'|'resource') {
-    let path = `${APPDATA}/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/LocalState/games/com.mojang`;
+    let path = `${APPDATA}/Minecraft Bedrock/Users/Shared/games/com.mojang`;
 
     // Check dev packs first
     for (const folder of fs.readdirSync(`${path}/development_${type}_packs`)) {
